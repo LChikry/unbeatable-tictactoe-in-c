@@ -9,13 +9,22 @@ I start creating the game because I found two main ways to never get beaten by a
 ## How to Install & Use
 
 1. go to src folder.
-   `cd src`
+
+```
+cd src
+```
 
 2. compile the program to an executable file using this command
-   `gcc -o ../bin/src/main main.c ./computer_turn/unbeatable_mode.c ./computer_turn/normal_mode.c ./computer_turn/computer_moves.c ./computer_turn/computer_turn.c ./common/err.c ./common/graphic.c ./common/form.c ./game_play/game_checkers.c ./game_play/user_turn.c ./game_play/game_play.c`
+
+```
+gcc -o ../bin/src/main main.c ./computer_turn/unbeatable_mode.c ./computer_turn/normal_mode.c ./computer_turn/computer_moves.c ./computer_turn/computer_turn.c ./common/err.c ./common/graphic.c ./common/form.c ./game_play/game_checkers.c ./game_play/user_turn.c ./game_play/game_play.c
+```
 
 3. execute the program using this command
-   `../bin/src/./main`
+
+```
+../bin/src/./main
+```
 
 ## Technologies & Knowledge Used
 
