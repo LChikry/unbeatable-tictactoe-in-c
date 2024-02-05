@@ -24,4 +24,4 @@ I start creating the game because I found two main ways to never get beaten by a
 - 
 
 ## Issues I'm aware of
-- none
+- The game exit at the end of playing a round with the computer.
