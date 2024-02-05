@@ -18,10 +18,12 @@ I start creating the game because I found two main ways to never get beaten by a
    `../bin/src/./main`
 
 ## Technologies & Knowledge Used
+
 - Terminal manipulation (Escape Sequences).
 - Modularization of the code (Makefile & CMake).
 - Linked List data structure
-- 
+-
 
 ## Issues I'm aware of
+
 - The game exit at the end of playing a round with the computer.
