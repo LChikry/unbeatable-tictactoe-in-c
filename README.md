@@ -21,8 +21,7 @@ I start creating the game because I found two main ways to never get beaten by a
 
 - Terminal manipulation (Escape Sequences).
 - Modularization of the code (Makefile & CMake).
-- Linked List data structure
--
+- LinkedList data structure.
 
 ## Issues I'm aware of
 
