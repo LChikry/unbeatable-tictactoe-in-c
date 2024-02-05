@@ -28,8 +28,10 @@ int GamePlay(char *board, int game_mode, bool should_user_play,
 
   TerminalCleaner();
   LogoPrinter();
-  while (number_of_turns < 9) {
-    number_of_turns++;
+  while (number_of_turns < 8) {
+    ++number_of_turns;  // after incrementing, this variable tells us how many
+                        // marks already exist in the board
+
     if (number_of_turns >= 5) {
       game_result = WhoWon(board, user_playing_symbol, computer_playing_symbol);
     }
