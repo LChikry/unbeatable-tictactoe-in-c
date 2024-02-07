@@ -18,3 +18,6 @@
 
 - todo 4
   - use Corn mode all the time in the program
+
+- todo 5: contributing
+  - add the steps to contribute and how to deal with branches.
