@@ -29,7 +29,7 @@ jobs:
           |
           gcc -o bin/test/helper/user_choices_samples test/unit/unbeatable_mode/user_choices_samples.c
           bin/test/helper/./user_choices_samples > test_output.txt
-          if grep -q "PASS" test_output.txt; then
+          if grep -q "PASSED" test_output.txt; then
             # Tests passed, print success message
             echo "Tests passed!"
           else
@@ -43,7 +43,7 @@ jobs:
           |
           gcc -o bin/test/unit/unbeatable_mode_test test/unit/unbeatable_mode/unbeatable_mode_test.c src/game_play/game_checkers.c src/game_play/user_turn.c src/game_play/game_play.c src/computer_turn/unbeatable_mode.c src/computer_turn/normal_mode.c src/computer_turn/computer_moves.c src/computer_turn/computer_turn.c src/common/graphic.c src/common/err.c
           bin/test/unit/./unbeatable_mode_test > test_output.txt
-          if grep -q "FAIL" test_output.txt; then
+          if grep -q "FAILED" test_output.txt; then
             echo "::error::Tests failed! Check test_output.txt for details."
             exit 1 # Exit with non-zero code to mark job as failed
           else

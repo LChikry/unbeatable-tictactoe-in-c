@@ -28,11 +28,11 @@ void CreateRandom4DigitsWithoutNumber5(void) {
 
   fclose(outfp);
 
-  fputs("\033[32;1m", stdout);
-  puts("\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+  // fputs("\033[32;1m", stdout);
+  // puts("\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
   printf("PASSED EXECUTION: %d of 4 Digit Choices File Generated\n", cnt);
-  puts("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-  fputs("\033[0m", stdout);
+  // puts("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+  // fputs("\033[0m", stdout);
 }
 
 void CreateRandom5Digits(void) {
@@ -65,11 +65,11 @@ void CreateRandom5Digits(void) {
 
   fclose(outfp);
 
-  fputs("\033[32;1m", stdout);
-  puts("\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+  // fputs("\033[32;1m", stdout);
+  // puts("\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
   printf("PASSED EXECUTION: %d of 5 Digit Choices File Generated\n", cnt);
-  puts("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-  fputs("\033[0m", stdout);
+  // puts("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+  // fputs("\033[0m", stdout);
 }
 
 int main(void) {
