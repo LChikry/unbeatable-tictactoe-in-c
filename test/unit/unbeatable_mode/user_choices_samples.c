@@ -1,18 +1,9 @@
-/*
-  Compiler Process:
-
-  cd test/integration
-
-  gcc -o ../../bin/test/user_playing_samples user_playing_samples.c
-
-    ../bin/test/./ser_playing_samples
-*/
-
 #include <stdio.h>
 
 void CreateRandom4DigitsWithoutNumber5(void) {
-  FILE *outfp =
-      fopen("../../data/test/user_second_random_board_place_numbers.txt", "w");
+  FILE *outfp = fopen(
+      "../../../data/test/user_second_random_board_place_numbers.txt", "w");
+
   int count = 10;
 
   puts("File will started to be Generated");
@@ -32,7 +23,6 @@ void CreateRandom4DigitsWithoutNumber5(void) {
           if (d == a || d == b || d == c || d == 5) continue;
 
           fprintf(outfp, "%d%d%d%d\n", a, b, c, d);
-          fprintf(stdout, "%d%d%d%d\n", a, b, c, d);
           cnt++;
         }
       }
@@ -40,13 +30,13 @@ void CreateRandom4DigitsWithoutNumber5(void) {
   }
 
   fclose(outfp);
-
   printf("File Created Successfully with %d numbers\n", cnt);
 }
 
 void CreateRandom5Digits(void) {
-  FILE *outfp =
-      fopen("../../data/test/user_first_random_board_place_numbers.txt", "w");
+  FILE *outfp = fopen(
+      "../../../data/test/user_first_random_board_place_numbers.txt", "w");
+
   int count = 10;
 
   puts("File will started to be Generated");
