@@ -1,4 +1,4 @@
-1.Be in the root directory
+1. Be in the root directory
 
 2. compile
 
