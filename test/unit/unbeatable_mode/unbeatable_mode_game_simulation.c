@@ -120,7 +120,7 @@ int UnbeatableModeTest(void) {
   if (instructions == NULL) {
     fputs("\033[36;1m", stdout);
     puts("\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-    puts("EXECUTION FAILURE: Unbeatable Mode with User Playing First");
+    puts("FAILED EXECUTION: Unbeatable Mode with User Playing First");
     puts("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
     fputs("\033[0m", stdout);
     return -1;
@@ -145,7 +145,7 @@ int UnbeatableModeTest(void) {
 
   fputs("\033[32;1m", stdout);
   puts("\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-  puts(" PASSED: Unbeatable Mode with User Playing First Simulator Test");
+  puts("PASSED: Unbeatable Mode with User Playing First Simulator Test");
   puts("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
   fputs("\033[0m", stdout);
 
@@ -160,7 +160,7 @@ int UnbeatableModeTest(void) {
   if (instructions == NULL) {
     fputs("\033[36;1m", stdout);
     puts("\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-    puts("EXECUTION FAILURE: Unbeatable Mode with User Playing Second");
+    puts("FAILED EXECUTION: Unbeatable Mode with User Playing Second");
     puts("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
     fputs("\033[0m", stdout);
     return -1;
@@ -175,7 +175,7 @@ int UnbeatableModeTest(void) {
     if (is_unbeatable_mode_beaten) {
       fputs("\033[31;1m", stdout);
       puts("\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-      puts(" FAILED: Unbeatable Mode with User Playing Second Simulator Test");
+      puts("FAILED: Unbeatable Mode with User Playing Second Simulator Test");
       puts("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
       fputs("\033[0m", stdout);
       break;
@@ -184,7 +184,7 @@ int UnbeatableModeTest(void) {
 
   fputs("\033[32;1m", stdout);
   puts("\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-  puts(" PASSED: Unbeatable Mode with User Playing Second Simulator Test");
+  puts("PASSED: Unbeatable Mode with User Playing Second Simulator Test");
   puts("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
   fputs("\033[0m", stdout);
 

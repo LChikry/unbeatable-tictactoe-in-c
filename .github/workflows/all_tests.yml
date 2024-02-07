@@ -1,10 +1,62 @@
-# All actions have a name that will be displayed in the "Actions" page in GitHub.
+# # All actions have a name that will be displayed in the "Actions" page in GitHub.
+# name: EchoTest
+
+# # The "on" option will specify when to run this action and on which branch
+# # Usually for a CI action you would like to run it on every pull request and on push
+# # For CD you would probably only want to run it on closed pull requests or direct pushes on master
+# # If you want to run it manually you would add "worflow_dispatch"
+# on:
+#   push:
+#     branches:
+#       [
+#         dev,
+#       ]
+#   pull_request:
+#     branches:
+#       [
+#         dev,
+#         master,
+#       ]
+#   workflow_dispatch:
+
+# # The whole action can contain sub-items called jobs
+# # Jobs are run separately and will spin up a new build machine for each sub-item
+# jobs:
+#   # Under jobs you can put whatever name you want
+
+#   # This is just a custom name "build" but it can be anything
+#   build:
+#     # What build machine to start
+
+#     # For Windows you can go with "windows-latest"
+#     runs-on: ubuntu-latest
+
+#     # Steps are the individual actions for each job
+#     steps:
+#       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+#       # Usually this is always needed
+#       - uses: actions/checkout@v2
+
+#       # Runs a single command using the runners shell
+#       # - name: Run a one-line script
+#       #   run: echo FAILED
+
+#       # Runs a set of commands using the runners shell
+#       - name: Run the Tests
+#         run:
+#           |
+#           gcc -o bin/test/all_tests_run test/run_testing.c test/unit/unbeatable_mode/unbeatable_mode_game_simulation.c src/game_play/game_checkers.c src/game_play/user_turn.c src/game_play/game_play.c src/computer_turn/unbeatable_mode.c src/computer_turn/normal_mode.c src/computer_turn/computer_moves.c src/computer_turn/computer_turn.c src/common/graphic.c src/common/err.c test/unit/unbeatable_mode/user_choices_samples.c
+#           bin/test/./all_tests_run > test_output.txt
+
+
+#       - name: Check for test failures
+#          run: |
+#         if grep -q FAIL test_output.txt; then
+#           exit 1 # Exit with non-zero code to mark job as failed
+#         fi
+
 name: EchoTest
 
-# The "on" option will specify when to run this action and on which branch
-# Usually for a CI action you would like to run it on every pull request and on push
-# For CD you would probably only want to run it on closed pull requests or direct pushes on master
-# If you want to run it manually you would add "worflow_dispatch"
 on:
   push:
     branches:
@@ -19,31 +71,22 @@ on:
       ]
   workflow_dispatch:
 
-# The whole action can contain sub-items called jobs
-# Jobs are run separately and will spin up a new build machine for each sub-item
 jobs:
-  # Under jobs you can put whatever name you want
+  runs-on: ubuntu-latest
 
-  # This is just a custom name "build" but it can be anything
-  build:
-    # What build machine to start
+    # Usually this is always needed
+    - uses: actions/checkout@v2
 
-    # For Windows you can go with "windows-latest"
-    runs-on: ubuntu-latest
+    - name: Run a multi-line script
+      run: |
+        gcc -o bin/test/all_tests_run test/run_testing.c test/unit/unbeatable_mode/unbeatable_mode_game_simulation.c src/game_play/game_checkers.c src/game_play/user_turn.c src/game_play/game_play.c src/computer_turn/unbeatable_mode.c src/computer_turn/normal_mode.c src/computer_turn/computer_moves.c src/computer_turn/computer_turn.c src/common/graphic.c src/common/err.c test/unit/unbeatable_mode/user_choices_samples.c
+        bin/test/./all_tests_run > test_output.txt
 
-    # Steps are the individual actions for each job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      # Usually this is always needed
-      - uses: actions/checkout@v2
-
-      # Runs a single command using the runners shell
-      # - name: Run a one-line script
-      #   run: echo FAILED
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run:
-          |
-          gcc -o bin/test/all_tests_run test/run_testing.c test/unit/unbeatable_mode/unbeatable_mode_game_simulation.c src/game_play/game_checkers.c src/game_play/user_turn.c src/game_play/game_play.c src/computer_turn/unbeatable_mode.c src/computer_turn/normal_mode.c src/computer_turn/computer_moves.c src/computer_turn/computer_turn.c src/common/graphic.c src/common/err.c test/unit/unbeatable_mode/user_choices_samples.c
-          bin/test/./all_tests_run
+    - name: Check for test failures
+      run: |
+        if grep -q "FAILED" test_output.txt; then
+          echo "::error::Tests failed! Check test_output.txt for details."
+          exit 1 # Exit with non-zero code to mark job as failed
+        else
+          echo "Tests passed!"
+        fi
