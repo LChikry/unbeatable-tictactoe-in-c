@@ -112,10 +112,10 @@ bool UnbeatableModeGameSimulation(FILE *instructions, FILE *results,
   return is_unbeatable_mode_beaten;
 }
 
-int main(void) {
+int UnbeatableModeTest(void) {
   FILE *instructions =
-      fopen("../data/test/user_first_random_board_place_numbers.txt", "r");
-  FILE *results = fopen("../data/test/user_first_game_results.txt", "w");
+      fopen("data/test/user_first_random_board_place_numbers.txt", "r");
+  FILE *results = fopen("data/test/user_first_game_results.txt", "w");
 
   if (instructions == NULL) {
     fputs("\033[36;1m", stdout);
@@ -153,8 +153,8 @@ int main(void) {
   fclose(results);
 
   instructions =
-      fopen("../data/test/user_second_random_board_place_numbers.txt", "r");
-  results = fopen("../data/test/user_second_game_results.txt", "w");
+      fopen("data/test/user_second_random_board_place_numbers.txt", "r");
+  results = fopen("data/test/user_second_game_results.txt", "w");
 
   // todo: work on the aestitic of this message
   if (instructions == NULL) {
@@ -190,5 +190,12 @@ int main(void) {
 
   fclose(instructions);
   fclose(results);
+
   return 0;
 }
+
+// int main(void) {
+//   UnbeatableModeTest();
+
+//   return 0;
+// }

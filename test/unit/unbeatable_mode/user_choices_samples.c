@@ -2,7 +2,7 @@
 
 void CreateRandom4DigitsWithoutNumber5(void) {
   FILE *outfp = fopen(
-      "../../../data/test/user_second_random_board_place_numbers.txt", "w");
+      "data/test/user_second_random_board_place_numbers.txt", "w");
 
   int count = 10;
 
@@ -35,7 +35,7 @@ void CreateRandom4DigitsWithoutNumber5(void) {
 
 void CreateRandom5Digits(void) {
   FILE *outfp = fopen(
-      "../../../data/test/user_first_random_board_place_numbers.txt", "w");
+      "data/test/user_first_random_board_place_numbers.txt", "w");
 
   int count = 10;
 
@@ -69,10 +69,9 @@ void CreateRandom5Digits(void) {
   printf("File Created Successfully with %d numbers\n", cnt);
 }
 
-int main(void) {
-  CreateRandom4DigitsWithoutNumber5();
+// int main(void) {
+//   CreateRandom4DigitsWithoutNumber5();
+//   CreateRandom5Digits();
 
-  CreateRandom5Digits();
-
-  return 1;
-}
+//   return 1;
+// }
