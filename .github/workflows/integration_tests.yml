@@ -19,9 +19,12 @@ jobs:
       #     |
       #     gcc
       #     > test_output.txt
-      #     if grep -q FAIL test_output.txt; then
-      #       exit 1 # Exit with non-zero code to mark job as failed
-      #     fi
+      # if grep -q "FAILED" test_output.txt; then
+      #   echo "::error::Tests failed! Check test_output.txt for details."
+      #   exit 1 # Exit with non-zero code to mark job as failed
+      # else
+      #   echo "Tests Passed!"
+      # fi
 
   Menu_Choice_Two:
     runs-on: ubuntu-latest
@@ -33,9 +36,12 @@ jobs:
       #   |
       #   gcc
       #   > test_output.txt
-      #   if grep -q FAIL test_output.txt; then
-      #     exit 1 # Exit with non-zero code to mark job as failed
-      #   fi
+      # if grep -q "FAILED" test_output.txt; then
+      #   echo "::error::Tests failed! Check test_output.txt for details."
+      #   exit 1 # Exit with non-zero code to mark job as failed
+      # else
+      #   echo "Tests Passed!"
+      # fi
 
   Menu_Choice_Three:
     runs-on: ubuntu-latest
@@ -47,9 +53,12 @@ jobs:
       #   |
       #   gcc
       #   > test_output.txt
-      #   if grep -q FAIL test_output.txt; then
-      #     exit 1 # Exit with non-zero code to mark job as failed
-      #   fi
+      # if grep -q "FAILED" test_output.txt; then
+      #   echo "::error::Tests failed! Check test_output.txt for details."
+      #   exit 1 # Exit with non-zero code to mark job as failed
+      # else
+      #   echo "Tests Passed!"
+      # fi
 
   Menu_Choice_Four:
     runs-on: ubuntu-latest
@@ -61,9 +70,12 @@ jobs:
       #   |
       #   gcc
       #   > test_output.txt
-      #   if grep -q FAIL test_output.txt; then
-      #     exit 1 # Exit with non-zero code to mark job as failed
-      #   fi
+      # if grep -q "FAILED" test_output.txt; then
+      #   echo "::error::Tests failed! Check test_output.txt for details."
+      #   exit 1 # Exit with non-zero code to mark job as failed
+      # else
+      #   echo "Tests Passed!"
+      # fi
 
   Menu_Choice_Five:
     runs-on: ubuntu-latest
@@ -75,6 +87,9 @@ jobs:
       #   |
       #   gcc
       #   > test_output.txt
-      #   if grep -q FAIL test_output.txt; then
-      #     exit 1 # Exit with non-zero code to mark job as failed
-      #   fi
+      # if grep -q "FAILED" test_output.txt; then
+      #   echo "::error::Tests failed! Check test_output.txt for details."
+      #   exit 1 # Exit with non-zero code to mark job as failed
+      # else
+      #   echo "Tests Passed!"
+      # fi
