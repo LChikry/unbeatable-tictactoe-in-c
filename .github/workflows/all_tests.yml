@@ -1,16 +1,21 @@
 # All actions have a name that will be displayed in the "Actions" page in GitHub.
 name: EchoTest
 
-
 # The "on" option will specify when to run this action and on which branch
 # Usually for a CI action you would like to run it on every pull request and on push
 # For CD you would probably only want to run it on closed pull requests or direct pushes on master
 # If you want to run it manually you would add "worflow_dispatch"
 on:
   push:
-    branches: [dev]
+    branches:
+      [
+        dev,
+      ]
   pull_request:
-    branches: [dev]
+    branches:
+      [
+        dev,
+      ]
   workflow_dispatch:
 
 # The whole action can contain sub-items called jobs
@@ -31,13 +36,13 @@ jobs:
       # Usually this is always needed
       - uses: actions/checkout@v2
 
-      
       # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo FAILED
+      # - name: Run a one-line script
+      #   run: echo FAILED
 
       # Runs a set of commands using the runners shell
-      # - name: Run a multi-line script
-      #   run: |
-      #     gcc -o bin/test/all_tests_run test/run_testing.c test/unit/unbeatable_mode/unbeatable_mode_game_simulation.c src/game_play/game_checkers.c src/game_play/user_turn.c src/game_play/game_play.c src/computer_turn/unbeatable_mode.c src/computer_turn/normal_mode.c src/computer_turn/computer_moves.c src/computer_turn/computer_turn.c src/common/graphic.c src/common/err.c test/unit/unbeatable_mode/user_choices_samples.c
-      #     bin/test/./all_tests_run
+      - name: Run a multi-line script
+        run:
+          |
+          gcc -o bin/test/all_tests_run test/run_testing.c test/unit/unbeatable_mode/unbeatable_mode_game_simulation.c src/game_play/game_checkers.c src/game_play/user_turn.c src/game_play/game_play.c src/computer_turn/unbeatable_mode.c src/computer_turn/normal_mode.c src/computer_turn/computer_moves.c src/computer_turn/computer_turn.c src/common/graphic.c src/common/err.c test/unit/unbeatable_mode/user_choices_samples.c
+          bin/test/./all_tests_run
