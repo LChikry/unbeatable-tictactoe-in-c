@@ -143,11 +143,13 @@ int UnbeatableModeTest(void) {
     }
   }
 
-  fputs("\033[32;1m", stdout);
-  puts("\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-  puts("PASSED: Unbeatable Mode with User Playing First Simulator Test");
-  puts("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-  fputs("\033[0m", stdout);
+  if (!is_unbeatable_mode_beaten) {
+    fputs("\033[32;1m", stdout);
+    puts("\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    puts("PASSED: Unbeatable Mode with User Playing First Simulator Test");
+    puts("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    fputs("\033[0m", stdout);
+  }
 
   fclose(instructions);
   fclose(results);
@@ -182,11 +184,13 @@ int UnbeatableModeTest(void) {
     }
   }
 
-  fputs("\033[32;1m", stdout);
-  puts("\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-  puts("PASSED: Unbeatable Mode with User Playing Second Simulator Test");
-  puts("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-  fputs("\033[0m", stdout);
+  if (!is_unbeatable_mode_beaten) {
+    fputs("\033[32;1m", stdout);
+    puts("\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    puts("PASSED: Unbeatable Mode with User Playing Second Simulator Test");
+    puts("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    fputs("\033[0m", stdout);
+  }
 
   fclose(instructions);
   fclose(results);
@@ -194,8 +198,8 @@ int UnbeatableModeTest(void) {
   return 0;
 }
 
-// int main(void) {
-//   UnbeatableModeTest();
+int main(void) {
+  UnbeatableModeTest();
 
-//   return 0;
-// }
+  return 0;
+}
