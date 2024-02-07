@@ -76,5 +76,5 @@ int main(void) {
   CreateRandom4DigitsWithoutNumber5();
   CreateRandom5Digits();
 
-  return 1;
+  return 0;
 }
