@@ -251,21 +251,19 @@ int UnbeatableMode(char *board, char playing_symbol, int number_of_turns,
                    bool *is_winning_algorithm_failed,
                    bool *is_center_and_corner_squares_empty,
                    bool *is_center_and_middle_squares_empty) {
-  return EasyMode(board, playing_symbol);
-
   // this algorithm should be executed first if the condition is true
-  // if (*is_winning_algorithm_failed) {
-  //   return NormalMode(board, playing_symbol, number_of_turns);
-  // }
+  if (*is_winning_algorithm_failed) {
+    return NormalMode(board, playing_symbol, number_of_turns);
+  }
 
-  // if (0 == number_of_turns % 2) {
-  //   return StartingFirstWinningAlgorithm(board, playing_symbol,
-  //   number_of_turns,
-  //                                        is_winning_algorithm_failed);
-  // }
+  if (0 == number_of_turns % 2) {
+    return StartingFirstWinningAlgorithm(board, playing_symbol,
+    number_of_turns,
+                                         is_winning_algorithm_failed);
+  }
 
-  // return StartingSecondWinningAlgorithm(
-  //     board, playing_symbol, number_of_turns, is_winning_algorithm_failed,
-  //     is_center_and_corner_squares_empty,
-  //     is_center_and_middle_squares_empty);
+  return StartingSecondWinningAlgorithm(
+      board, playing_symbol, number_of_turns, is_winning_algorithm_failed,
+      is_center_and_corner_squares_empty,
+      is_center_and_middle_squares_empty);
 }
