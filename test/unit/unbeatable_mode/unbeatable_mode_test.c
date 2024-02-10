@@ -5,6 +5,9 @@
 #include <stdlib.h>
 
 #include "../../../include/common/common.h"
+#include "../../../include/computer_turn/computer_turn.h"
+#include "../../../include/computer_turn/normal_mode.h"
+#include "../../../include/computer_turn/unbeatable_mode.h"
 #include "../../../include/game_play/game_checkers.h"
 #include "../../../include/game_play/game_play.h"
 
@@ -54,6 +57,45 @@ void MarkUserMove(char *board, char place, const char user_playing_symbol) {
   }
 }
 
+int ComputerTurnSimulator(char *board, int number_of_turns,
+                          int *playing_algorithm_used) {
+  if (PLAYING_EASY_MODE == *playing_algorithm_used) {
+    return EasyMode(board);
+  }
+
+  // Normal Mode used also when the unbeatable algorithm can't win
+  if (PLAYING_NORMAL_MODE == *playing_algorithm_used) {
+    return NormalMode(board, number_of_turns);
+  }
+
+  // Finding The Most Optimal and Unbeatable Algorithm
+  if (3 == *playing_algorithm_used) {
+    *playing_algorithm_used = GetUnbeatableAlgorithm(board, number_of_turns);
+  }
+
+  if (PLAYING_FIRST_ALGO == *playing_algorithm_used) {
+    return StartingFirstWinningAlgorithm(board, number_of_turns,
+                                         playing_algorithm_used);
+  }
+
+  if (PLAYING_SECOND_CORNER == *playing_algorithm_used) {
+    return StartingSecondWithEmptyCenterAndCornerSquares(
+        board, number_of_turns, playing_algorithm_used);
+  }
+
+  if (PLAYING_SECOND_MIDDLE == *playing_algorithm_used) {
+    return StartingSecondWithEmptyCenterAndMiddleSquares(board,
+                                                         number_of_turns);
+  }
+
+  if (PLAYING_SECOND_CENTER == *playing_algorithm_used) {
+    return StartingSecondWithMarkedCenterSquare(board, number_of_turns);
+  }
+
+  puts("Something went Wrong in ComputerTurnSimulator function");
+  exit(1);
+}
+
 bool UnbeatableModeGameSimulation(FILE *instructions, FILE *results,
                                   bool should_user_play) {
   // setting the board
@@ -61,9 +103,7 @@ bool UnbeatableModeGameSimulation(FILE *instructions, FILE *results,
 
   int game_result = DRAW_GAME, number_of_turns = 0;
 
-  bool is_winning_algorithm_failed = false;
-  bool is_center_and_corner_squares_empty = false;
-  bool is_center_and_middle_squares_empty = false;
+  int playing_algorithm_used = 3;
 
   char user_moves[7];
   fgets(user_moves, 7, instructions);
@@ -83,10 +123,8 @@ bool UnbeatableModeGameSimulation(FILE *instructions, FILE *results,
       i++;
 
     } else {
-      UnbeatableMode((char *)board, number_of_turns,
-                     &is_winning_algorithm_failed,
-                     &is_center_and_corner_squares_empty,
-                     &is_center_and_middle_squares_empty);
+      (void)ComputerTurnSimulator((char *)board, number_of_turns,
+                                  &playing_algorithm_used);
 
       should_user_play = true;
     }

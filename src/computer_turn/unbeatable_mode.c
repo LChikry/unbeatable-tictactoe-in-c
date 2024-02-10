@@ -10,7 +10,7 @@
 #include "../../include/game_play/game_checkers.h"
 
 int StartingFirstWinningAlgorithm(char *board, int number_of_turns,
-                                  bool *is_winning_algorithm_failed) {
+                                  int *playing_algorithm_used) {
   int board_place_number;
 
   switch (number_of_turns) {
@@ -43,7 +43,7 @@ int StartingFirstWinningAlgorithm(char *board, int number_of_turns,
             board_place_number == 6 || board_place_number == 8;
 
         if (is_computer_marked_a_middle_square) {
-          *is_winning_algorithm_failed = true;
+          *playing_algorithm_used = PLAYING_NORMAL_MODE;
         }
 
         return board_place_number;
@@ -112,8 +112,9 @@ int StartingSecondWithMarkedCenterSquare(char *board, int number_of_turns) {
   }
 }
 
-int StartingSecondWithEmptyCenterAndCornerSquares(
-    char *board, int number_of_turns, bool *is_winning_algorithm_failed) {
+int StartingSecondWithEmptyCenterAndCornerSquares(char *board,
+                                                  int number_of_turns,
+                                                  int *playing_algorithm_used) {
   int board_place_number;
 
   switch (number_of_turns) {
@@ -126,7 +127,7 @@ int StartingSecondWithEmptyCenterAndCornerSquares(
       // moves if user played in a corner
       if ((board_place_number = CheckXThenTakeTheCriticalMove(
                board, COMPUTER_PLAYING_SYMBOL, false))) {
-        *is_winning_algorithm_failed = true;
+        *playing_algorithm_used = PLAYING_NORMAL_MODE;
         return board_place_number;
       }
 
@@ -212,51 +213,19 @@ int StartingSecondWithEmptyCenterAndMiddleSquares(char *board,
   }
 }
 
-int StartingSecondWinningAlgorithm(char *board, int number_of_turns,
-                                   bool *is_winning_algorithm_failed,
-                                   bool *is_center_and_corner_squares_empty,
-                                   bool *is_center_and_middle_squares_empty) {
-  // choosing the algorithm we going to use
-  if (number_of_turns == 1) {
-    if (IsPlaceEmpty(board, 5)) {
-      if (IsPlaceEmpty(board, 2) && IsPlaceEmpty(board, 4) &&
-          IsPlaceEmpty(board, 6) && IsPlaceEmpty(board, 8)) {
-        *is_center_and_middle_squares_empty = true;
-      } else {
-        *is_center_and_corner_squares_empty = true;
-      }
-    }
-    // automatically we will use the algorithm with marked center
+int GetUnbeatableAlgorithm(char *board, int number_of_turns) {
+  if (0 == number_of_turns) {
+    return PLAYING_FIRST_ALGO;
   }
 
-  if (*is_center_and_corner_squares_empty) {
-    return StartingSecondWithEmptyCenterAndCornerSquares(
-        board, number_of_turns, is_winning_algorithm_failed);
+  if (!IsPlaceEmpty(board, 5)) {
+    return PLAYING_SECOND_CENTER;
   }
 
-  if (*is_center_and_middle_squares_empty) {
-    return StartingSecondWithEmptyCenterAndMiddleSquares(board,
-                                                         number_of_turns);
+  if (IsPlaceEmpty(board, 2) && IsPlaceEmpty(board, 4) &&
+      IsPlaceEmpty(board, 6) && IsPlaceEmpty(board, 8)) {
+    return PLAYING_SECOND_MIDDLE;
   }
 
-  return StartingSecondWithMarkedCenterSquare(board, number_of_turns);
-}
-
-int UnbeatableMode(char *board, int number_of_turns,
-                   bool *is_winning_algorithm_failed,
-                   bool *is_center_and_corner_squares_empty,
-                   bool *is_center_and_middle_squares_empty) {
-  // this algorithm should be executed first if the condition is true
-  if (*is_winning_algorithm_failed) {
-    return NormalMode(board, number_of_turns);
-  }
-
-  if (0 == number_of_turns % 2) {
-    return StartingFirstWinningAlgorithm(board, number_of_turns,
-                                         is_winning_algorithm_failed);
-  }
-
-  return StartingSecondWinningAlgorithm(
-      board, number_of_turns, is_winning_algorithm_failed,
-      is_center_and_corner_squares_empty, is_center_and_middle_squares_empty);
+  return PLAYING_SECOND_CORNER;
 }
