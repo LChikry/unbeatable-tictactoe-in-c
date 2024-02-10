@@ -83,7 +83,6 @@ bool UnbeatableModeGameSimulation(FILE *instructions, FILE *results,
       i++;
 
     } else {
-      // todo: unfair mode
       UnbeatableMode((char *)board, number_of_turns,
                      &is_winning_algorithm_failed,
                      &is_center_and_corner_squares_empty,

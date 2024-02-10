@@ -1,6 +1,8 @@
 #ifndef UNBEATABLE_MODE_H
 #define UNBEATABLE_MODE_H
 
+#include <stdbool.h>
+
 int UnbeatableMode(char *board, int number_of_turns,
                    bool *is_winning_algorithm_failed,
                    bool *is_center_and_corner_squares_empty,
