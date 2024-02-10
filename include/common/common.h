@@ -18,6 +18,13 @@
 #define USER_PLAYING_SYMBOL 'X'
 #define COMPUTER_PLAYING_SYMBOL 'O'
 
+#define PLAYING_EASY_MODE 1
+#define PLAYING_NORMAL_MODE 2
+#define PLAYING_FIRST_ALGO 4
+#define PLAYING_SECOND_MIDDLE 5
+#define PLAYING_SECOND_CORNER 6
+#define PLAYING_SECOND_CENTER 7
+
 #ifdef WIN32
 #include <windows.h>
 #endif

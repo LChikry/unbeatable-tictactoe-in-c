@@ -18,11 +18,9 @@ int GamePlay(char *board, int game_mode, bool should_user_play) {
   }
 
   GameIntro();
-  int game_result = DRAW_GAME;
   int number_of_turns = -1;
-  bool is_winning_algorithm_failed = false;
-  bool is_center_and_middle_squares_empty = false;
-  bool is_center_and_corner_squares_empty = false;
+  int game_result = DRAW_GAME;
+  int playing_algorithm_used = game_mode;
 
   TerminalCleaner();
   LogoPrinter();
@@ -45,11 +43,7 @@ int GamePlay(char *board, int game_mode, bool should_user_play) {
 
     TerminalCleaner();
     LogoPrinter();
-
-    ComputerTurn(game_mode, board, number_of_turns,
-                 &is_winning_algorithm_failed,
-                 &is_center_and_corner_squares_empty,
-                 &is_center_and_middle_squares_empty);
+    ComputerTurn(board, number_of_turns, &playing_algorithm_used);
     should_user_play = true;
   }  // end of the while loop
 
