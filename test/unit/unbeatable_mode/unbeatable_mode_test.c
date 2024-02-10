@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 #include "../../../include/common/common.h"
+#include "../../../include/computer_turn/computer_turn.h"
 #include "../../../include/game_play/game_checkers.h"
 #include "../../../include/game_play/game_play.h"
 
@@ -61,9 +62,7 @@ bool UnbeatableModeGameSimulation(FILE *instructions, FILE *results,
 
   int game_result = DRAW_GAME, number_of_turns = 0;
 
-  bool is_winning_algorithm_failed = false;
-  bool is_center_and_corner_squares_empty = false;
-  bool is_center_and_middle_squares_empty = false;
+  int playing_algorithm_used = 3;
 
   char user_moves[7];
   fgets(user_moves, 7, instructions);
@@ -83,10 +82,7 @@ bool UnbeatableModeGameSimulation(FILE *instructions, FILE *results,
       i++;
 
     } else {
-      UnbeatableMode((char *)board, number_of_turns,
-                     &is_winning_algorithm_failed,
-                     &is_center_and_corner_squares_empty,
-                     &is_center_and_middle_squares_empty);
+      ComputerTurn((char *)board, number_of_turns, &playing_algorithm_used);
 
       should_user_play = true;
     }
