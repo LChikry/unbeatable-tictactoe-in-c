@@ -33,8 +33,6 @@ void ComputerTurn(char *board, int number_of_turns,
                   int *playing_algorithm_used) {
   int board_place_number = 0;
 
-  printf("\n\nHere the playing_algorithm is %d\n\n", *playing_algorithm_used);
-
   if (PLAYING_EASY_MODE == *playing_algorithm_used) {
     board_place_number = EasyMode(board);
   }

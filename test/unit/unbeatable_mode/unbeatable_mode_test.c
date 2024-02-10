@@ -55,6 +55,48 @@ void MarkUserMove(char *board, char place, const char user_playing_symbol) {
   }
 }
 
+void ComputerTurnSimulator(char *board, int number_of_turns,
+                           int *playing_algorithm_used) {
+  int board_place_number = 0;
+
+  if (PLAYING_EASY_MODE == *playing_algorithm_used) {
+    board_place_number = EasyMode(board);
+  }
+
+  // Normal Mode used also when the unbeatable algorithm can't win
+  if (PLAYING_NORMAL_MODE == *playing_algorithm_used) {
+    board_place_number = NormalMode(board, number_of_turns);
+  }
+
+  // Finding The Most Optimal and Unbeatable Algorithm
+  if (3 == *playing_algorithm_used) {
+    *playing_algorithm_used = GetUnbeatableAlgorithm(board, number_of_turns);
+  }
+
+  if (PLAYING_FIRST_ALGO == *playing_algorithm_used) {
+    board_place_number = StartingFirstWinningAlgorithm(board, number_of_turns,
+                                                       playing_algorithm_used);
+  }
+
+  if (PLAYING_SECOND_CORNER == *playing_algorithm_used) {
+    board_place_number = StartingSecondWithEmptyCenterAndCornerSquares(
+        board, number_of_turns, playing_algorithm_used);
+  }
+
+  if (PLAYING_SECOND_MIDDLE == *playing_algorithm_used) {
+    board_place_number =
+        StartingSecondWithEmptyCenterAndMiddleSquares(board, number_of_turns);
+  }
+
+  if (PLAYING_SECOND_CENTER == *playing_algorithm_used) {
+    board_place_number =
+        StartingSecondWithMarkedCenterSquare(board, number_of_turns);
+  }
+
+  puts("Something went Wrong in ComputerTurn function");
+  exit(1);
+}
+
 bool UnbeatableModeGameSimulation(FILE *instructions, FILE *results,
                                   bool should_user_play) {
   // setting the board
@@ -82,7 +124,8 @@ bool UnbeatableModeGameSimulation(FILE *instructions, FILE *results,
       i++;
 
     } else {
-      ComputerTurn((char *)board, number_of_turns, &playing_algorithm_used);
+      ComputerTurnSimulator((char *)board, number_of_turns,
+                            &playing_algorithm_used);
 
       should_user_play = true;
     }
