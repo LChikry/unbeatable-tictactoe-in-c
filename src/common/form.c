@@ -127,44 +127,13 @@ int WhoWillPlayFirst(void) {
   return (playing_order_choice - 1);
 }
 
-void AssignPlayingSymbols(char *user_playing_symbol,
-                          char *computer_playing_symbol) {
-  bool is_loop_run_once = false;
-  *user_playing_symbol = 'n';
-
-  do {
-    TerminalCleaner();
-    LogoPrinter();
-
-    if (is_loop_run_once) {
-      fputs("\033[31;1m", stdout);
-      puts("\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
-      puts("|    Please Choose Either:        X     or     O       |");
-      puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-      fputs("\033[0m", stdout);
-
-    } else {
-      puts("\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
-      puts("|          What Symbol You Want to Play With?          |");
-      puts("|                                                      |");
-      puts("|                  X      or      O                    |");
-      puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-    }
-
-    is_loop_run_once = true;
-    *user_playing_symbol = GetGoodInput(1, false);
-  } while (*user_playing_symbol != 'X' && *user_playing_symbol != 'O');
-
-  *computer_playing_symbol = CounterPlayingSymbol(*user_playing_symbol);
-}
-
-int EndGameMenuPage(char *board, const char computer_playing_symbol) {
+int EndGameMenuPage(char *board) {
   bool is_loop_run_once = false;
   int end_game_menu_choice;
 
   do {
     if (is_loop_run_once) ErrorMessagePrinter();
-    BoardPrinter(board, computer_playing_symbol);
+    BoardPrinter(board);
     usleep(1300000);
     puts("\n++++++++++++++++++++++ Game Over: ++++++++++++++++++++++");
     puts("|                                                      |");

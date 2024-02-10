@@ -1,21 +1,19 @@
 #ifndef COMPUTER_MOVES_H
 #define COMPUTER_MOVES_H
 
-int MarkTheOppositeCornerOfACorner(char *board, const char playing_symbol);
+int MarkTheOppositeCornerOfACorner(char *board);
 
-int MarkARandomOppositeCornerOfAMiddle(char *board, const char playing_symbol);
+int MarkARandomOppositeCornerOfAMiddle(char *board);
 
-int MarkARandomCorner(char *board, const char playing_symbol);
+int MarkARandomCorner(char *board);
 
-int MarkARandomMiddle(char *board, const char playing_symbol);
+int MarkARandomMiddle(char *board);
 
-int MarkATargetedOppositeCornerOfAMiddle(char *board,
-                                         const char playing_symbol);
+int MarkATargetedOppositeCornerOfAMiddle(char *board);
 
-int MarkTheAdjacentCornerToAMiddle(char *board,
-                                   const char computer_playing_symbol);
+int MarkTheAdjacentCornerToAMiddle(char *board);
 
-int MakeTheCriticalMove(char *board, const char computer_playing_symbol,
-                        int winning_direction, int squares_location);
+int MakeTheCriticalMove(char *board, int winning_direction,
+                        int squares_location);
 
 #endif

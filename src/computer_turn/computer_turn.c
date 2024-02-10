@@ -16,7 +16,7 @@ char CounterPlayingSymbol(const char playing_symbol) {
   return 'X';
 }
 
-int EasyMode(char *board, const char playing_symbol) {
+int EasyMode(char *board) {
   srand(time(NULL));
   int board_place_number = rand() % 9 + 1;
 
@@ -24,33 +24,28 @@ int EasyMode(char *board, const char playing_symbol) {
     board_place_number = rand() % 9 + 1;
   }
 
-  *(board + board_place_number - 1) = playing_symbol;
+  *(board + board_place_number - 1) = COMPUTER_PLAYING_SYMBOL;
 
   return board_place_number;
 }
 
-void ComputerTurn(int game_mode, char *board, char playing_symbol,
-                  int number_of_turns, bool *is_winning_algorithm_failed,
+void ComputerTurn(int game_mode, char *board, int number_of_turns,
+                  bool *is_winning_algorithm_failed,
                   bool *is_center_and_corner_squares_empty,
                   bool *is_center_and_middle_squares_empty) {
-  // puts("\n\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
-  // puts("|                  The Computer Turn                   |");
-  // puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-  // sleep(1);
-
   int board_place_number = 0;
 
   if (game_mode == 1) {
-    board_place_number = EasyMode(board, playing_symbol);
+    board_place_number = EasyMode(board);
   }
 
   if (game_mode == 2) {
-    board_place_number = NormalMode(board, playing_symbol, number_of_turns);
+    board_place_number = NormalMode(board, number_of_turns);
   }
 
   if (game_mode == 3) {
     board_place_number = UnbeatableMode(
-        board, playing_symbol, number_of_turns, is_winning_algorithm_failed,
+        board, number_of_turns, is_winning_algorithm_failed,
         is_center_and_corner_squares_empty, is_center_and_middle_squares_empty);
   }
 

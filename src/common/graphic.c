@@ -44,7 +44,7 @@ void ErrorMessagePrinter(void) {
   fputs("\033[0m", stdout);
 }
 
-void BoardPrinter(char *board, char computer_playing_symbol) {
+void BoardPrinter(char *board) {
   printf("\n");
   for (int i = 0; i < 3; i++) {
     puts("\t\t        |       |      ");
@@ -53,7 +53,7 @@ void BoardPrinter(char *board, char computer_playing_symbol) {
       if (j != 0) printf("|");
 
       if (!IsPlaceEmpty(board, j + i * 3 + 1)) {
-        if (IsPlaceTakenByX(board, j + i * 3 + 1, computer_playing_symbol)) {
+        if (IsPlaceTakenByX(board, j + i * 3 + 1, COMPUTER_PLAYING_SYMBOL)) {
           printf("\033[34;1m   %c   \033[0m", *(board + j + i * 3));
         } else {
           printf("\033[33;1m   %c   \033[0m", *(board + j + i * 3));
@@ -79,9 +79,6 @@ void GameIntro(void) {
   sleep(1);
 }
 
-// todo: make the color of the message different red, blue, green depending on
-// the result
-//  Print the congratulation/unfortunately message in the terminal
 void WinnerMessagePrinter(int game_mode, int game_result) {
   TerminalCleaner();
   LogoPrinter();

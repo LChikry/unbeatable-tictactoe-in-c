@@ -14,18 +14,16 @@ int main(void) {
     menu_choice = MainMenuPage();
 
     if (1 == menu_choice) {
-      char user_playing_symbol, computer_playing_symbol;
-      AssignPlayingSymbols(&user_playing_symbol, &computer_playing_symbol);
       int game_mode_choice = ComputerModeMenuPage();
 
       while (1 == menu_choice) {
+        // todo: check this function and rearrange the choices
         bool should_user_play = !WhoWillPlayFirst();
         char board[3][3] = {{'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'}};
         int game_result =
-            GamePlay((char *)board, game_mode_choice, should_user_play,
-                     user_playing_symbol, computer_playing_symbol);
+            GamePlay((char *)board, game_mode_choice, should_user_play);
         WinnerMessagePrinter(game_mode_choice, game_result);
-        menu_choice = EndGameMenuPage((char *)board, computer_playing_symbol);
+        menu_choice = EndGameMenuPage((char *)board);
       }
 
       if (2 == menu_choice) {

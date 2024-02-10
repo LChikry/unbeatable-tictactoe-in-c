@@ -14,7 +14,6 @@ void WinnerMessagePrinter(int game_mode, int game_result);
 
 int PickRandomlyWhoWillPlayFirst(void);
 
-void BoardPrinter(char *board, char computer_playing_symbol);
-
+void BoardPrinter(char *board);
 
 #endif
