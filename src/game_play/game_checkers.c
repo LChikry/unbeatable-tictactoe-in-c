@@ -114,14 +114,14 @@ int IsSymbolOccurredXTimes(char *board, const char playing_symbol, int x_times,
 
 // Return yes or not, and if yes, it tells in what direction, and what the
 // squares are.
-bool IsXCloseToWin(char *board, const char unknown_playing_symbol,
+bool IsXCloseToWin(char *board, const char playing_symbol_of_x,
                    bool is_x_the_given_playing_symbol, int *winning_direction,
                    int *squares_location) {
   char the_playing_symbol;
   if (is_x_the_given_playing_symbol) {
-    the_playing_symbol = unknown_playing_symbol;
+    the_playing_symbol = playing_symbol_of_x;
   } else {
-    the_playing_symbol = CounterPlayingSymbol(unknown_playing_symbol);
+    the_playing_symbol = CounterPlayingSymbol(playing_symbol_of_x);
   }
 
   // Checking Horizontally
@@ -165,21 +165,18 @@ int CheckXThenTakeTheCriticalMove(char *board, const char playing_symbol,
   if (IsXCloseToWin(board, playing_symbol, are_you_checking_the_given_symbol,
                     &user_winning_direction, &user_winning_squares_location)) {
     // stop the user from winning and return the board place number
-    return MakeTheCriticalMove(board, playing_symbol, user_winning_direction,
+    return MakeTheCriticalMove(board, user_winning_direction,
                                user_winning_squares_location);
   }
 
   return 0;
 }
 
-bool IsUserMarkedOnlyCorners(char *board, const char computer_playing_symbol) {
-  const char user_playing_symbol =
-      CounterPlayingSymbol(computer_playing_symbol);
-
+bool IsUserMarkedOnlyCorners(char *board) {
   for (int i = 1; i <= 9; i++) {
     if (1 == i || 3 == i || 7 == i || 9 == i) continue;
 
-    if (IsPlaceTakenByX(board, i, user_playing_symbol)) {
+    if (IsPlaceTakenByX(board, i, USER_PLAYING_SYMBOL)) {
       return false;
     }
   }
@@ -191,43 +188,45 @@ bool IsUserMarkedOnlyCorners(char *board, const char computer_playing_symbol) {
 // 0: no one win yet
 // 1: computer won
 // 2: user won
-int WhoWon(char *board, const char user_playing_symbol,
-           const char computer_playing_symbol) {
-  if (IsSymbolOccurredXTimes(board, computer_playing_symbol, 3,
-                             HORIZONTAL_DIRECTION))
+int WhoWon(char *board) {
+  if (IsSymbolOccurredXTimes(board, COMPUTER_PLAYING_SYMBOL, 3,
+                             HORIZONTAL_DIRECTION)) {
     return COMPUTER_WON;
-  if (IsSymbolOccurredXTimes(board, user_playing_symbol, 3,
-                             HORIZONTAL_DIRECTION))
+  }
+  if (IsSymbolOccurredXTimes(board, USER_PLAYING_SYMBOL, 3,
+                             HORIZONTAL_DIRECTION)) {
     return USER_WON;
+  }
 
-  if (IsSymbolOccurredXTimes(board, computer_playing_symbol, 3,
-                             VERTICAL_DIRECTION))
+  if (IsSymbolOccurredXTimes(board, COMPUTER_PLAYING_SYMBOL, 3,
+                             VERTICAL_DIRECTION)) {
     return COMPUTER_WON;
-  if (IsSymbolOccurredXTimes(board, user_playing_symbol, 3, VERTICAL_DIRECTION))
+  }
+  if (IsSymbolOccurredXTimes(board, USER_PLAYING_SYMBOL, 3,
+                             VERTICAL_DIRECTION)) {
     return USER_WON;
+  }
 
-  if (IsSymbolOccurredXTimes(board, computer_playing_symbol, 3,
-                             X_SHAPE_DIRECTION))
+  if (IsSymbolOccurredXTimes(board, COMPUTER_PLAYING_SYMBOL, 3,
+                             X_SHAPE_DIRECTION)) {
     return COMPUTER_WON;
-  if (IsSymbolOccurredXTimes(board, user_playing_symbol, 3, X_SHAPE_DIRECTION))
+  }
+  if (IsSymbolOccurredXTimes(board, USER_PLAYING_SYMBOL, 3,
+                             X_SHAPE_DIRECTION)) {
     return USER_WON;
-
+  }
   // if no one won yet..
   return DRAW_GAME;
 }
 
-bool IsUserMiddleMarksAreParallel(char *board,
-                                  const char computer_playing_symbol) {
-  const char user_playing_symbol =
-      CounterPlayingSymbol(computer_playing_symbol);
-
-  if (IsPlaceTakenByX(board, 2, user_playing_symbol) &&
-      IsPlaceTakenByX(board, 8, user_playing_symbol)) {
+bool IsUserMiddleMarksAreParallel(char *board) {
+  if (IsPlaceTakenByX(board, 2, USER_PLAYING_SYMBOL) &&
+      IsPlaceTakenByX(board, 8, USER_PLAYING_SYMBOL)) {
     return true;
   }
 
-  if (IsPlaceTakenByX(board, 4, user_playing_symbol) &&
-      IsPlaceTakenByX(board, 6, user_playing_symbol)) {
+  if (IsPlaceTakenByX(board, 4, USER_PLAYING_SYMBOL) &&
+      IsPlaceTakenByX(board, 6, USER_PLAYING_SYMBOL)) {
     return true;
   }
 

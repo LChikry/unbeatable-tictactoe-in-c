@@ -5,14 +5,14 @@
 #include "../../include/computer_turn/computer_turn.h"
 #include "../../include/game_play/game_checkers.h"
 
-int MarkTheOppositeCornerOfACorner(char *board, const char playing_symbol) {
+int MarkTheOppositeCornerOfACorner(char *board) {
   // checks if one of the corners is marked or not by the user
   for (int i = 1; i <= 9; i += 2) {
     if (5 == i) continue;
 
     if (!IsPlaceEmpty(board, i)) {
       // if the corner is marked, we mark its opposite corner
-      *(board + 10 - i - 1) = playing_symbol;
+      *(board + 10 - i - 1) = COMPUTER_PLAYING_SYMBOL;
       return 10 - i;
     }
   }  // end of for-loop
@@ -21,7 +21,7 @@ int MarkTheOppositeCornerOfACorner(char *board, const char playing_symbol) {
   exit(1);
 }
 
-int MarkARandomOppositeCornerOfAMiddle(char *board, const char playing_symbol) {
+int MarkARandomOppositeCornerOfAMiddle(char *board) {
   // checks what is the middle square marked by the user
   for (int i = 2; i <= 8; i += 2) {
     if (IsPlaceEmpty(board, i)) continue;
@@ -29,12 +29,12 @@ int MarkARandomOppositeCornerOfAMiddle(char *board, const char playing_symbol) {
     // we mark a corner that is exists in the opposite row/column of the
     // middle square the user marked
     if (i < 5) {
-      *(board + i + 5 - 1) = playing_symbol;
+      *(board + i + 5 - 1) = COMPUTER_PLAYING_SYMBOL;
       return i + 5;
     }
 
     // this happen when i >= 5
-    *(board + i - 5 - 1) = playing_symbol;
+    *(board + i - 5 - 1) = COMPUTER_PLAYING_SYMBOL;
     return i - 5;
   }  // end of the loop
 
@@ -42,13 +42,13 @@ int MarkARandomOppositeCornerOfAMiddle(char *board, const char playing_symbol) {
   exit(1);
 }
 
-int MarkARandomCorner(char *board, const char playing_symbol) {
+int MarkARandomCorner(char *board) {
   // checks what is the middle square marked by the user
   for (int i = 1; i <= 9; i += 2) {
     if (5 == i) continue;
 
     if (IsPlaceEmpty(board, i)) {
-      *(board + i - 1) = playing_symbol;
+      *(board + i - 1) = COMPUTER_PLAYING_SYMBOL;
       return i;
     }
   }
@@ -57,10 +57,10 @@ int MarkARandomCorner(char *board, const char playing_symbol) {
   exit(1);
 }
 
-int MarkARandomMiddle(char *board, const char playing_symbol) {
+int MarkARandomMiddle(char *board) {
   for (int i = 2; i <= 8; i += 2) {
     if (IsPlaceEmpty(board, i)) {
-      *(board + i - 1) = playing_symbol;
+      *(board + i - 1) = COMPUTER_PLAYING_SYMBOL;
       return i;
     }
   }
@@ -69,8 +69,7 @@ int MarkARandomMiddle(char *board, const char playing_symbol) {
   exit(1);
 }
 
-int MarkATargetedOppositeCornerOfAMiddle(char *board,
-                                         const char playing_symbol) {
+int MarkATargetedOppositeCornerOfAMiddle(char *board) {
   int first_corner_square_number, second_corner_square_number;
 
   // checks what is the middle square marked by the user
@@ -114,7 +113,7 @@ int MarkATargetedOppositeCornerOfAMiddle(char *board,
     if (!IsPlaceEmpty(board, i)) continue;
 
     if (i == first_corner_square_number || i == second_corner_square_number) {
-      *(board + i - 1) = playing_symbol;
+      *(board + i - 1) = COMPUTER_PLAYING_SYMBOL;
 
       return i;
     }
@@ -124,26 +123,25 @@ int MarkATargetedOppositeCornerOfAMiddle(char *board,
   exit(1);
 }
 
-int MarkTheAdjacentCornerToAMiddle(char *board,
-                                   const char computer_playing_symbol) {
+int MarkTheAdjacentCornerToAMiddle(char *board) {
   for (int i = 2; i <= 8; i += 2) {
     if (!IsPlaceEmpty(board, i)) {
       if (4 == i || 6 == i) {
         if (IsPlaceEmpty(board, i + 3)) {
-          *(board + i + 2) = computer_playing_symbol;
+          *(board + i + 2) = COMPUTER_PLAYING_SYMBOL;
           return i + 3;
         }
 
-        *(board + i - 4) = computer_playing_symbol;
+        *(board + i - 4) = COMPUTER_PLAYING_SYMBOL;
         return i - 3;
       }
 
       if (IsPlaceEmpty(board, i + 1)) {
-        *(board + i) = computer_playing_symbol;
+        *(board + i) = COMPUTER_PLAYING_SYMBOL;
         return i + 1;
       }
 
-      *(board + i - 2) = computer_playing_symbol;
+      *(board + i - 2) = COMPUTER_PLAYING_SYMBOL;
       return i - 1;
     }
   }
@@ -152,12 +150,12 @@ int MarkTheAdjacentCornerToAMiddle(char *board,
   exit(1);
 }
 
-int MakeTheCriticalMove(char *board, const char computer_playing_symbol,
-                        int winning_direction, int squares_location) {
+int MakeTheCriticalMove(char *board, int winning_direction,
+                        int squares_location) {
   if (winning_direction == HORIZONTAL_DIRECTION) {
     for (int i = 0; i < 3; i++) {
       if (IsPlaceEmpty(board, squares_location * 3 - i)) {
-        *(board + squares_location * 3 - i - 1) = computer_playing_symbol;
+        *(board + squares_location * 3 - i - 1) = COMPUTER_PLAYING_SYMBOL;
 
         return squares_location * 3 - i;
       }
@@ -167,7 +165,7 @@ int MakeTheCriticalMove(char *board, const char computer_playing_symbol,
   if (winning_direction == VERTICAL_DIRECTION) {
     for (int i = 0; i < 3; i++) {
       if (IsPlaceEmpty(board, squares_location + i * 3)) {
-        *(board + squares_location + i * 3 - 1) = computer_playing_symbol;
+        *(board + squares_location + i * 3 - 1) = COMPUTER_PLAYING_SYMBOL;
 
         return squares_location + i * 3;
       }
@@ -177,7 +175,7 @@ int MakeTheCriticalMove(char *board, const char computer_playing_symbol,
   if (squares_location == X_LINE_159) {
     for (int i = 1; i <= 9; i += 4) {
       if (IsPlaceEmpty(board, i)) {
-        *(board + i - 1) = computer_playing_symbol;
+        *(board + i - 1) = COMPUTER_PLAYING_SYMBOL;
 
         return i;
       }
@@ -187,7 +185,7 @@ int MakeTheCriticalMove(char *board, const char computer_playing_symbol,
   if (squares_location == X_LINE_357) {
     for (int i = 3; i <= 7; i += 2) {
       if (IsPlaceEmpty(board, i)) {
-        *(board + i - 1) = computer_playing_symbol;
+        *(board + i - 1) = COMPUTER_PLAYING_SYMBOL;
 
         return i;
       }

@@ -15,6 +15,9 @@
 #define USER_PLAYING_FIRST 0
 #define COMPUTER_PLAYING_FIRST 1
 
+#define USER_PLAYING_SYMBOL 'X'
+#define COMPUTER_PLAYING_SYMBOL 'O'
+
 #ifdef WIN32
 #include <windows.h>
 #endif

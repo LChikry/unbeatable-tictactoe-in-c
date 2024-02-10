@@ -5,13 +5,13 @@
 #include "../../include/computer_turn/computer_turn.h"
 #include "../../include/game_play/game_checkers.h"
 
-int NormalMode(char *board, char playing_symbol, int number_of_turns) {
+int NormalMode(char *board, int number_of_turns) {
   int board_place_number;
 
   if (number_of_turns >= 4) {
     // check if the computer close to win, then make the winning move if so
     board_place_number =
-        CheckXThenTakeTheCriticalMove(board, playing_symbol, true);
+        CheckXThenTakeTheCriticalMove(board, COMPUTER_PLAYING_SYMBOL, true);
 
     if (board_place_number) return board_place_number;
   }
@@ -22,11 +22,11 @@ int NormalMode(char *board, char playing_symbol, int number_of_turns) {
       (number_of_turns >= 4 && 2 == number_of_turns % 2)) {
     // is the user close to win
     board_place_number =
-        CheckXThenTakeTheCriticalMove(board, playing_symbol, false);
+        CheckXThenTakeTheCriticalMove(board, COMPUTER_PLAYING_SYMBOL, false);
 
     if (board_place_number) return board_place_number;
   }
 
   // if no one of us close to win, play randomly
-  return EasyMode(board, playing_symbol);
+  return EasyMode(board);
 }
