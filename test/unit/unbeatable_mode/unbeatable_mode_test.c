@@ -1,9 +1,10 @@
+#include "../../../include/computer_turn/unbeatable_mode.h"
+
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "../../../include/common/common.h"
-#include "../../../include/computer_turn/unbeatable_mode.h"
 #include "../../../include/game_play/game_checkers.h"
 #include "../../../include/game_play/game_play.h"
 
@@ -57,8 +58,6 @@ bool UnbeatableModeGameSimulation(FILE *instructions, FILE *results,
                                   bool should_user_play) {
   // setting the board
   char board[3][3] = {{'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'}};
-  const char computer_playing_symbol = 'X';
-  const char user_playing_symbol = 'O';
 
   int game_result = DRAW_GAME, number_of_turns = 0;
 
@@ -78,14 +77,14 @@ bool UnbeatableModeGameSimulation(FILE *instructions, FILE *results,
         return false;
       }
 
-      MarkUserMove((char *)board, user_moves[i], user_playing_symbol);
+      MarkUserMove((char *)board, user_moves[i], USER_PLAYING_SYMBOL);
 
       should_user_play = false;
       i++;
 
     } else {
       // todo: unfair mode
-      UnbeatableMode((char *)board, computer_playing_symbol, number_of_turns,
+      UnbeatableMode((char *)board, number_of_turns,
                      &is_winning_algorithm_failed,
                      &is_center_and_corner_squares_empty,
                      &is_center_and_middle_squares_empty);
@@ -96,8 +95,7 @@ bool UnbeatableModeGameSimulation(FILE *instructions, FILE *results,
     number_of_turns++;
 
     if (number_of_turns >= 5) {
-      game_result =
-          WhoWon((char *)board, user_playing_symbol, computer_playing_symbol);
+      game_result = WhoWon((char *)board);
     }
 
     if (9 == number_of_turns) break;
@@ -198,6 +196,11 @@ int UnbeatableModeTest(void) {
   return 0;
 }
 
+/****************************************************************/
+/*                                                              */
+/*                             MAIN                             */
+/*                                                              */
+/****************************************************************/
 int main(void) {
   UnbeatableModeTest();
 
