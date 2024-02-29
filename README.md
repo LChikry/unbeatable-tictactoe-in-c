@@ -1,4 +1,4 @@
-# Unfair TicTacToe
+# Unbeatable TicTacToe in C
 
 ## About the Game
 
@@ -8,29 +8,23 @@ I start creating the game because I found two main ways to never get beaten by a
 
 ## How to Install & Use
 
-1. go to src folder.
+1. Download the code of the master branch.
+2. Open the program folder in the terminal.
+3. Run the program using this command:
 
 ```
-cd src
+bin/src/./main
 ```
 
-2. compile the program to an executable file using this command
+## Contributing
 
-```
-gcc -o ../bin/src/main main.c ./computer_turn/unbeatable_mode.c ./computer_turn/normal_mode.c ./computer_turn/computer_moves.c ./computer_turn/computer_turn.c ./common/err.c ./common/graphic.c ./common/form.c ./game_play/game_checkers.c ./game_play/user_turn.c ./game_play/game_play.c
-```
+Please follow the following steps to contribute to this project. There are some important procedures.
 
-3. execute the program using this command
-
-```
-../bin/src/./main
-```
-
-## Technologies & Knowledge Used
-
-- Terminal manipulation (Escape Sequences).
-- Modularization of the code (Makefile & CMake).
-- LinkedList data structure.
+1. Fork and clone this repository.
+2. Create a branch from the `dev` branch, not the master.
+3. Make you changes
+4. Open a pull request to the `dev` branch, not the master.
+5. Voila!
 
 ## Issues I'm aware of
 
