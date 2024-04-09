@@ -9,7 +9,7 @@ int FriendsModeMenuPage(void);
 
 int ResetScoreMenuPage(void);
 
-int WhoWillPlayFirst(void);
+int IsUserWillPlayFirst(void);
 
 int EndGameMenuPage(char *board);
 

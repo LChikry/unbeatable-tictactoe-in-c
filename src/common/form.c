@@ -21,7 +21,7 @@ int MainMenuPage(void) {
     puts("\n++++++++++++++++++++++ The Menu: +++++++++++++++++++++++");
     puts("|  1. Play Against the Computer                        |");
     puts("|  2. Play with Your Friends                           |");
-    puts("|  3. Saved Game Plays                                 |");
+    puts("|  3. Saved Gameplay                                 |");
     puts("|  4. Your Score                                       |");
     puts("|  5. Quit                                             |");
     puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -102,7 +102,7 @@ int ResetScoreMenuPage(void) {
   return score_reset_choice;
 }
 
-int WhoWillPlayFirst(void) {
+bool IsUserWillPlayFirst(void) {
   bool is_loop_run_once = false;
   int playing_order_choice;
 
@@ -114,7 +114,7 @@ int WhoWillPlayFirst(void) {
     puts("\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
     puts("|                Who Will Play First?                  |");
     puts("|                                                      |");
-    puts("|     1. You       2. The Computer       3. Random     |");
+    puts("|     1. Random       2. You       3. The Computer     |");
     puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
     is_loop_run_once = true;
@@ -122,9 +122,22 @@ int WhoWillPlayFirst(void) {
 
   } while (playing_order_choice < 1 || playing_order_choice > 3);
 
-  if (3 == playing_order_choice) return PickRandomlyWhoWillPlayFirst();
+  switch (playing_order_choice) {
+    case 1:
+      return PickRandomlyWhoWillPlayFirst();
+      break;
 
-  return (playing_order_choice - 1);
+    case 2:
+      return true;
+      break;
+
+    case 3:
+      return false;
+      break;
+
+    default:
+      return -1;
+  }
 }
 
 int EndGameMenuPage(char *board) {
@@ -137,13 +150,13 @@ int EndGameMenuPage(char *board) {
     usleep(1300000);
     puts("\n++++++++++++++++++++++ Game Over: ++++++++++++++++++++++");
     puts("|                                                      |");
-    puts("|  1. Play Again    2. Save This Game     3. Return    |");
+    puts("| 1. Play Again   2. Change Mode   3. Save   4. Return |");
     puts("|                                                      |");
     puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
     is_loop_run_once = true;
     end_game_menu_choice = GetGoodInput(1, true);
-  } while (end_game_menu_choice < 1 || end_game_menu_choice > 4);
+  } while (end_game_menu_choice <= 0 || end_game_menu_choice >= 5);
 
   return end_game_menu_choice;
 }

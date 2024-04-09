@@ -6,11 +6,26 @@ This game is similar to the TicTacToe game you can find in Google search engine,
 
 I start creating the game because I found two main ways to never get beaten by anyone, or even beat them. But latter on, I found that Google already developed the same thing. Nevertheless, my program implements a slight different algorithm than what Google does. Therefore, I continued developing it, so the community can have a C based clone of the game in addition to gaining experience from this fun project.
 
-## How to Install & Use
+## How to Run The Game
 
 1. Download the code of the master branch.
 2. Open the program folder in the terminal.
-3. Run the program using this command:
+3. Run the game using this command:
+
+```
+bin/src/./main
+```
+
+## Compile The Game (If You Couldn't Run It)
+
+1. Open the program folder in the terminal.
+2. Compile the game using this command:
+
+```
+gcc -o bin/src/main ./src/main.c ./src/computer_turn/unbeatable_mode.c ./src/computer_turn/normal_mode.c ./src/computer_turn/computer_moves.c ./src/computer_turn/computer_turn.c ./src/common/err.c ./src/common/graphic.c ./src/common/form.c ./src/game_play/game_checkers.c ./src/game_play/user_turn.c ./src/game_play/game_play.c
+```
+
+3. Now, run the game using this command:
 
 ```
 bin/src/./main

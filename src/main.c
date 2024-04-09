@@ -16,17 +16,19 @@ int main(void) {
     if (1 == menu_choice) {
       int game_mode_choice = ComputerModeMenuPage();
 
-      while (1 == menu_choice) {
-        // todo: check this function and rearrange the choices
-        bool should_user_play = !WhoWillPlayFirst();
+      do {
+        if (2 == menu_choice) {
+          game_mode_choice = ComputerModeMenuPage();
+        }
+        bool should_user_play = IsUserWillPlayFirst();
         char board[3][3] = {{'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'}};
         int game_result =
             GamePlay((char *)board, game_mode_choice, should_user_play);
         WinnerMessagePrinter(game_mode_choice, game_result);
         menu_choice = EndGameMenuPage((char *)board);
-      }
+      } while (1 == menu_choice || 2 == menu_choice);
 
-      if (2 == menu_choice) {
+      if (3 == menu_choice) {
         // save this game
       }
 
@@ -34,7 +36,7 @@ int main(void) {
     }  // end of first choice
 
     if (menu_choice == 2) {
-      /* code */
+      // play with friends
     }
 
   }  // end of the while loop
