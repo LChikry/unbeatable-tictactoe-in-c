@@ -5,6 +5,7 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "../../include/common/common.h"
 #include "../../include/common/err.h"
 #include "../../include/common/graphic.h"
 #include "../../include/computer_turn/computer_turn.h"
@@ -21,7 +22,7 @@ int MainMenuPage(void) {
     puts("\n++++++++++++++++++++++ The Menu: +++++++++++++++++++++++");
     puts("|  1. Play Against the Computer                        |");
     puts("|  2. Play with Your Friends                           |");
-    puts("|  3. Saved Gameplay                                 |");
+    puts("|  3. Saved Gameplays                                  |");
     puts("|  4. Your Score                                       |");
     puts("|  5. Quit                                             |");
     puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -150,7 +151,8 @@ int EndGameMenuPage(char *board) {
     usleep(1300000);
     puts("\n++++++++++++++++++++++ Game Over: ++++++++++++++++++++++");
     puts("|                                                      |");
-    puts("| 1. Play Again   2. Change Mode   3. Save   4. Return |");
+    puts("|         1. Play Again        2. Change Mode          |");
+    puts("|         3. Save              4. Return               |");
     puts("|                                                      |");
     puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
@@ -159,4 +161,66 @@ int EndGameMenuPage(char *board) {
   } while (end_game_menu_choice <= 0 || end_game_menu_choice >= 5);
 
   return end_game_menu_choice;
+}
+
+int GameTitleMenuPage(void) {
+  bool is_loop_run_once = false;
+  int titling_the_game_choice;
+
+  do {
+    if (is_loop_run_once) ErrorMessagePrinter();
+
+    puts("\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
+    puts("|       How Do You Want To Name This Gameplay?         |");
+    puts("|                                                      |");
+    puts("|        1. Manually          2. Automatically         |");
+    puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+    is_loop_run_once = true;
+    titling_the_game_choice = GetGoodInput(1, true);
+  } while (titling_the_game_choice < 1 || titling_the_game_choice > 2);
+
+  return titling_the_game_choice;
+}
+
+void GetGameTitle(char *gameplay_title, int max_size) {
+  int confirming_game_title_choice = 1;
+
+  do {
+    puts("\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
+    puts("|       Please Enter the Title of This Gameplay        |");
+    puts("|                                                      |");
+    puts("|                 (Max. 25 Characters)                 |");
+    puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+    puts("\n========================================================");
+    fputs("Title: ", stdout);
+    fgets(gameplay_title, max_size, stdin);
+    puts("========================================================");
+
+    if (gameplay_title[strlen(gameplay_title) - 1] == '\n') {
+      gameplay_title[strlen(gameplay_title) - 1] = 0;
+    }
+
+    do {
+      if (confirming_game_title_choice < 1 ||
+          confirming_game_title_choice > 2) {
+        ErrorMessagePrinter();
+      }
+      puts("\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
+      puts("|               Do You Confirm This Title?             |");
+      puts("|                                                      |");
+      puts("|\t   |--------------------------------|          |");
+      printf("\t      \"%s\"\n", gameplay_title);
+      puts("|\t   |--------------------------------|          |");
+      puts("|                                                      |");
+      puts("|           1. Confirm          2. Rename              |");
+      puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+      confirming_game_title_choice = GetGoodInput(1, true);
+      TerminalCleaner();
+      LogoPrinter();
+    } while (confirming_game_title_choice < 1 ||
+             confirming_game_title_choice > 2);
+  } while (2 == confirming_game_title_choice);
 }

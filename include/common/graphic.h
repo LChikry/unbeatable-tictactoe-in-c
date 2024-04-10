@@ -16,4 +16,7 @@ int PickRandomlyWhoWillPlayFirst(void);
 
 void BoardPrinter(char *board);
 
+void SavedGameMessage(char *gameplay_title,
+                      bool is_gameplay_saved_successfully);
+
 #endif

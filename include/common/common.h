@@ -1,6 +1,9 @@
 #ifndef COMMON_H
 #define COMMON_H
 
+#define false 0
+#define true 1
+
 #define HORIZONTAL_DIRECTION 1
 #define VERTICAL_DIRECTION 2
 #define X_SHAPE_DIRECTION 3
@@ -12,8 +15,8 @@
 #define COMPUTER_WON 1
 #define DRAW_GAME 0
 
-#define USER_PLAYING_FIRST 0
-#define COMPUTER_PLAYING_FIRST 1
+#define USER_PLAYING_FIRST 1
+#define COMPUTER_PLAYING_FIRST 0
 
 #define USER_PLAYING_SYMBOL 'X'
 #define COMPUTER_PLAYING_SYMBOL 'O'
@@ -24,6 +27,10 @@
 #define PLAYING_SECOND_MIDDLE 5
 #define PLAYING_SECOND_CORNER 6
 #define PLAYING_SECOND_CENTER 7
+
+#define EASY_GAME_MODE 1
+#define NORMAL_GAME_MODE 2
+#define UNBEATABLE_GAME_MODE 3
 
 #ifdef WIN32
 #include <windows.h>

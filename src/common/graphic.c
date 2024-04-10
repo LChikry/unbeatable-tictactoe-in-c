@@ -79,6 +79,32 @@ void GameIntro(void) {
   sleep(1);
 }
 
+void SavedGameMessage(char *gameplay_title,
+                      bool is_gameplay_saved_successfully) {
+  TerminalCleaner();
+  LogoPrinter();
+
+  puts("\n\n\n\n+++++++++++++++++++++++ Message: ++++++++++++++++++++++");
+  puts("|                                                      |");
+
+  if (is_gameplay_saved_successfully) {
+    puts(
+        "|     \033[32;1m The Gameplay Have Been Successfully Saved  \033[0m   "
+        "  |");
+    printf("              Under \"%s\"        \n", gameplay_title);
+  } else {
+    puts(
+        "|           \033[31;1m The Gameplay Didn't Get Saved  \033[0m         "
+        "  |");
+  }
+
+  puts("|                                                      |");
+  puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+  puts("\n\n\n\n");  // just to move the cursor for the design
+  sleep(2);
+}
+
 void WinnerMessagePrinter(int game_mode, int game_result) {
   TerminalCleaner();
   LogoPrinter();

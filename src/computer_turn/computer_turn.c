@@ -29,8 +29,8 @@ int EasyMode(char *board) {
   return board_place_number;
 }
 
-void ComputerTurn(char *board, int number_of_turns,
-                  int *playing_algorithm_used) {
+int ComputerTurn(char *board, int number_of_turns,
+                 int *playing_algorithm_used) {
   int board_place_number = 0;
 
   if (PLAYING_EASY_MODE == *playing_algorithm_used) {
@@ -76,7 +76,7 @@ void ComputerTurn(char *board, int number_of_turns,
         board_place_number);
     puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
     sleep(1);
-    return;
+    return board_place_number;
   }
 
   puts("Something went Wrong in ComputerTurn function");

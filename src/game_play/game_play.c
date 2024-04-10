@@ -6,9 +6,11 @@
 #include "../../include/common/graphic.h"
 #include "../../include/computer_turn/computer_turn.h"
 #include "../../include/game_play/game_checkers.h"
+#include "../../include/game_play/saving_gameplays.h"
 #include "../../include/game_play/user_turn.h"
 
-int GamePlay(char *board, int game_mode, bool should_user_play) {
+int GamePlay(char *board, int game_mode, bool should_user_play,
+             GamePlayNode **top) {
   if (game_mode == 3) {
     puts("\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
     puts("|   This Mode is Designed to Never Lose Against You!   |");
@@ -25,6 +27,7 @@ int GamePlay(char *board, int game_mode, bool should_user_play) {
   TerminalCleaner();
   LogoPrinter();
   while (number_of_turns < 8) {
+    PrintStack(*top);
     // after ++, this variable represent how many marks already exist
     ++number_of_turns;
     if (number_of_turns >= 5) game_result = WhoWon(board);
@@ -36,14 +39,16 @@ int GamePlay(char *board, int game_mode, bool should_user_play) {
       puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
       BoardPrinter(board);
 
-      UserTurn(board);
+      SaveTheMove(top, UserTurn(board));
       should_user_play = false;
       continue;
     }
 
     TerminalCleaner();
     LogoPrinter();
-    ComputerTurn(board, number_of_turns, &playing_algorithm_used);
+
+    SaveTheMove(top,
+                ComputerTurn(board, number_of_turns, &playing_algorithm_used));
     should_user_play = true;
   }  // end of the while loop
 

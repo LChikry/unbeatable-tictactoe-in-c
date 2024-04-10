@@ -3,6 +3,9 @@
 
 #include <stdbool.h>
 
-int GamePlay(char *board, int game_mode, bool should_user_play);
+#include "../../include/game_play/saving_gameplays.h"
+
+int GamePlay(char *board, int game_mode, bool should_user_play,
+             GamePlayNode **top);
 
 #endif

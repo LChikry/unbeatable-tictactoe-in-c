@@ -5,8 +5,7 @@
 
 int EasyMode(char *board);
 
-void ComputerTurn(char *board, int number_of_turns,
-                  int *playing_algorithm_used);
+int ComputerTurn(char *board, int number_of_turns, int *playing_algorithm_used);
 
 char CounterPlayingSymbol(const char playing_symbol);
 
