@@ -9,11 +9,12 @@ int FriendsModeMenuPage(void);
 
 int ResetScoreMenuPage(void);
 
-int WhoWillPlayFirst(void);
+int IsUserWillPlayFirst(void);
 
-void AssignPlayingSymbols(char *user_playing_symbol,
-                          char *computer_playing_symbol);
+int EndGameMenuPage(char *board);
 
-int EndGameMenuPage(char *board, const char computer_playing_symbol);
+int GameTitleMenuPage(void);
+
+void GetGameTitle(char *gameplay_title, int max_size);
 
 #endif

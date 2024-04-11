@@ -1,5 +1,6 @@
 #ifndef ERR_H
 #define ERR_H
+
 #include <stdbool.h>
 
 void BufferCleaner(void);

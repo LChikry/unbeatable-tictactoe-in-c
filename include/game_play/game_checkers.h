@@ -18,11 +18,10 @@ bool IsXCloseToWin(char *board, const char unknown_playing_symbol,
 int CheckXThenTakeTheCriticalMove(char *board, const char playing_symbol,
                                   bool are_you_checking_the_given_symbol);
 
-bool IsUserMarkedOnlyCorners(char *board, const char computer_playing_symbol);
+bool IsUserMarkedOnlyCorners(char *board);
 
-int WhoWon(char *board, char user_playing_symbol, char computer_playing_symbol);
+int WhoWon(char *board);
 
-bool IsUserMiddleMarksAreParallel(char *board,
-                                  const char computer_playing_symbol);
+bool IsUserMiddleMarksAreParallel(char *board);
 
 #endif

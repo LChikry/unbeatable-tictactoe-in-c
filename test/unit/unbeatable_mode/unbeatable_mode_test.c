@@ -1,11 +1,16 @@
+#include "../../../include/computer_turn/unbeatable_mode.h"
+
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "../../../include/common/common.h"
+#include "../../../include/computer_turn/computer_turn.h"
+#include "../../../include/computer_turn/normal_mode.h"
 #include "../../../include/computer_turn/unbeatable_mode.h"
 #include "../../../include/game_play/game_checkers.h"
 #include "../../../include/game_play/game_play.h"
+#include "../../../include/game_play/saving_gameplays.h"
 
 unsigned long int d = 0;
 
@@ -53,18 +58,53 @@ void MarkUserMove(char *board, char place, const char user_playing_symbol) {
   }
 }
 
+int ComputerTurnSimulator(char *board, int number_of_turns,
+                          int *playing_algorithm_used) {
+  if (PLAYING_EASY_MODE == *playing_algorithm_used) {
+    return EasyMode(board);
+  }
+
+  // Normal Mode used also when the unbeatable algorithm can't win
+  if (PLAYING_NORMAL_MODE == *playing_algorithm_used) {
+    return NormalMode(board, number_of_turns);
+  }
+
+  // Finding The Most Optimal and Unbeatable Algorithm
+  if (3 == *playing_algorithm_used) {
+    *playing_algorithm_used = GetUnbeatableAlgorithm(board, number_of_turns);
+  }
+
+  if (PLAYING_FIRST_ALGO == *playing_algorithm_used) {
+    return StartingFirstWinningAlgorithm(board, number_of_turns,
+                                         playing_algorithm_used);
+  }
+
+  if (PLAYING_SECOND_CORNER == *playing_algorithm_used) {
+    return StartingSecondWithEmptyCenterAndCornerSquares(
+        board, number_of_turns, playing_algorithm_used);
+  }
+
+  if (PLAYING_SECOND_MIDDLE == *playing_algorithm_used) {
+    return StartingSecondWithEmptyCenterAndMiddleSquares(board,
+                                                         number_of_turns);
+  }
+
+  if (PLAYING_SECOND_CENTER == *playing_algorithm_used) {
+    return StartingSecondWithMarkedCenterSquare(board, number_of_turns);
+  }
+
+  puts("Something went Wrong in ComputerTurnSimulator function");
+  exit(1);
+}
+
 bool UnbeatableModeGameSimulation(FILE *instructions, FILE *results,
                                   bool should_user_play) {
   // setting the board
   char board[3][3] = {{'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'}};
-  const char computer_playing_symbol = 'X';
-  const char user_playing_symbol = 'O';
 
   int game_result = DRAW_GAME, number_of_turns = 0;
 
-  bool is_winning_algorithm_failed = false;
-  bool is_center_and_corner_squares_empty = false;
-  bool is_center_and_middle_squares_empty = false;
+  int playing_algorithm_used = 3;
 
   char user_moves[7];
   fgets(user_moves, 7, instructions);
@@ -78,17 +118,14 @@ bool UnbeatableModeGameSimulation(FILE *instructions, FILE *results,
         return false;
       }
 
-      MarkUserMove((char *)board, user_moves[i], user_playing_symbol);
+      MarkUserMove((char *)board, user_moves[i], USER_PLAYING_SYMBOL);
 
       should_user_play = false;
       i++;
 
     } else {
-      // todo: unfair mode
-      UnbeatableMode((char *)board, computer_playing_symbol, number_of_turns,
-                     &is_winning_algorithm_failed,
-                     &is_center_and_corner_squares_empty,
-                     &is_center_and_middle_squares_empty);
+      (void)ComputerTurnSimulator((char *)board, number_of_turns,
+                                  &playing_algorithm_used);
 
       should_user_play = true;
     }
@@ -96,8 +133,7 @@ bool UnbeatableModeGameSimulation(FILE *instructions, FILE *results,
     number_of_turns++;
 
     if (number_of_turns >= 5) {
-      game_result =
-          WhoWon((char *)board, user_playing_symbol, computer_playing_symbol);
+      game_result = WhoWon((char *)board);
     }
 
     if (9 == number_of_turns) break;
@@ -112,15 +148,15 @@ bool UnbeatableModeGameSimulation(FILE *instructions, FILE *results,
   return is_unbeatable_mode_beaten;
 }
 
-int main(void) {
+int UnbeatableModeTest(void) {
   FILE *instructions =
-      fopen("../data/test/user_first_random_board_place_numbers.txt", "r");
-  FILE *results = fopen("../data/test/user_first_game_results.txt", "w");
+      fopen("data/test/user_first_random_board_place_numbers.txt", "r");
+  FILE *results = fopen("data/test/user_first_game_results.txt", "w");
 
   if (instructions == NULL) {
     fputs("\033[36;1m", stdout);
     puts("\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-    puts("EXECUTION FAILURE: Unbeatable Mode with User Playing First");
+    puts("FAILED EXECUTION: Unbeatable Mode with User Playing First");
     puts("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
     fputs("\033[0m", stdout);
     return -1;
@@ -143,24 +179,26 @@ int main(void) {
     }
   }
 
-  fputs("\033[32;1m", stdout);
-  puts("\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-  puts(" PASSED: Unbeatable Mode with User Playing First Simulator Test");
-  puts("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-  fputs("\033[0m", stdout);
+  if (!is_unbeatable_mode_beaten) {
+    fputs("\033[32;1m", stdout);
+    puts("\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    puts("PASSED: Unbeatable Mode with User Playing First Simulator Test");
+    puts("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    fputs("\033[0m", stdout);
+  }
 
   fclose(instructions);
   fclose(results);
 
   instructions =
-      fopen("../data/test/user_second_random_board_place_numbers.txt", "r");
-  results = fopen("../data/test/user_second_game_results.txt", "w");
+      fopen("data/test/user_second_random_board_place_numbers.txt", "r");
+  results = fopen("data/test/user_second_game_results.txt", "w");
 
   // todo: work on the aestitic of this message
   if (instructions == NULL) {
     fputs("\033[36;1m", stdout);
     puts("\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-    puts("EXECUTION FAILURE: Unbeatable Mode with User Playing Second");
+    puts("FAILED EXECUTION: Unbeatable Mode with User Playing Second");
     puts("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
     fputs("\033[0m", stdout);
     return -1;
@@ -175,20 +213,34 @@ int main(void) {
     if (is_unbeatable_mode_beaten) {
       fputs("\033[31;1m", stdout);
       puts("\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-      puts(" FAILED: Unbeatable Mode with User Playing Second Simulator Test");
+      puts("FAILED: Unbeatable Mode with User Playing Second Simulator Test");
       puts("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
       fputs("\033[0m", stdout);
       break;
     }
   }
 
-  fputs("\033[32;1m", stdout);
-  puts("\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-  puts(" PASSED: Unbeatable Mode with User Playing Second Simulator Test");
-  puts("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-  fputs("\033[0m", stdout);
+  if (!is_unbeatable_mode_beaten) {
+    fputs("\033[32;1m", stdout);
+    puts("\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    puts("PASSED: Unbeatable Mode with User Playing Second Simulator Test");
+    puts("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    fputs("\033[0m", stdout);
+  }
 
   fclose(instructions);
   fclose(results);
+
+  return 0;
+}
+
+/****************************************************************/
+/*                                                              */
+/*                             MAIN                             */
+/*                                                              */
+/****************************************************************/
+int main(void) {
+  UnbeatableModeTest();
+
   return 0;
 }

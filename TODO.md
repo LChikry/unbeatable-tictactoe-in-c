@@ -4,7 +4,7 @@
 
 - todo 2
 
-  - dd the choice of playing with friends
+  - add the choice of playing with friends
 
 - todo 3: Mini Menu
 
@@ -17,6 +17,7 @@
     3. game 3
 
 - todo 4
+
   - use Corn mode all the time in the program
 
 - todo 5: contributing

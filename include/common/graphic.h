@@ -14,7 +14,9 @@ void WinnerMessagePrinter(int game_mode, int game_result);
 
 int PickRandomlyWhoWillPlayFirst(void);
 
-void BoardPrinter(char *board, char computer_playing_symbol);
+void BoardPrinter(char *board);
 
+void SavedGameMessage(char *gameplay_title,
+                      bool is_gameplay_saved_successfully);
 
 #endif

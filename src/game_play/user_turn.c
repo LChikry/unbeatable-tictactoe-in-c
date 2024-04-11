@@ -7,14 +7,14 @@
 #include "../../include/computer_turn/computer_turn.h"
 #include "../../include/game_play/game_checkers.h"
 
-void UserTurn(char *board, char playing_symbol) {
+int UserTurn(char *board) {
   int board_place_number;
   bool is_function_run_once = false;
 
   do {
     if (is_function_run_once) {
       ErrorMessagePrinter();
-      BoardPrinter(board, CounterPlayingSymbol(playing_symbol));
+      BoardPrinter(board);
     }
 
     board_place_number = GetGoodInput(1, true);
@@ -22,7 +22,8 @@ void UserTurn(char *board, char playing_symbol) {
   } while (board_place_number > 9 || board_place_number < 1 ||
            !IsPlaceEmpty(board, board_place_number));
 
-  *(board + board_place_number - 1) = playing_symbol;
+  *(board + board_place_number - 1) = USER_PLAYING_SYMBOL;
+
   TerminalCleaner();
   LogoPrinter();
   puts("\n\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
@@ -31,6 +32,8 @@ void UserTurn(char *board, char playing_symbol) {
       " |\n",
       board_place_number);
   puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-  BoardPrinter(board, CounterPlayingSymbol(playing_symbol));
+
+  BoardPrinter(board);
   sleep(1);
+  return board_place_number;
 }

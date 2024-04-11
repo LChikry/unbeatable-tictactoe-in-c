@@ -5,6 +5,7 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "../../include/common/common.h"
 #include "../../include/common/err.h"
 #include "../../include/common/graphic.h"
 #include "../../include/computer_turn/computer_turn.h"
@@ -21,7 +22,7 @@ int MainMenuPage(void) {
     puts("\n++++++++++++++++++++++ The Menu: +++++++++++++++++++++++");
     puts("|  1. Play Against the Computer                        |");
     puts("|  2. Play with Your Friends                           |");
-    puts("|  3. Saved Game Plays                                 |");
+    puts("|  3. Saved Gameplays                                  |");
     puts("|  4. Your Score                                       |");
     puts("|  5. Quit                                             |");
     puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -102,7 +103,7 @@ int ResetScoreMenuPage(void) {
   return score_reset_choice;
 }
 
-int WhoWillPlayFirst(void) {
+bool IsUserWillPlayFirst(void) {
   bool is_loop_run_once = false;
   int playing_order_choice;
 
@@ -114,7 +115,7 @@ int WhoWillPlayFirst(void) {
     puts("\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
     puts("|                Who Will Play First?                  |");
     puts("|                                                      |");
-    puts("|     1. You       2. The Computer       3. Random     |");
+    puts("|     1. Random       2. You       3. The Computer     |");
     puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
     is_loop_run_once = true;
@@ -122,59 +123,104 @@ int WhoWillPlayFirst(void) {
 
   } while (playing_order_choice < 1 || playing_order_choice > 3);
 
-  if (3 == playing_order_choice) return PickRandomlyWhoWillPlayFirst();
+  switch (playing_order_choice) {
+    case 1:
+      return PickRandomlyWhoWillPlayFirst();
+      break;
 
-  return (playing_order_choice - 1);
+    case 2:
+      return true;
+      break;
+
+    case 3:
+      return false;
+      break;
+
+    default:
+      return -1;
+  }
 }
 
-void AssignPlayingSymbols(char *user_playing_symbol,
-                          char *computer_playing_symbol) {
-  bool is_loop_run_once = false;
-  *user_playing_symbol = 'n';
-
-  do {
-    TerminalCleaner();
-    LogoPrinter();
-
-    if (is_loop_run_once) {
-      fputs("\033[31;1m", stdout);
-      puts("\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
-      puts("|    Please Choose Either:        X     or     O       |");
-      puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-      fputs("\033[0m", stdout);
-
-    } else {
-      puts("\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
-      puts("|          What Symbol You Want to Play With?          |");
-      puts("|                                                      |");
-      puts("|                  X      or      O                    |");
-      puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-    }
-
-    is_loop_run_once = true;
-    *user_playing_symbol = GetGoodInput(1, false);
-  } while (*user_playing_symbol != 'X' && *user_playing_symbol != 'O');
-
-  *computer_playing_symbol = CounterPlayingSymbol(*user_playing_symbol);
-}
-
-int EndGameMenuPage(char *board, const char computer_playing_symbol) {
+int EndGameMenuPage(char *board) {
   bool is_loop_run_once = false;
   int end_game_menu_choice;
 
   do {
     if (is_loop_run_once) ErrorMessagePrinter();
-    BoardPrinter(board, computer_playing_symbol);
+    BoardPrinter(board);
     usleep(1300000);
     puts("\n++++++++++++++++++++++ Game Over: ++++++++++++++++++++++");
     puts("|                                                      |");
-    puts("|  1. Play Again    2. Save This Game     3. Return    |");
+    puts("|         1. Play Again        2. Change Mode          |");
+    puts("|         3. Save              4. Return               |");
     puts("|                                                      |");
     puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
     is_loop_run_once = true;
     end_game_menu_choice = GetGoodInput(1, true);
-  } while (end_game_menu_choice < 1 || end_game_menu_choice > 4);
+  } while (end_game_menu_choice <= 0 || end_game_menu_choice >= 5);
 
   return end_game_menu_choice;
+}
+
+int GameTitleMenuPage(void) {
+  bool is_loop_run_once = false;
+  int titling_the_game_choice;
+
+  do {
+    if (is_loop_run_once) ErrorMessagePrinter();
+
+    puts("\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
+    puts("|       How Do You Want To Name This Gameplay?         |");
+    puts("|                                                      |");
+    puts("|        1. Manually          2. Automatically         |");
+    puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+    is_loop_run_once = true;
+    titling_the_game_choice = GetGoodInput(1, true);
+  } while (titling_the_game_choice < 1 || titling_the_game_choice > 2);
+
+  return titling_the_game_choice;
+}
+
+void GetGameTitle(char *gameplay_title, int max_size) {
+  int confirming_game_title_choice = 1;
+
+  do {
+    puts("\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
+    puts("|       Please Enter the Title of This Gameplay        |");
+    puts("|                                                      |");
+    puts("|                 (Max. 25 Characters)                 |");
+    puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+    puts("\n========================================================");
+    fputs("Title: ", stdout);
+    fgets(gameplay_title, max_size, stdin);
+    puts("========================================================");
+
+    if (gameplay_title[strlen(gameplay_title) - 1] == '\n') {
+      gameplay_title[strlen(gameplay_title) - 1] = 0;
+    }
+
+    do {
+      if (confirming_game_title_choice < 1 ||
+          confirming_game_title_choice > 2) {
+        ErrorMessagePrinter();
+      }
+      puts("\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
+      puts("|               Do You Confirm This Title?             |");
+      puts("|                                                      |");
+      puts("|\t   |--------------------------------|          |");
+      printf("\t      \"%s\"\n", gameplay_title);
+      puts("|\t   |--------------------------------|          |");
+      puts("|                                                      |");
+      puts("|           1. Confirm          2. Rename              |");
+      puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+      confirming_game_title_choice = GetGoodInput(1, true);
+      TerminalCleaner();
+      LogoPrinter();
+    } while (confirming_game_title_choice < 1 ||
+             confirming_game_title_choice > 2);
+  } while (2 == confirming_game_title_choice);
 }
