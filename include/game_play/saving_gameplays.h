@@ -4,21 +4,17 @@
 #include <stdbool.h>
 
 typedef struct {
-  void *down;
+  void *next;
   char the_move[2];
-} GamePlayNode;
+} GameplayNode;
 
-GamePlayNode *SaveTheMove(GamePlayNode **top, int new_move);
+GameplayNode *SaveTheMove(GameplayNode **top, int new_move);
 
-int GetFileName(char *moves_file_name, char *titles_file_name, int game_mode);
+int GetNextGameplayTitleNumber(int game_mode_choice);
 
-int PickGameplayName(int game_mode_choice);
-
-int SaveTheGameplay(GamePlayNode *top, int game_mode, const char *game_title,
+int SaveTheGameplay(GameplayNode *top, int game_mode, const char *game_title,
                     bool is_user_played_first);
 
-void DeleteTheGamePlay(GamePlayNode **top);
-
-void PrintStack(GamePlayNode *top);
+void DeleteTheGameplay(GameplayNode **top);
 
 #endif

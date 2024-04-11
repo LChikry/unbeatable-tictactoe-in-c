@@ -4,7 +4,7 @@
 
 - todo 2
 
-  - dd the choice of playing with friends
+  - add the choice of playing with friends
 
 - todo 3: Mini Menu
 

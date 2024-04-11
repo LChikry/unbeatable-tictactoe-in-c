@@ -6,6 +6,7 @@
 
 #include "../../include/game_play/saving_gameplays.h"
 
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -13,18 +14,19 @@
 
 #include "../../include/common/common.h"
 
-GamePlayNode *SaveTheMove(GamePlayNode **top, int new_move) {
-  GamePlayNode *node = malloc(sizeof(node));
+GameplayNode *SaveTheMove(GameplayNode **head, int new_move) {
+  GameplayNode *node = malloc(sizeof(node));
   if (node == NULL) return NULL;
 
   snprintf(node->the_move, 2, "%d", new_move);
-  node->down = *top;
+  node->next = *head;
 
-  *top = node;
+  *head = node;
   return node;
 }
 
-int GetFileName(char *moves_file_name, char *titles_file_name, int game_mode) {
+static int get_file_name(char *moves_file_name, char *titles_file_name,
+                         int game_mode) {
   char game_mode_name[22];
 
   switch (game_mode) {
@@ -41,84 +43,86 @@ int GetFileName(char *moves_file_name, char *titles_file_name, int game_mode) {
       break;
 
     default:
-      puts("error in GetFileName");
+      puts("error in get_file_name");
       return 1;
   }
 
-  snprintf(moves_file_name, 65, "data/app/gameplays/%s_moves.txt",
-           game_mode_name);
-  snprintf(titles_file_name, 65, "data/app/gameplays/%s_titles.txt",
-           game_mode_name);
+  if (moves_file_name != NULL) {
+    snprintf(moves_file_name, 65, "data/app/gameplays/%s_moves.txt",
+             game_mode_name);
+  }
+
+  if (titles_file_name != NULL) {
+    snprintf(titles_file_name, 65, "data/app/gameplays/%s_titles.txt",
+             game_mode_name);
+  }
 
   return 0;
 }
 
-int PickGameplayName(int game_mode_choice) {
+int GetNextGameplayTitleNumber(int game_mode_choice) {
   char titles_file_name[65] = {0};
-  {
-    char moves_file_name[65] = {0};
-    GetFileName(moves_file_name, titles_file_name, game_mode_choice);
-  }
+  get_file_name(NULL, titles_file_name, game_mode_choice);
 
-  FILE *titles_file = fopen(titles_file_name, "r");
-  if (titles_file == NULL) return 1;
+  FILE *input_titles_file = fopen(titles_file_name, "r");
+  if (input_titles_file == NULL) return 1;
 
   int title_count = 0;
   char title_match[30] = {0};
-  while (!feof(titles_file)) {
-    fgets(title_match, 30, titles_file);
-    if (title_match[0] == 0) break;
-    if (!strncmp(title_match, "Save ", 5)) title_count++;
+
+  while (fgets(title_match, 30, input_titles_file) != NULL) {
+    if (!strncmp(title_match, "Save", 4)) title_count++;
   }
 
-  fclose(titles_file);
+  fclose(input_titles_file);
   return title_count + 1;
 }
 
-int SaveTheGameplay(GamePlayNode *top, int game_mode, const char *game_title,
+static void saving_moves(FILE *moves_file, GameplayNode *head,
+                         bool is_it_first_call) {
+  if (head == NULL) return;
+
+  saving_moves(moves_file, head->next, false);
+  fprintf(moves_file, "%c", head->the_move[0]);
+  if (!is_it_first_call) fputs(", ", moves_file);
+}
+
+int SaveTheGameplay(GameplayNode *head, int game_mode, const char *game_title,
                     bool is_user_played_first) {
   char moves_file_name[65] = {0};
   char titles_file_name[65] = {0};
-  GetFileName(moves_file_name, titles_file_name, game_mode);
+  get_file_name(moves_file_name, titles_file_name, game_mode);
 
+  // First file
   FILE *titles_file = fopen(titles_file_name, "a");
   if (titles_file == NULL) return 1;
   fprintf(titles_file, "%s\n", game_title);
   fclose(titles_file);
 
+  // Second file
   FILE *moves_file = fopen(moves_file_name, "a");
   if (moves_file == NULL) return 1;
+
   if (is_user_played_first) {
     fputs("U: ", moves_file);
   } else {
     fputs("C: ", moves_file);
   }
 
-  while (top != NULL) {
-    fprintf(moves_file, "%c", top->the_move[0]);
-    top = top->down;
-    if (top != NULL) fputs(", ", moves_file);
-  }
+  saving_moves(moves_file, head, true);
   fputs("\n", moves_file);
   fclose(moves_file);
 
   return 0;
 }
 
-void DeleteTheGamePlay(GamePlayNode **top) {
-  GamePlayNode *temp = NULL;
+void DeleteTheGameplay(GameplayNode **head) {
+  if (*head == NULL) return;
+  GameplayNode *temp = NULL;
 
-  while ((*top) != NULL) {
-    temp = *top;
-    *top = (*top)->down;
+  while ((*head) != NULL) {
+    temp = *head;
+    *head = (*head)->next;
     free(temp);
-  }
-}
-
-void PrintStack(GamePlayNode *top) {
-  int i = 0;
-  while (top != NULL) {
-    printf("\tstage %d: %c\n", i++, top->the_move[0]);
-    top = top->down;
   }
 }

@@ -91,7 +91,7 @@ void SavedGameMessage(char *gameplay_title,
     puts(
         "|     \033[32;1m The Gameplay Have Been Successfully Saved  \033[0m   "
         "  |");
-    printf("              Under \"%s\"        \n", gameplay_title);
+    printf("                  Under \"%s\" \n", gameplay_title);
   } else {
     puts(
         "|           \033[31;1m The Gameplay Didn't Get Saved  \033[0m         "

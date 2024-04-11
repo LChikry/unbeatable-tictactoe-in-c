@@ -10,6 +10,7 @@
 #include "../../../include/computer_turn/unbeatable_mode.h"
 #include "../../../include/game_play/game_checkers.h"
 #include "../../../include/game_play/game_play.h"
+#include "../../include/game_play/saving_gameplays.h"
 
 unsigned long int d = 0;
 

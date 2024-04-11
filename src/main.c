@@ -16,24 +16,23 @@ int main(void) {
     menu_choice = MainMenuPage();
 
     if (1 == menu_choice) {
-      GamePlayNode *top = NULL;  // top of the stack of the gameplay moves
+      GameplayNode *head = NULL;  // head of the linked list
       bool should_user_play = false;
       int game_mode_choice = ComputerModeMenuPage();
 
       do {
+        DeleteTheGameplay(&head);  // sets also head to NULL at the end
         if (2 == menu_choice) game_mode_choice = ComputerModeMenuPage();
         should_user_play = IsUserWillPlayFirst();
 
         char board[3][3] = {{'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'}};
         int game_result =
-            GamePlay((char *)board, game_mode_choice, should_user_play, &top);
+            GamePlay((char *)board, game_mode_choice, should_user_play, &head);
         WinnerMessagePrinter(game_mode_choice, game_result);
         menu_choice = EndGameMenuPage((char *)board);
-
-        if (3 != menu_choice) DeleteTheGamePlay(&top);
       } while (1 == menu_choice || 2 == menu_choice);
 
-      // handling one of the choices of the EndGameMenuPage
+      // Saving The Gameplay
       if (3 == menu_choice) {
         int game_title_choice = 0;
         TerminalCleaner();
@@ -44,29 +43,37 @@ int main(void) {
         LogoPrinter();
         char gameplay_title[26] = {0};
 
+        // Manually Adding the Title of the Save
         if (1 == game_title_choice) {
           GetGameTitle(gameplay_title, 26);
-          if (SaveTheGameplay(top, game_mode_choice, gameplay_title,
+
+          if (SaveTheGameplay(head, game_mode_choice, gameplay_title,
                               should_user_play)) {
-            puts("\nerror in SaveTheGameplay");
-            return 1;
+            SavedGameMessage(gameplay_title, false);
+            // puts("\nerror in SaveTheGameplay");
+            // return 1;
           }
           SavedGameMessage(gameplay_title, true);
+          DeleteTheGameplay(&head);
           continue;
         }
 
-        // name the game automatically
-        int save_number = PickGameplayName(game_mode_choice);
-        snprintf(gameplay_title, 25, "Save %d", save_number);
+        // Automatically Adding the Title of the Save
+        int save_number = GetNextGameplayTitleNumber(game_mode_choice);
+        snprintf(gameplay_title, 25, "Save %0.d", save_number);
 
-        if (SaveTheGameplay(top, game_mode_choice, gameplay_title,
+        if (SaveTheGameplay(head, game_mode_choice, gameplay_title,
                             should_user_play)) {
-          puts("\nerror in SaveTheGameplay");
-          return 1;
+          SavedGameMessage(gameplay_title, false);
+          // puts("\nerror in SaveTheGameplay");
+          // return 1;
         }
         SavedGameMessage(gameplay_title, true);
-      }
+        DeleteTheGameplay(&head);
+        continue;
+      }  // end of saving choice in EndGameMenuPage
 
+      DeleteTheGameplay(&head);
       continue;
     }  // end of first choice
 
