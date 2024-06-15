@@ -79,6 +79,6 @@ int ComputerTurn(char *board, int number_of_turns,
     return board_place_number;
   }
 
-  puts("Something went Wrong in ComputerTurn function");
+  puts("error in ComputerTurn function");
   exit(1);
 }
