@@ -19,4 +19,6 @@ void BoardPrinter(char *board);
 void SavedGameMessage(char *gameplay_title,
                       bool is_gameplay_saved_successfully);
 
+void PrintSavedGameplayTitles(char **gameplay_titles, int number_of_gameplays);
+
 #endif

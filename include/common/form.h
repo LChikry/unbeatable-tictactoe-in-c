@@ -15,6 +15,8 @@ int EndGameMenuPage(char *board);
 
 int GameTitleMenuPage(void);
 
-void GetGameTitle(char *gameplay_title, int max_size);
+void GetGameTitle(char *gameplay_title);
+
+int GetGameplayModeOfSavedGames(void);
 
 #endif

@@ -138,7 +138,7 @@ void WinnerMessagePrinter(int game_mode, int game_result) {
 
       default:
         break;
-    }       // end of the switch
+    }  // end of the switch
   } else {  // Unfair Mode
     switch (game_result) {
       case DRAW_GAME:
@@ -168,7 +168,7 @@ void WinnerMessagePrinter(int game_mode, int game_result) {
       default:
         break;
     }  // end of the switch
-  }    // end of the else
+  }  // end of the else
 }
 
 int PickRandomlyWhoWillPlayFirst(void) {
@@ -220,4 +220,45 @@ int PickRandomlyWhoWillPlayFirst(void) {
 
   usleep(1750000);
   return coin_value;
+}
+
+void PrintSavedGameplayTitles(char **gameplay_titles, int number_of_gameplays) {
+  TerminalCleaner();
+  LogoPrinter();
+
+  if (number_of_gameplays == 0) {
+    TerminalCleaner();
+    LogoPrinter();
+
+    puts("\n++++++++++++++++++++++ Message : +++++++++++++++++++++++");
+    puts("|                                                      |");
+    puts("|                     No Game Found!                   |");
+    puts("|                                                      |");
+    puts("\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    sleep(2);
+    return;
+  }
+
+  int title_length = 0;
+  puts("\n\n++++++++++++++++++++ Saved Games: ++++++++++++++++++++");
+  for (int i = 0; i < number_of_gameplays; ++i) {
+    printf("| %s", gameplay_titles[i]);
+    title_length = strlen(gameplay_titles[i]);
+    for (int j = title_length; j <= 25; i++) {
+      printf(" ");
+    }
+
+    ++i;
+
+    printf(" | %s", gameplay_titles[i]);
+    title_length = strlen(gameplay_titles[i]);
+    for (int j = title_length; j <= 25; i++) {
+      printf(" ");
+    }
+
+    printf(" |\n");
+  }
+  puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+  // add choice to select the
 }

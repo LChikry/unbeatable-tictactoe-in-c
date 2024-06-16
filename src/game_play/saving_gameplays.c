@@ -25,10 +25,7 @@ GameplayNode *SaveTheMove(GameplayNode **head, int new_move) {
   return node;
 }
 
-static int get_file_name(char *moves_file_name, char *titles_file_name,
-                         int game_mode) {
-  char game_mode_name[22];
-
+static int get_game_mode_name(int game_mode, char *game_mode_name) {
   switch (game_mode) {
     case EASY_GAME_MODE:
       strncpy(game_mode_name, "easy_gameplays", 22);
@@ -47,22 +44,36 @@ static int get_file_name(char *moves_file_name, char *titles_file_name,
       return 1;
   }
 
-  if (moves_file_name != NULL) {
-    snprintf(moves_file_name, 65, "data/app/gameplays/%s_moves.txt",
-             game_mode_name);
-  }
+  return 0;
+}
 
-  if (titles_file_name != NULL) {
-    snprintf(titles_file_name, 65, "data/app/gameplays/%s_titles.txt",
-             game_mode_name);
-  }
+static int get_title_file_name(char *titles_file_name, int game_mode) {
+  if (titles_file_name == NULL) return 1;
+
+  char game_mode_name[22];
+  if (get_game_mode_name(game_mode, game_mode_name)) return 1;
+
+  snprintf(titles_file_name, 65, "data/app/gameplays/%s_titles.txt",
+           game_mode_name);
+
+  return 0;
+}
+
+static int get_moves_file_name(char *moves_file_name, int game_mode) {
+  if (moves_file_name == NULL) return 1;
+
+  char game_mode_name[22];
+  if (get_game_mode_name(game_mode, game_mode_name)) return 1;
+
+  snprintf(moves_file_name, 65, "data/app/gameplays/%s_moves.txt",
+           game_mode_name);
 
   return 0;
 }
 
 int GetNextGameplayTitleNumber(int game_mode_choice) {
   char titles_file_name[65] = {0};
-  get_file_name(NULL, titles_file_name, game_mode_choice);
+  get_title_file_name(titles_file_name, game_mode_choice);
 
   FILE *input_titles_file = fopen(titles_file_name, "r");
   if (input_titles_file == NULL) return 1;
@@ -91,7 +102,8 @@ int SaveTheGameplay(GameplayNode *head, int game_mode, const char *game_title,
                     bool is_user_played_first) {
   char moves_file_name[65] = {0};
   char titles_file_name[65] = {0};
-  get_file_name(moves_file_name, titles_file_name, game_mode);
+  get_moves_file_name(moves_file_name, game_mode);
+  get_title_file_name(titles_file_name, game_mode);
 
   // First file
   FILE *titles_file = fopen(titles_file_name, "a");
@@ -125,4 +137,31 @@ void DeleteTheGameplay(GameplayNode **head) {
     *head = (*head)->next;
     free(temp);
   }
+}
+
+char **GetSavedGameplaysTitleAndNumber(int game_mode,
+                                       int *number_of_gameplays) {
+  char titles_file_name[65] = {0};
+  get_title_file_name(titles_file_name, game_mode);
+
+  FILE *titles_file = fopen(titles_file_name, "a");
+  if (titles_file == NULL) return NULL;
+
+  int number_of_titles = 0;
+  char **saved_titles = malloc(sizeof(char *) * ++number_of_titles);
+  char title_buffer[MAXIMUM_GAMEPLAY_TITLE_SIZE + 2];
+
+  while (fgets(title_buffer, MAXIMUM_GAMEPLAY_TITLE_SIZE + 1, titles_file) !=
+         NULL) {
+    int title_size = strlen(title_buffer) - 1;
+    if (title_size < 1) return NULL;
+    title_buffer[title_size] = '\0';
+    saved_titles[number_of_titles] = malloc(sizeof(char) * title_size);
+    strncpy(saved_titles[number_of_titles], title_buffer, title_size);
+    saved_titles = realloc(saved_titles, sizeof(char *) * ++number_of_titles);
+  }
+  fclose(titles_file);
+
+  *number_of_gameplays = number_of_titles - 1;
+  return saved_titles;
 }

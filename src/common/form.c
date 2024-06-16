@@ -148,7 +148,7 @@ int EndGameMenuPage(char *board) {
   do {
     if (is_loop_run_once) ErrorMessagePrinter();
     BoardPrinter(board);
-    usleep(1300000);
+
     puts("\n++++++++++++++++++++++ Game Over: ++++++++++++++++++++++");
     puts("|                                                      |");
     puts("|         1. Play Again        2. Change Mode          |");
@@ -183,7 +183,7 @@ int GameTitleMenuPage(void) {
   return titling_the_game_choice;
 }
 
-void GetGameTitle(char *gameplay_title, int max_size) {
+void GetGameTitle(char *gameplay_title) {
   int confirming_game_title_choice = 1;
 
   do {
@@ -195,7 +195,7 @@ void GetGameTitle(char *gameplay_title, int max_size) {
 
     puts("\n========================================================");
     fputs("Title: ", stdout);
-    fgets(gameplay_title, max_size, stdin);
+    fgets(gameplay_title, MAXIMUM_GAMEPLAY_TITLE_SIZE + 1, stdin);
     puts("========================================================");
 
     if (gameplay_title[strlen(gameplay_title) - 1] == '\n') {
@@ -223,4 +223,24 @@ void GetGameTitle(char *gameplay_title, int max_size) {
     } while (confirming_game_title_choice < 1 ||
              confirming_game_title_choice > 2);
   } while (2 == confirming_game_title_choice);
+}
+
+int GetGameplayModeOfSavedGames(void) {
+  bool is_loop_run_once = false;
+  int saved_gameplay_choice;
+
+  do {
+    if (is_loop_run_once) ErrorMessagePrinter();
+
+    puts("\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
+    puts("|          Which Mode Games You Want to See?           |");
+    puts("|                                                      |");
+    puts("|     1. Easy       2. Normal       3. Unbeatable      |");
+    puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+    is_loop_run_once = true;
+    saved_gameplay_choice = GetGoodInput(1, true);
+  } while (saved_gameplay_choice <= 0 || saved_gameplay_choice >= 4);
+
+  return saved_gameplay_choice;
 }
