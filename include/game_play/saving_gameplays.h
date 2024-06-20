@@ -8,6 +8,11 @@ typedef struct {
   char the_move[2];
 } GameplayNode;
 
+typedef struct {
+  char **saved_titles;
+  int number_of_saved_games;
+} GameplayTitles;
+
 GameplayNode *SaveTheMove(GameplayNode **top, int new_move);
 
 int GetNextGameplayTitleNumber(int game_mode_choice);
@@ -17,6 +22,6 @@ int SaveTheGameplay(GameplayNode *top, int game_mode, const char *game_title,
 
 void DeleteTheGameplay(GameplayNode **top);
 
-char **GetSavedGameplaysTitleAndNumber(int game_mode, int *number_of_gameplays);
+GameplayTitles GetSavedGameplaysTitleAndNumber(int game_mode);
 
 #endif

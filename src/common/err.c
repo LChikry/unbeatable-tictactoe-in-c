@@ -19,7 +19,7 @@ int GetGoodInput(int expected_length, bool is_first_char_input_digit) {
   char user_input[expected_length + 8];  // 8 is the margin of error
 
   puts("\n========================================================");
-  fputs("Your choice is: ", stdout);
+  fputs("Your input is: ", stdout);
   fgets(user_input, expected_length + 8, stdin);
   puts("========================================================");
 

@@ -22,3 +22,7 @@
 
 - todo 5: contributing
   - add the steps to contribute and how to deal with branches.
+
+
+- todo 6:
+  - add a checking boundary of number of saved games (when saving). It should not exist 3 digits (999)

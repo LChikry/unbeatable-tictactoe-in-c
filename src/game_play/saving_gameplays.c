@@ -82,7 +82,7 @@ int GetNextGameplayTitleNumber(int game_mode_choice) {
   char title_match[30] = {0};
 
   while (fgets(title_match, 30, input_titles_file) != NULL) {
-    if (!strncmp(title_match, "Save", 4)) title_count++;
+    if (!strncmp(title_match, DEFAULT_SAVED_GAMEPLAY_NAME, 4)) title_count++;
   }
 
   fclose(input_titles_file);
@@ -139,29 +139,41 @@ void DeleteTheGameplay(GameplayNode **head) {
   }
 }
 
-char **GetSavedGameplaysTitleAndNumber(int game_mode,
-                                       int *number_of_gameplays) {
-  char titles_file_name[65] = {0};
-  get_title_file_name(titles_file_name, game_mode);
-
-  FILE *titles_file = fopen(titles_file_name, "a");
-  if (titles_file == NULL) return NULL;
-
-  int number_of_titles = 0;
-  char **saved_titles = malloc(sizeof(char *) * ++number_of_titles);
-  char title_buffer[MAXIMUM_GAMEPLAY_TITLE_SIZE + 2];
-
-  while (fgets(title_buffer, MAXIMUM_GAMEPLAY_TITLE_SIZE + 1, titles_file) !=
-         NULL) {
-    int title_size = strlen(title_buffer) - 1;
-    if (title_size < 1) return NULL;
-    title_buffer[title_size] = '\0';
-    saved_titles[number_of_titles] = malloc(sizeof(char) * title_size);
-    strncpy(saved_titles[number_of_titles], title_buffer, title_size);
-    saved_titles = realloc(saved_titles, sizeof(char *) * ++number_of_titles);
+GameplayTitles GetSavedGameplaysTitleAndNumber(int game_mode) {
+  FILE *titles_file;
+  {
+    char titles_file_name[65] = {0};
+    get_title_file_name(titles_file_name, game_mode);
+    titles_file = fopen(titles_file_name, "r");
   }
-  fclose(titles_file);
+  if (titles_file == NULL) {
+    puts("error of Opening File in GetSavedGameplaysTitleAndNumber");
+    return (GameplayTitles){.saved_titles = NULL, .number_of_saved_games = -1};
+  }
 
-  *number_of_gameplays = number_of_titles - 1;
-  return saved_titles;
+  GameplayTitles saved_games;
+  saved_games.saved_titles = malloc(sizeof(char *));
+  saved_games.number_of_saved_games = 0;
+  char *buffer = NULL;
+  size_t buffer_size = 0;
+  int read_chars = 0;
+
+  while ((read_chars = getline(&buffer, &buffer_size, titles_file)) != -1) {
+    if (read_chars < 1) return saved_games;
+
+    buffer[read_chars - 1] = '\0';
+    ++saved_games.number_of_saved_games;
+
+    saved_games.saved_titles =
+        realloc(saved_games.saved_titles,
+                sizeof(char *) * saved_games.number_of_saved_games);
+
+    saved_games.saved_titles[saved_games.number_of_saved_games - 1] = buffer;
+
+    buffer = NULL;
+    buffer_size = 0;
+  }
+
+  fclose(titles_file);
+  return saved_games;
 }

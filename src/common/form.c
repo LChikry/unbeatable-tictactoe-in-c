@@ -1,3 +1,5 @@
+#include "../../include/common/form.h"
+
 #include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -190,7 +192,8 @@ void GetGameTitle(char *gameplay_title) {
     puts("\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
     puts("|       Please Enter the Title of This Gameplay        |");
     puts("|                                                      |");
-    puts("|                 (Max. 25 Characters)                 |");
+    printf("|                 (Max. %d Characters)                 |\n",
+           MAXIMUM_GAMEPLAY_TITLE_SIZE);
     puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
     puts("\n========================================================");
@@ -230,6 +233,8 @@ int GetGameplayModeOfSavedGames(void) {
   int saved_gameplay_choice;
 
   do {
+    TerminalCleaner();
+    LogoPrinter();
     if (is_loop_run_once) ErrorMessagePrinter();
 
     puts("\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
@@ -243,4 +248,85 @@ int GetGameplayModeOfSavedGames(void) {
   } while (saved_gameplay_choice <= 0 || saved_gameplay_choice >= 4);
 
   return saved_gameplay_choice;
+}
+
+int GetSavedGameplayAction(void) {
+  bool is_loop_run_once = false;
+  int saved_gameplay_action_choice;
+
+  do {
+    if (is_loop_run_once) ErrorMessagePrinter();
+
+    puts("\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
+    puts("|                What Do You Want To Do?               |");
+    puts("|                                                      |");
+    puts("|     1. Show Gameplay       2. Delete Gameplay        |");
+    puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+    is_loop_run_once = true;
+    saved_gameplay_action_choice = GetGoodInput(1, true);
+  } while (saved_gameplay_action_choice <= 0 ||
+           saved_gameplay_action_choice >= 3);
+
+  return saved_gameplay_action_choice;
+}
+
+GameplayNumbers GetSavedGameplayNumber(GameplayTitles saved_games) {
+  bool is_loop_run_once = false;
+  int saved_gameplay_action_choice;
+  GameplayNumbers numbers;
+
+  while (true) {
+    if (is_loop_run_once) {
+      free(numbers.list_of_saved_numbers);
+      ErrorMessagePrinter();
+      PrintSavedGameplayTitles(saved_games);
+    }
+
+    puts("\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
+    puts("|         Enter the Number of the Gameplays?           |");
+    puts("| (for many gameplays, separate the numbers by spaces) |");
+    puts("|                                                      |");
+    puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+    puts("\n==========================================================");
+    char *input = NULL;
+    size_t input_size_limit = 0;
+    fputs("Your input is: ", stdout);
+    int input_length = getline(&input, &input_size_limit, stdin);
+    puts("==========================================================");
+
+    is_loop_run_once = true;
+    if (input_length == 0) continue;
+
+    char *curser = input;
+    numbers.list_of_saved_numbers = malloc(sizeof(int));
+    numbers.list_of_saved_numbers[0] = -1;
+    numbers.list_length = 1;
+    int temp_number = 0;
+
+    while (curser != input + strlen(input)) {
+      if (*curser == ' ' || *curser == ',' || *curser == ';' || curser == '.') {
+        ++curser;
+        continue;
+      }
+      temp_number = strtol(curser, &curser, 10);
+
+      if (temp_number == -1) break;
+      if (numbers.list_length - 1 > saved_games.number_of_saved_games) break;
+      if (temp_number <= 0 || temp_number >= 1000) break;
+
+      numbers.list_of_saved_numbers[numbers.list_length - 1] = temp_number;
+      numbers.list_of_saved_numbers = realloc(
+          numbers.list_of_saved_numbers, sizeof(int) * ++numbers.list_length);
+    }
+
+    if (temp_number <= -1 || temp_number >= 1000) continue;
+    if (!isdigit(numbers.list_of_saved_numbers[0]) ||
+        numbers.list_of_saved_numbers[0] == -1) {
+      continue;
+    }
+  }
+
+  return numbers;
 }

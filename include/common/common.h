@@ -32,7 +32,9 @@
 #define NORMAL_GAME_MODE 2
 #define UNBEATABLE_GAME_MODE 3
 
-#define MAXIMUM_GAMEPLAY_TITLE_SIZE 25
+#define MAXIMUM_GAMEPLAY_TITLE_SIZE 20
+
+#define DEFAULT_SAVED_GAMEPLAY_NAME "Gameplay"
 
 #ifdef WIN32
 #include <windows.h>

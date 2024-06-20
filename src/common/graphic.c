@@ -8,6 +8,7 @@
 
 #include "../../include/common/common.h"
 #include "../../include/game_play/game_checkers.h"
+#include "../../include/game_play/saving_gameplays.h"
 
 // Clean the terminal with any text, and changes the cursor to position (0,0)
 void TerminalCleaner(void) {
@@ -222,11 +223,11 @@ int PickRandomlyWhoWillPlayFirst(void) {
   return coin_value;
 }
 
-void PrintSavedGameplayTitles(char **gameplay_titles, int number_of_gameplays) {
+void PrintSavedGameplayTitles(GameplayTitles saved_games) {
   TerminalCleaner();
   LogoPrinter();
 
-  if (number_of_gameplays == 0) {
+  if (saved_games.number_of_saved_games == 0) {
     TerminalCleaner();
     LogoPrinter();
 
@@ -240,25 +241,32 @@ void PrintSavedGameplayTitles(char **gameplay_titles, int number_of_gameplays) {
   }
 
   int title_length = 0;
-  puts("\n\n++++++++++++++++++++ Saved Games: ++++++++++++++++++++");
-  for (int i = 0; i < number_of_gameplays; ++i) {
-    printf("| %s", gameplay_titles[i]);
-    title_length = strlen(gameplay_titles[i]);
-    for (int j = title_length; j <= 25; i++) {
+
+  puts("\n\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+  puts("|                     Saved Games:                      |");
+  puts("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
+  puts("---------------------------------------------------------");
+  for (int i = 0; i < saved_games.number_of_saved_games; ++i) {
+    printf("|  %03d. %s", i + 1, saved_games.saved_titles[i]);
+    title_length = strlen(saved_games.saved_titles[i]);
+    for (int j = 0; j < MAXIMUM_GAMEPLAY_TITLE_SIZE - title_length; ++j) {
       printf(" ");
     }
 
-    ++i;
+    if (++i >= saved_games.number_of_saved_games) {
+      for (int k = 0; k < MAXIMUM_GAMEPLAY_TITLE_SIZE + 8; ++k) printf(" ");
+      printf("|\n");
+      puts("---------------------------------------------------------");
+      break;
+    }
 
-    printf(" | %s", gameplay_titles[i]);
-    title_length = strlen(gameplay_titles[i]);
-    for (int j = title_length; j <= 25; i++) {
+    printf("|  %03d. %s", i + 1, saved_games.saved_titles[i]);
+    title_length = strlen(saved_games.saved_titles[i]);
+    for (int j = 0; j < MAXIMUM_GAMEPLAY_TITLE_SIZE - title_length; ++j) {
       printf(" ");
     }
 
-    printf(" |\n");
+    printf("|\n");
+    puts("---------------------------------------------------------");
   }
-  puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-
-  // add choice to select the
 }

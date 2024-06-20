@@ -1,5 +1,6 @@
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 
 #include "../include/common/common.h"
@@ -10,7 +11,7 @@
 
 void PlayingAgainstComputer(void);
 void PlayingWithFriends(void);
-void ShowSavedGameplays(void);
+void SavedGameplayChoice(void);
 
 int main(void) {
   WelcomePage();
@@ -80,7 +81,7 @@ void PlayingAgainstComputer(void) {
                       should_user_play)) {
     SavedGameMessage(gameplay_title, false);
     // puts("\nerror in SaveTheGameplay");
-    // return 1;
+    // return 1;`
   }
 
   SavedGameMessage(gameplay_title, true);
@@ -90,15 +91,23 @@ void PlayingAgainstComputer(void) {
 
 void PlayingWithFriends(void) {}
 
-void ShowSavedGameplays(void) {
+void SavedGameplayChoice(void) {
+  // 1: show game play  and  2: delete gameplay
+  int saved_gameplay_action = GetSavedGameplayAction();
   int game_mode = GetGameplayModeOfSavedGames();
-  int number_of_gameplays = 0;
+  GameplayTitles saved_games = GetSavedGameplaysTitleAndNumber(game_mode);
+  PrintSavedGameplayTitles(saved_games);
+  GameplayNumbers saved_gameplays_number = GetSavedGameplayNumber(saved_games);
 
-  // trouble shoot this, why doesn't change the number of gameplays
-  char **saved_titles =
-      GetSavedGameplaysTitleAndNumber(game_mode, &number_of_gameplays);
+  if (saved_gameplay_action == 1) {
+    DeleteGameplaysInFile(saved_games, saved_gameplays_number);
+  } else {
+    PrintSavedGameplayBoards(saved_games, saved_gameplays_number);
+  }
 
-  PrintSavedGameplayTitles(saved_titles, number_of_gameplays);
-
-  // print the saved game play
+  for (size_t i = 0; i < saved_games.number_of_saved_games; ++i) {
+    free(saved_games.saved_titles[i]);
+  }
+  free(saved_games.saved_titles);
+  free(saved_gameplays_number.list_of_saved_numbers);
 }
