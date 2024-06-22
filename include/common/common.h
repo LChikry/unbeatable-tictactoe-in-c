@@ -7,11 +7,6 @@ typedef struct {
 } GameplayNode;
 
 typedef struct {
-  char **titles;
-  int titles_count;
-} GameplayTitles;
-
-typedef struct {
   int *list;
   int list_length;
 } GameplayNumbers;
@@ -47,7 +42,10 @@ typedef struct {
 #define NORMAL_GAME_MODE 2
 #define UNBEATABLE_GAME_MODE 3
 
-#define MAXIMUM_GAMEPLAY_TITLE_SIZE 20
+#define MAX_GAMEPLAY_MODE_NAME_LENGTH 22
+#define MAX_GAMEPLAY_TITLE_LENGTH 20
+#define MAX_FILE_TITLE_LENGTH 57
+#define MAX_MOVES_LENGTH 31
 
 #define DEFAULT_SAVED_GAMEPLAY_NAME "Gameplay"
 #define DEFAULT_SAVED_GAMEPLAY_LENGTH 8

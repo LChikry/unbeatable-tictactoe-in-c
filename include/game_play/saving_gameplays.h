@@ -14,9 +14,11 @@ int SaveTheGameplay(GameplayNode *top, int game_mode, const char *game_title,
 
 void DeleteTheGameplay(GameplayNode **top);
 
-int get_title_file_name(char *titles_file_name, int game_mode);
-
-int get_moves_file_name(char *moves_file_name, int game_mode);
+int GetGameplayModeName(int game_mode, char *game_mode_name);
+int GetTitleFileName(char *titles_file_name, int game_mode);
+int GetMovesFileName(char *moves_file_name, int game_mode);
+int GetTempTitleFileName(char *temp_titles_file_name, int game_mode);
+int GetTempMovesFileName(char *temp_moves_file_name, int game_mode);
 
 int DeleteSavedGameplays(GameplayNumbers saved_gameplays_number,
                          int titles_count, int gameplay_mode);

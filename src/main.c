@@ -65,7 +65,7 @@ void PlayingAgainstComputer(void) {
 
   TerminalCleaner();
   LogoPrinter();
-  char gameplay_title[MAXIMUM_GAMEPLAY_TITLE_SIZE + 1] = {0};
+  char gameplay_title[MAX_GAMEPLAY_TITLE_LENGTH + 1] = {0};
 
   if (1 == game_title_choice) {
     // Manually Adding the Title of the Save
@@ -73,7 +73,7 @@ void PlayingAgainstComputer(void) {
   } else {
     // Automatically Adding the Title of the Save
     int save_number = GetNextGameplayTitleNumber(game_mode_choice);
-    snprintf(gameplay_title, MAXIMUM_GAMEPLAY_TITLE_SIZE, "%s %0.d",
+    snprintf(gameplay_title, MAX_GAMEPLAY_TITLE_LENGTH, "%s %0.d",
              DEFAULT_SAVED_GAMEPLAY_NAME, save_number);
   }
 
@@ -95,21 +95,28 @@ void SavedGameplayChoice(void) {
   int gameplay_mode = GetGameplayMode();
   // 1: show game play    and    2: delete gameplay
   int saved_gameplay_action = GetSavedGameplayAction();
+
   TerminalCleaner();
   LogoPrinter();
   int titles_count = PrintSavedGameplayTitles(gameplay_mode);
-  if (-1 == titles_count || 0 == titles_count) return;
-  GameplayNumbers gameplays_to_delete =
-      GetSavedGameplaysNumber(gameplay_mode, titles_count);
-  sleep(5);
+  if (0 == titles_count || -1 == titles_count) return;
 
-  if (!gameplays_to_delete.list) {  // skip
-  } else if (saved_gameplay_action == 1) {
-    // PrintSavedGameplayBoards(saved_games, saved_gameplays_number, game_mode);
-  } else {
-    // DeleteSavedGameplays(gameplays_to_delete, titles_count, gameplay_mode);
-    // SuccessfulMessagePrinter();
+  GameplayNumbers choosen_gameplays =
+      GetSavedGameplaysNumber(gameplay_mode, titles_count);
+
+  if (!choosen_gameplays.list) {
+    free(choosen_gameplays.list);
+    return;
   }
 
-  free(gameplays_to_delete.list);
+  if (saved_gameplay_action == 1) {
+    // PrintSavedGameplayBoards(saved_gameplays_number, game_mode);
+  }
+
+  if (saved_gameplay_action == 2) {
+    DeleteSavedGameplays(choosen_gameplays, titles_count, gameplay_mode);
+    SuccessfulMessagePrinter();
+  }
+
+  free(choosen_gameplays.list);
 }

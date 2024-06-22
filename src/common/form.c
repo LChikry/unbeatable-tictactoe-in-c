@@ -193,12 +193,12 @@ void GetGameTitle(char *gameplay_title) {
     puts("|       Please Enter the Title of This Gameplay        |");
     puts("|                                                      |");
     printf("|                 (Max. %d Characters)                 |\n",
-           MAXIMUM_GAMEPLAY_TITLE_SIZE);
+           MAX_GAMEPLAY_TITLE_LENGTH);
     puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
     puts("\n========================================================");
     fputs("Title: ", stdout);
-    fgets(gameplay_title, MAXIMUM_GAMEPLAY_TITLE_SIZE + 1, stdin);
+    fgets(gameplay_title, MAX_GAMEPLAY_TITLE_LENGTH + 1, stdin);
     puts("========================================================");
 
     if (gameplay_title[strlen(gameplay_title) - 1] == '\n') {
