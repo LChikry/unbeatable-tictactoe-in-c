@@ -1,10 +1,9 @@
 #ifndef FORM_H
 #define FORM_H
 
-typedef struct {
-  int *list_of_saved_numbers;
-  int list_length;
-} GameplayNumbers;
+#include <stdbool.h>
+
+#include "common.h"
 
 int MainMenuPage(void);
 
@@ -14,7 +13,7 @@ int FriendsModeMenuPage(void);
 
 int ResetScoreMenuPage(void);
 
-int IsUserWillPlayFirst(void);
+bool IsUserWillPlayFirst(void);
 
 int EndGameMenuPage(char *board);
 

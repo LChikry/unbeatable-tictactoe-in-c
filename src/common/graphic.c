@@ -223,11 +223,11 @@ int PickRandomlyWhoWillPlayFirst(void) {
   return coin_value;
 }
 
-void PrintSavedGameplayTitles(GameplayTitles saved_games) {
+int PrintSavedGameplayTitles(GameplayTitles saved_games) {
   TerminalCleaner();
   LogoPrinter();
 
-  if (saved_games.number_of_saved_games == 0) {
+  if (saved_games.titles_count == 0) {
     TerminalCleaner();
     LogoPrinter();
 
@@ -237,7 +237,7 @@ void PrintSavedGameplayTitles(GameplayTitles saved_games) {
     puts("|                                                      |");
     puts("\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
     sleep(2);
-    return;
+    return 1;
   }
 
   int title_length = 0;
@@ -246,14 +246,14 @@ void PrintSavedGameplayTitles(GameplayTitles saved_games) {
   puts("|                     Saved Games:                      |");
   puts("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
   puts("---------------------------------------------------------");
-  for (int i = 0; i < saved_games.number_of_saved_games; ++i) {
+  for (int i = 0; i < saved_games.titles_count; ++i) {
     printf("|  %03d. %s", i + 1, saved_games.saved_titles[i]);
     title_length = strlen(saved_games.saved_titles[i]);
     for (int j = 0; j < MAXIMUM_GAMEPLAY_TITLE_SIZE - title_length; ++j) {
       printf(" ");
     }
 
-    if (++i >= saved_games.number_of_saved_games) {
+    if (++i >= saved_games.titles_count) {
       for (int k = 0; k < MAXIMUM_GAMEPLAY_TITLE_SIZE + 8; ++k) printf(" ");
       printf("|\n");
       puts("---------------------------------------------------------");
@@ -269,4 +269,6 @@ void PrintSavedGameplayTitles(GameplayTitles saved_games) {
     printf("|\n");
     puts("---------------------------------------------------------");
   }
+
+  return 0;
 }

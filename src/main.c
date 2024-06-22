@@ -22,7 +22,7 @@ int main(void) {
 
     if (1 == menu_choice) PlayingAgainstComputer();
     if (2 == menu_choice) PlayingWithFriends();
-    if (3 == menu_choice) ShowSavedGameplays();
+    if (3 == menu_choice) SavedGameplayChoice();
 
   }  // end of the while loop
 
@@ -92,22 +92,29 @@ void PlayingAgainstComputer(void) {
 void PlayingWithFriends(void) {}
 
 void SavedGameplayChoice(void) {
+  int game_mode = GetGameplayModeOfSavedGames();
   // 1: show game play  and  2: delete gameplay
   int saved_gameplay_action = GetSavedGameplayAction();
-  int game_mode = GetGameplayModeOfSavedGames();
   GameplayTitles saved_games = GetSavedGameplaysTitleAndNumber(game_mode);
-  PrintSavedGameplayTitles(saved_games);
+  if (PrintSavedGameplayTitles(saved_games)) {
+    for (size_t i = 0; i < saved_games.titles_count; ++i) {
+      free(saved_games.saved_titles[i]);
+    }
+    free(saved_games.saved_titles);
+    return;
+  }
   GameplayNumbers saved_gameplays_number = GetSavedGameplayNumber(saved_games);
 
-  if (saved_gameplay_action == 1) {
-    DeleteGameplaysInFile(saved_games, saved_gameplays_number);
+  if (!saved_gameplays_number.list) {  // skip
+  } else if (saved_gameplay_action == 2) {
+    DeleteSavedGameplays(saved_games, saved_gameplays_number, game_mode);
   } else {
-    PrintSavedGameplayBoards(saved_games, saved_gameplays_number);
+    // PrintSavedGameplayBoards(saved_games, saved_gameplays_number, game_mode);
   }
 
-  for (size_t i = 0; i < saved_games.number_of_saved_games; ++i) {
+  for (size_t i = 0; i < saved_games.titles_count; ++i) {
     free(saved_games.saved_titles[i]);
   }
   free(saved_games.saved_titles);
-  free(saved_gameplays_number.list_of_saved_numbers);
+  free(saved_gameplays_number.list);
 }

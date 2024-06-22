@@ -18,6 +18,6 @@ void SavedGameMessage(char *gameplay_title,
 // others
 int PickRandomlyWhoWillPlayFirst(void);
 void BoardPrinter(char *board);
-void PrintSavedGameplayTitles(GameTitles saved_game);
+int PrintSavedGameplayTitles(GameplayTitles saved_game);
 
 #endif

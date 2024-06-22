@@ -3,15 +3,7 @@
 
 #include <stdbool.h>
 
-typedef struct {
-  void *next;
-  char the_move[2];
-} GameplayNode;
-
-typedef struct {
-  char **saved_titles;
-  int number_of_saved_games;
-} GameplayTitles;
+#include "../common/common.h"
 
 GameplayNode *SaveTheMove(GameplayNode **top, int new_move);
 
@@ -23,5 +15,9 @@ int SaveTheGameplay(GameplayNode *top, int game_mode, const char *game_title,
 void DeleteTheGameplay(GameplayNode **top);
 
 GameplayTitles GetSavedGameplaysTitleAndNumber(int game_mode);
+
+void DeleteSavedGameplays(GameplayTitles saved_games,
+                          GameplayNumbers saved_gameplays_number,
+                          int game_mode);
 
 #endif

@@ -238,7 +238,7 @@ int GetGameplayModeOfSavedGames(void) {
     if (is_loop_run_once) ErrorMessagePrinter();
 
     puts("\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
-    puts("|          Which Mode Games You Want to See?           |");
+    puts("|          Choose the Gameplay Mode You Want           |");
     puts("|                                                      |");
     puts("|     1. Easy       2. Normal       3. Unbeatable      |");
     puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -274,59 +274,60 @@ int GetSavedGameplayAction(void) {
 GameplayNumbers GetSavedGameplayNumber(GameplayTitles saved_games) {
   bool is_loop_run_once = false;
   int saved_gameplay_action_choice;
-  GameplayNumbers numbers;
+  GameplayNumbers numbers_to_delete = {.list = NULL, .list_length = 0};
 
   while (true) {
     if (is_loop_run_once) {
-      free(numbers.list_of_saved_numbers);
+      free(numbers_to_delete.list);
       ErrorMessagePrinter();
       PrintSavedGameplayTitles(saved_games);
     }
 
+    is_loop_run_once = true;
     puts("\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
-    puts("|         Enter the Number of the Gameplays?           |");
-    puts("| (for many gameplays, separate the numbers by spaces) |");
+    puts("|          Enter the Number of the Gameplays?          |");
+    puts("|              (Use Spaces as Separators)              |");
     puts("|                                                      |");
+    puts("|                 or Enter -1 to Cancel                |");
     puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
     puts("\n==========================================================");
-    char *input = NULL;
-    size_t input_size_limit = 0;
     fputs("Your input is: ", stdout);
-    int input_length = getline(&input, &input_size_limit, stdin);
+    char *input = NULL;
+    int input_length = 0;
+    {
+      size_t input_size_limit = 0;
+      input_length = getline(&input, &input_size_limit, stdin) - 1;
+    }
     puts("==========================================================");
 
-    is_loop_run_once = true;
     if (input_length == 0) continue;
-
-    char *curser = input;
-    numbers.list_of_saved_numbers = malloc(sizeof(int));
-    numbers.list_of_saved_numbers[0] = -1;
-    numbers.list_length = 1;
+    char *cursor = input;
     int temp_number = 0;
-
-    while (curser != input + strlen(input)) {
-      if (*curser == ' ' || *curser == ',' || *curser == ';' || curser == '.') {
-        ++curser;
+    // parsing the input
+    while (cursor != input + input_length) {
+      if (numbers_to_delete.list_length >= saved_games.titles_count) {
+        return numbers_to_delete;
+      }
+      if (!isdigit(*cursor) && *cursor != '-' && *cursor != '.' &&
+          *cursor != ',' && *cursor != '+') {
+        ++cursor;
         continue;
       }
-      temp_number = strtol(curser, &curser, 10);
+      if (-1 == (temp_number = strtol(cursor, &cursor, 10))) {
+        return (GameplayNumbers){.list = NULL, .list_length = 0};
+      }
+      if (temp_number <= 0 || temp_number > saved_games.titles_count) break;
 
-      if (temp_number == -1) break;
-      if (numbers.list_length - 1 > saved_games.number_of_saved_games) break;
-      if (temp_number <= 0 || temp_number >= 1000) break;
+      ++numbers_to_delete.list_length;
+      numbers_to_delete.list = realloc(
+          numbers_to_delete.list, sizeof(int) * numbers_to_delete.list_length);
+      numbers_to_delete.list[numbers_to_delete.list_length - 1] = temp_number;
+    }  // end of parsing input loop
 
-      numbers.list_of_saved_numbers[numbers.list_length - 1] = temp_number;
-      numbers.list_of_saved_numbers = realloc(
-          numbers.list_of_saved_numbers, sizeof(int) * ++numbers.list_length);
-    }
+    if (temp_number <= 0 || temp_number > saved_games.titles_count) continue;
+    break;
+  }  // end of input loop
 
-    if (temp_number <= -1 || temp_number >= 1000) continue;
-    if (!isdigit(numbers.list_of_saved_numbers[0]) ||
-        numbers.list_of_saved_numbers[0] == -1) {
-      continue;
-    }
-  }
-
-  return numbers;
+  return numbers_to_delete;
 }

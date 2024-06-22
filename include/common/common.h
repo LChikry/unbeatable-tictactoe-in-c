@@ -1,6 +1,21 @@
 #ifndef COMMON_H
 #define COMMON_H
 
+typedef struct {
+  void *next;
+  char the_move[2];
+} GameplayNode;
+
+typedef struct {
+  char **saved_titles;
+  int titles_count;
+} GameplayTitles;
+
+typedef struct {
+  int *list;
+  int list_length;
+} GameplayNumbers;
+
 #define false 0
 #define true 1
 

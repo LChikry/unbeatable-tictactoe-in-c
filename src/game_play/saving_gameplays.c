@@ -13,6 +13,7 @@
 #include <unistd.h>
 
 #include "../../include/common/common.h"
+#include "../../include/common/form.h"
 
 GameplayNode *SaveTheMove(GameplayNode **head, int new_move) {
   GameplayNode *node = malloc(sizeof(node));
@@ -148,32 +149,66 @@ GameplayTitles GetSavedGameplaysTitleAndNumber(int game_mode) {
   }
   if (titles_file == NULL) {
     puts("error of Opening File in GetSavedGameplaysTitleAndNumber");
-    return (GameplayTitles){.saved_titles = NULL, .number_of_saved_games = -1};
+    return (GameplayTitles){.saved_titles = NULL, .titles_count = -1};
   }
 
-  GameplayTitles saved_games;
-  saved_games.saved_titles = malloc(sizeof(char *));
-  saved_games.number_of_saved_games = 0;
+  GameplayTitles saved_games = {.saved_titles = NULL, .titles_count = 0};
   char *buffer = NULL;
-  size_t buffer_size = 0;
+  size_t buffer_size_limit = 0;
   int read_chars = 0;
 
-  while ((read_chars = getline(&buffer, &buffer_size, titles_file)) != -1) {
-    if (read_chars < 1) return saved_games;
-
+  while ((read_chars = getline(&buffer, &buffer_size_limit, titles_file)) > 1) {
+    ++saved_games.titles_count;
+    saved_games.saved_titles = realloc(
+        saved_games.saved_titles, sizeof(char *) * saved_games.titles_count);
     buffer[read_chars - 1] = '\0';
-    ++saved_games.number_of_saved_games;
-
-    saved_games.saved_titles =
-        realloc(saved_games.saved_titles,
-                sizeof(char *) * saved_games.number_of_saved_games);
-
-    saved_games.saved_titles[saved_games.number_of_saved_games - 1] = buffer;
+    saved_games.saved_titles[saved_games.titles_count - 1] = buffer;
 
     buffer = NULL;
-    buffer_size = 0;
+    buffer_size_limit = 0;
   }
 
   fclose(titles_file);
   return saved_games;
+}
+
+void DeleteSavedGameplays(GameplayTitles saved_games,
+                          GameplayNumbers games_to_delete, int game_mode) {
+  FILE *titles_file;
+  {
+    char titles_file_name[65] = {0};
+    get_title_file_name(titles_file_name, game_mode);
+    titles_file = fopen(titles_file_name, "w");
+  }
+  if (titles_file == NULL) {
+    puts("error of Opening File in GetSavedGameplaysTitleAndNumber");
+    return;
+  }
+
+  if (saved_games.titles_count == games_to_delete.list_length) {
+    fclose(titles_file);
+    return;
+  }
+
+  int count = 0;
+  bool is_game_found = false;
+  for (int i = 0; i < saved_games.titles_count; ++i) {
+    is_game_found = false;
+
+    if (count < games_to_delete.list_length) {
+      for (int j = 0; j < games_to_delete.list_length; ++j) {
+        if (i + 1 == games_to_delete.list[j]) {
+          is_game_found = true;
+          ++count;
+          break;
+        }
+      }
+    }
+
+    if (is_game_found) continue;
+    fputs(saved_games.saved_titles[i], titles_file);
+    fputs("\n", titles_file);
+  }
+
+  fclose(titles_file);
 }
