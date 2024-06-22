@@ -20,5 +20,7 @@ void SavedGameMessage(char *gameplay_title,
 int PickRandomlyWhoWillPlayFirst(void);
 void BoardPrinter(char *board);
 int PrintSavedGameplayTitles(int gameplay_mode);
+void PrintSavedGameplayBoards(GameplayNumbers gameplays_to_print,
+                              int gameplay_mode, int titles_count);
 
 #endif

@@ -45,11 +45,11 @@ void PlayingAgainstComputer(void) {
     if (2 == menu_choice) game_mode_choice = GetGameplayMode();
     should_user_play = IsUserWillPlayFirst();
 
-    char board[3][3] = {{'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'}};
+    char board[9] = {'1', '2', '3', '4', '5', '6', '7', '8', '9'};
     int game_result =
-        GamePlay((char *)board, game_mode_choice, should_user_play, &head);
+        GamePlay(board, game_mode_choice, should_user_play, &head);
     WinnerMessagePrinter(game_mode_choice, game_result);
-    menu_choice = EndGameMenuPage((char *)board);
+    menu_choice = EndGameMenuPage(board);
   } while (1 == menu_choice || 2 == menu_choice);
 
   if (4 == menu_choice) {
@@ -110,7 +110,7 @@ void SavedGameplayChoice(void) {
   }
 
   if (saved_gameplay_action == 1) {
-    // PrintSavedGameplayBoards(saved_gameplays_number, game_mode);
+    PrintSavedGameplayBoards(choosen_gameplays, gameplay_mode, titles_count);
   }
 
   if (saved_gameplay_action == 2) {
