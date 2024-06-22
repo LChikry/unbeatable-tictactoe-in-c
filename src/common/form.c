@@ -251,7 +251,8 @@ int GetSavedGameplayAction(void) {
   return saved_gameplay_action_choice;
 }
 
-GameplayNumbers GetSavedGameplayNumber(GameplayTitles saved_games) {
+GameplayNumbers GetSavedGameplayNumber(GameplayTitles saved_games,
+                                       int game_mode) {
   bool is_loop_run_once = false;
   int saved_gameplay_action_choice;
   GameplayNumbers numbers_to_delete = {.list = NULL, .list_length = 0};
@@ -260,7 +261,7 @@ GameplayNumbers GetSavedGameplayNumber(GameplayTitles saved_games) {
     if (is_loop_run_once) {
       free(numbers_to_delete.list);
       ErrorMessagePrinter();
-      PrintSavedGameplayTitles(saved_games);
+      PrintSavedGameplayTitles(game_mode);
     }
 
     is_loop_run_once = true;

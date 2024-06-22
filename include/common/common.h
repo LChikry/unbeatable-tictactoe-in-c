@@ -7,7 +7,7 @@ typedef struct {
 } GameplayNode;
 
 typedef struct {
-  char **saved_titles;
+  char **titles;
   int titles_count;
 } GameplayTitles;
 

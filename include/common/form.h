@@ -23,6 +23,6 @@ void GetGameTitle(char *gameplay_title);
 
 int GetSavedGameplayAction(void);
 
-GameplayNumbers GetSavedGameplayNumber(GameplayTitles saved_games);
+GameplayNumbers GetSavedGameplayNumber(GameplayTitles saved_games, int game_mode);
 
 #endif
