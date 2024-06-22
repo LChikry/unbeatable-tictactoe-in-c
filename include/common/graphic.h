@@ -10,6 +10,7 @@ void TerminalCleaner(void);
 void LogoPrinter(void);
 void WelcomePage(void);
 void ErrorMessagePrinter(void);
+void SuccessfulMessagePrinter(void);
 void GameIntro(void);
 void WinnerMessagePrinter(int game_mode, int game_result);
 void SavedGameMessage(char *gameplay_title,

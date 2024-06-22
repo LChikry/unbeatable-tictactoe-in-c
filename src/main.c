@@ -93,7 +93,7 @@ void PlayingWithFriends(void) {}
 
 void SavedGameplayChoice(void) {
   int game_mode = GetGameplayMode();
-  // 1: show game play  and  2: delete gameplay
+  // 1: show game play    and    2: delete gameplay
   int saved_gameplay_action = GetSavedGameplayAction();
   GameplayTitles saved_games = GetSavedGameplaysTitleAndNumber(game_mode);
   if (PrintSavedGameplayTitles(saved_games)) {
@@ -108,6 +108,7 @@ void SavedGameplayChoice(void) {
   if (!saved_gameplays_number.list) {  // skip
   } else if (saved_gameplay_action == 2) {
     DeleteSavedGameplays(saved_games, saved_gameplays_number, game_mode);
+    SuccessfulMessagePrinter();
   } else {
     // PrintSavedGameplayBoards(saved_games, saved_gameplays_number, game_mode);
   }

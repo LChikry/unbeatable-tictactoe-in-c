@@ -229,6 +229,8 @@ void GetGameTitle(char *gameplay_title) {
 }
 
 int GetSavedGameplayAction(void) {
+  TerminalCleaner();
+  LogoPrinter();
   bool is_loop_run_once = false;
   int saved_gameplay_action_choice;
 

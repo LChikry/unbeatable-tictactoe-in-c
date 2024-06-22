@@ -45,6 +45,17 @@ void ErrorMessagePrinter(void) {
   fputs("\033[0m", stdout);
 }
 
+void SuccessfulMessagePrinter(void) {
+  TerminalCleaner();
+  LogoPrinter();
+  puts("\n\n\n\n+++++++++++++++++++++++ Message: +++++++++++++++++++++++");
+  puts("|                 Done Successfully :)                 |");
+  puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+  puts("\n\n\n\n");  // just to move the cursor for the design
+  sleep(1);
+}
+
 void BoardPrinter(char *board) {
   printf("\n");
   for (int i = 0; i < 3; i++) {
