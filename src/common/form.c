@@ -37,7 +37,7 @@ int MainMenuPage(void) {
   return main_menu_choice;
 }
 
-int ComputerModeMenuPage(void) {
+int GetGameplayMode(void) {
   bool is_loop_run_once = false;
   int game_mode;
 
@@ -47,7 +47,7 @@ int ComputerModeMenuPage(void) {
     if (is_loop_run_once) ErrorMessagePrinter();
 
     puts("\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
-    puts("|          Now, Choose the mode of the game:           |");
+    puts("|        Choose the Gameplay Mode of the Game:         |");
     puts("|                                                      |");
     puts("|     1. Easy       2. Normal       3. Unbeatable      |");
     puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -94,7 +94,7 @@ int ResetScoreMenuPage(void) {
     puts("\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
     puts("|       Which Game Mode Score You Want to Reset?       |");
     puts("|                                                      |");
-    puts("|    1. Easy    2. Normal    3. Unbeatable    4. All   |");
+    puts("|   1. Easy    2. Normal    3. Unbeatable    4. All    |");
     puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
     is_loop_run_once = true;
@@ -226,28 +226,6 @@ void GetGameTitle(char *gameplay_title) {
     } while (confirming_game_title_choice < 1 ||
              confirming_game_title_choice > 2);
   } while (2 == confirming_game_title_choice);
-}
-
-int GetGameplayModeOfSavedGames(void) {
-  bool is_loop_run_once = false;
-  int saved_gameplay_choice;
-
-  do {
-    TerminalCleaner();
-    LogoPrinter();
-    if (is_loop_run_once) ErrorMessagePrinter();
-
-    puts("\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
-    puts("|          Choose the Gameplay Mode You Want           |");
-    puts("|                                                      |");
-    puts("|     1. Easy       2. Normal       3. Unbeatable      |");
-    puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-
-    is_loop_run_once = true;
-    saved_gameplay_choice = GetGoodInput(1, true);
-  } while (saved_gameplay_choice <= 0 || saved_gameplay_choice >= 4);
-
-  return saved_gameplay_choice;
 }
 
 int GetSavedGameplayAction(void) {

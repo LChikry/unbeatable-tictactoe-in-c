@@ -7,7 +7,7 @@
 
 int MainMenuPage(void);
 
-int ComputerModeMenuPage(void);
+int GetGameplayMode(void);
 
 int FriendsModeMenuPage(void);
 
@@ -20,8 +20,6 @@ int EndGameMenuPage(char *board);
 int GameTitleMenuPage(void);
 
 void GetGameTitle(char *gameplay_title);
-
-int GetGameplayModeOfSavedGames(void);
 
 int GetSavedGameplayAction(void);
 

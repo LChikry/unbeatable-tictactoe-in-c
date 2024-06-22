@@ -38,11 +38,11 @@ void PlayingAgainstComputer(void) {
   int menu_choice = 0;
   GameplayNode *head = NULL;  // linked list to store gameplay moves
   bool should_user_play = false;
-  int game_mode_choice = ComputerModeMenuPage();
+  int game_mode_choice = GetGameplayMode();
 
   do {
     DeleteTheGameplay(&head);  // sets also head to NULL at the end
-    if (2 == menu_choice) game_mode_choice = ComputerModeMenuPage();
+    if (2 == menu_choice) game_mode_choice = GetGameplayMode();
     should_user_play = IsUserWillPlayFirst();
 
     char board[3][3] = {{'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'}};
@@ -92,7 +92,7 @@ void PlayingAgainstComputer(void) {
 void PlayingWithFriends(void) {}
 
 void SavedGameplayChoice(void) {
-  int game_mode = GetGameplayModeOfSavedGames();
+  int game_mode = GetGameplayMode();
   // 1: show game play  and  2: delete gameplay
   int saved_gameplay_action = GetSavedGameplayAction();
   GameplayTitles saved_games = GetSavedGameplaysTitleAndNumber(game_mode);
