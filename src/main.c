@@ -92,27 +92,24 @@ void PlayingAgainstComputer(void) {
 void PlayingWithFriends(void) {}
 
 void SavedGameplayChoice(void) {
-  int game_mode = GetGameplayMode();
+  int gameplay_mode = GetGameplayMode();
   // 1: show game play    and    2: delete gameplay
   int saved_gameplay_action = GetSavedGameplayAction();
-  // Gameplays saved_gameplays = GetSavedGameplays(game_mode);
-  if (PrintSavedGameplayTitles(game_mode)) return;
-
+  TerminalCleaner();
+  LogoPrinter();
+  int titles_count = PrintSavedGameplayTitles(gameplay_mode);
+  if (-1 == titles_count || 0 == titles_count) return;
+  GameplayNumbers gameplays_to_delete =
+      GetSavedGameplaysNumber(gameplay_mode, titles_count);
   sleep(5);
-  // GameplayNumbers saved_gameplays_number =
-  //     GetSavedGameplayNumber(game_mode);
 
-  // if (!saved_gameplays_number.list) {  // skip
-  // } else if (saved_gameplay_action == 2) {
-  //   DeleteSavedGameplays(saved_gameplays, saved_gameplays_number, game_mode);
-  //   SuccessfulMessagePrinter();
-  // } else {
-  //   PrintSavedGameplayBoards(saved_games, saved_gameplays_number, game_mode);
-  // }
+  if (!gameplays_to_delete.list) {  // skip
+  } else if (saved_gameplay_action == 1) {
+    // PrintSavedGameplayBoards(saved_games, saved_gameplays_number, game_mode);
+  } else {
+    // DeleteSavedGameplays(gameplays_to_delete, titles_count, gameplay_mode);
+    // SuccessfulMessagePrinter();
+  }
 
-  // for (size_t i = 0; i < saved_gameplays.titles_count; ++i) {
-  //   free(saved_gameplays.saved_titles[i]);
-  // }
-  // free(saved_gameplays.saved_titles);
-  // free(saved_gameplays_number.list);
+  free(gameplays_to_delete.list);
 }

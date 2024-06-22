@@ -234,19 +234,20 @@ int PickRandomlyWhoWillPlayFirst(void) {
   return coin_value;
 }
 
-int PrintSavedGameplayTitles(int game_mode) {
-  TerminalCleaner();
-  LogoPrinter();
-
+/// @brief
+/// @param gameplay_mode
+/// @returns -1 if it fails to open the file, or 0 if no gameplay found,
+/// otherwise, it return the number of gameplays saved
+int PrintSavedGameplayTitles(int gameplay_mode) {
   FILE *titles_file;
   {
     char titles_file_name[65] = {0};
-    get_title_file_name(titles_file_name, game_mode);
+    get_title_file_name(titles_file_name, gameplay_mode);
     titles_file = fopen(titles_file_name, "r");
   }
   if (!titles_file) {
     puts("error of Opening File in PrintSavedGameplayTitles");
-    return 1;
+    return -1;
   }
 
   char *buffer = NULL;
@@ -264,7 +265,7 @@ int PrintSavedGameplayTitles(int game_mode) {
     puts("\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
     sleep(2);
     fclose(titles_file);
-    return 1;
+    return 0;
   }
 
   puts("\n\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -272,14 +273,14 @@ int PrintSavedGameplayTitles(int game_mode) {
   puts("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
   puts("---------------------------------------------------------");
   int title_length = 0;
-  int title_count = 0;
+  int titles_count = 0;
   rewind(titles_file);
 
   buffer = NULL;
   buffer_size_limit = 0;
   while ((read_chars = getline(&buffer, &buffer_size_limit, titles_file)) > 1) {
     buffer[read_chars - 1] = '\0';
-    printf("|  %03d. %s", ++title_count, buffer);
+    printf("|  %03d. %s", ++titles_count, buffer);
     title_length = strlen(buffer);
     for (int j = 0; j < MAXIMUM_GAMEPLAY_TITLE_SIZE - title_length; ++j) {
       printf(" ");
@@ -292,7 +293,7 @@ int PrintSavedGameplayTitles(int game_mode) {
     }
 
     buffer[read_chars - 1] = '\0';
-    printf("|  %03d. %s", ++title_count, buffer);
+    printf("|  %03d. %s", ++titles_count, buffer);
     title_length = strlen(buffer);
     for (int j = 0; j < MAXIMUM_GAMEPLAY_TITLE_SIZE - title_length; ++j) {
       printf(" ");
@@ -305,12 +306,12 @@ int PrintSavedGameplayTitles(int game_mode) {
     buffer_size_limit = 0;
   }
 
-  if (1 == title_count % 2) {
+  if (1 == titles_count % 2) {
     for (int k = 0; k < MAXIMUM_GAMEPLAY_TITLE_SIZE + 8; ++k) printf(" ");
     printf("|\n");
     puts("---------------------------------------------------------");
   }
 
   fclose(titles_file);
-  return 0;
+  return titles_count;
 }  // end of printing saved gameplayTitles

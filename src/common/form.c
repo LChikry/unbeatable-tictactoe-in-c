@@ -251,15 +251,14 @@ int GetSavedGameplayAction(void) {
   return saved_gameplay_action_choice;
 }
 
-GameplayNumbers GetSavedGameplayNumber(GameplayTitles saved_games,
-                                       int game_mode) {
+GameplayNumbers GetSavedGameplaysNumber(int game_mode, int titles_count) {
   bool is_loop_run_once = false;
   int saved_gameplay_action_choice;
-  GameplayNumbers numbers_to_delete = {.list = NULL, .list_length = 0};
+  GameplayNumbers gameplays_to_delete = {.list = NULL, .list_length = 0};
 
   while (true) {
     if (is_loop_run_once) {
-      free(numbers_to_delete.list);
+      free(gameplays_to_delete.list);
       ErrorMessagePrinter();
       PrintSavedGameplayTitles(game_mode);
     }
@@ -287,8 +286,8 @@ GameplayNumbers GetSavedGameplayNumber(GameplayTitles saved_games,
     int temp_number = 0;
     // parsing the input
     while (cursor != input + input_length) {
-      if (numbers_to_delete.list_length >= saved_games.titles_count) {
-        return numbers_to_delete;
+      if (gameplays_to_delete.list_length >= titles_count) {
+        return gameplays_to_delete;
       }
       if (!isdigit(*cursor) && *cursor != '-' && *cursor != '.' &&
           *cursor != ',' && *cursor != '+') {
@@ -298,17 +297,19 @@ GameplayNumbers GetSavedGameplayNumber(GameplayTitles saved_games,
       if (-1 == (temp_number = strtol(cursor, &cursor, 10))) {
         return (GameplayNumbers){.list = NULL, .list_length = 0};
       }
-      if (temp_number <= 0 || temp_number > saved_games.titles_count) break;
+      if (temp_number <= 0 || temp_number > titles_count) break;
 
-      ++numbers_to_delete.list_length;
-      numbers_to_delete.list = realloc(
-          numbers_to_delete.list, sizeof(int) * numbers_to_delete.list_length);
-      numbers_to_delete.list[numbers_to_delete.list_length - 1] = temp_number;
+      ++gameplays_to_delete.list_length;
+      gameplays_to_delete.list =
+          realloc(gameplays_to_delete.list,
+                  sizeof(int) * gameplays_to_delete.list_length);
+      gameplays_to_delete.list[gameplays_to_delete.list_length - 1] =
+          temp_number;
     }  // end of parsing input loop
 
-    if (temp_number <= 0 || temp_number > saved_games.titles_count) continue;
+    if (temp_number <= 0 || temp_number > titles_count) continue;
     break;
   }  // end of input loop
 
-  return numbers_to_delete;
+  return gameplays_to_delete;
 }

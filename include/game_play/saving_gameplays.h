@@ -18,7 +18,7 @@ int get_title_file_name(char *titles_file_name, int game_mode);
 
 int get_moves_file_name(char *moves_file_name, int game_mode);
 
-int DeleteSavedGameplays(GameplayTitles saved_games,
-                         GameplayNumbers saved_gameplays_number, int game_mode);
+int DeleteSavedGameplays(GameplayNumbers saved_gameplays_number,
+                         int titles_count, int gameplay_mode);
 
 #endif

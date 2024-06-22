@@ -146,16 +146,16 @@ void DeleteTheGameplay(GameplayNode **head) {
   }
 }
 
-int DeleteSavedGameplays(GameplayTitles saved_games,
-                         GameplayNumbers games_to_delete, int game_mode) {
+int DeleteSavedGameplays(GameplayNumbers gameplays_to_delete, int titles_count,
+                         int gameplay_mode) {
   FILE *titles_file, *moves_file;
   {
     char titles_file_name[65] = {0};
-    get_title_file_name(titles_file_name, game_mode);
+    get_title_file_name(titles_file_name, gameplay_mode);
     titles_file = fopen(titles_file_name, "w");
 
     char moves_file_name[65] = {0};
-    get_moves_file_name(moves_file_name, game_mode);
+    get_moves_file_name(moves_file_name, gameplay_mode);
     moves_file = fopen(moves_file_name, "w");
   }
   if (!titles_file || !moves_file) {
@@ -163,7 +163,7 @@ int DeleteSavedGameplays(GameplayTitles saved_games,
     return 1;
   }
 
-  if (saved_games.titles_count == games_to_delete.list_length) {
+  if (titles_count == gameplays_to_delete.list_length) {
     fclose(titles_file);
     fclose(moves_file);
     return 0;
@@ -171,12 +171,12 @@ int DeleteSavedGameplays(GameplayTitles saved_games,
 
   int count = 0;
   bool is_game_found = false;
-  for (int i = 0; i < saved_games.titles_count; ++i) {
+  for (int i = 0; i < titles_count; ++i) {
     is_game_found = false;
 
-    if (count < games_to_delete.list_length) {
-      for (int j = 0; j < games_to_delete.list_length; ++j) {
-        if (i + 1 == games_to_delete.list[j]) {
+    if (count < gameplays_to_delete.list_length) {
+      for (int j = 0; j < gameplays_to_delete.list_length; ++j) {
+        if (i + 1 == gameplays_to_delete.list[j]) {
           is_game_found = true;
           ++count;
           break;
@@ -185,7 +185,7 @@ int DeleteSavedGameplays(GameplayTitles saved_games,
     }
 
     if (is_game_found) continue;
-    fputs(saved_games.titles[i], titles_file);
+    // fputs(saved_games.titles[i], titles_file);
     fputs("\n", titles_file);
 
     // fputs(, moves_file);
