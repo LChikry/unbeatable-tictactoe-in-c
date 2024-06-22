@@ -73,8 +73,8 @@ void PlayingAgainstComputer(void) {
   } else {
     // Automatically Adding the Title of the Save
     int save_number = GetNextGameplayTitleNumber(game_mode_choice);
-    snprintf(gameplay_title, MAXIMUM_GAMEPLAY_TITLE_SIZE, "Save %0.d",
-             save_number);
+    snprintf(gameplay_title, MAXIMUM_GAMEPLAY_TITLE_SIZE, "%s %0.d",
+             DEFAULT_SAVED_GAMEPLAY_NAME, save_number);
   }
 
   if (SaveTheGameplay(head, game_mode_choice, gameplay_title,
@@ -95,7 +95,7 @@ void SavedGameplayChoice(void) {
   int game_mode = GetGameplayMode();
   // 1: show game play    and    2: delete gameplay
   int saved_gameplay_action = GetSavedGameplayAction();
-  GameplayTitles saved_games = GetSavedGameplaysTitleAndNumber(game_mode);
+  GameplayTitles saved_games = GetSavedGameplaysTitle(game_mode);
   if (PrintSavedGameplayTitles(saved_games)) {
     for (size_t i = 0; i < saved_games.titles_count; ++i) {
       free(saved_games.saved_titles[i]);

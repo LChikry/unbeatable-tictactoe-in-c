@@ -140,7 +140,7 @@ void DeleteTheGameplay(GameplayNode **head) {
   }
 }
 
-GameplayTitles GetSavedGameplaysTitleAndNumber(int game_mode) {
+GameplayTitles GetSavedGameplaysTitle(int game_mode) {
   FILE *titles_file;
   {
     char titles_file_name[65] = {0};

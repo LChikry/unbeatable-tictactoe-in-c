@@ -14,7 +14,7 @@ int SaveTheGameplay(GameplayNode *top, int game_mode, const char *game_title,
 
 void DeleteTheGameplay(GameplayNode **top);
 
-GameplayTitles GetSavedGameplaysTitleAndNumber(int game_mode);
+GameplayTitles GetSavedGameplaysTitle(int game_mode);
 
 void DeleteSavedGameplays(GameplayTitles saved_games,
                           GameplayNumbers saved_gameplays_number,
