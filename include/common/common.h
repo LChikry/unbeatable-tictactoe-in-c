@@ -50,6 +50,7 @@ typedef struct {
 #define MAXIMUM_GAMEPLAY_TITLE_SIZE 20
 
 #define DEFAULT_SAVED_GAMEPLAY_NAME "Gameplay"
+#define DEFAULT_SAVED_GAMEPLAY_LENGTH 8
 
 #ifdef WIN32
 #include <windows.h>

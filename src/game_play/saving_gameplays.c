@@ -73,21 +73,27 @@ static int get_moves_file_name(char *moves_file_name, int game_mode) {
 }
 
 int GetNextGameplayTitleNumber(int game_mode_choice) {
-  char titles_file_name[65] = {0};
-  get_title_file_name(titles_file_name, game_mode_choice);
+  FILE *titles_file;
+  {
+    char titles_file_name[65] = {0};
+    get_title_file_name(titles_file_name, game_mode_choice);
+    titles_file = fopen(titles_file_name, "r");
+  }
+  if (titles_file == NULL) return 1;
 
-  FILE *input_titles_file = fopen(titles_file_name, "r");
-  if (input_titles_file == NULL) return 1;
+  int next_title_number = 0;
+  char title_match[MAXIMUM_GAMEPLAY_TITLE_SIZE + 2] = {0};
 
-  int title_count = 0;
-  char title_match[30] = {0};
-
-  while (fgets(title_match, 30, input_titles_file) != NULL) {
-    if (!strncmp(title_match, DEFAULT_SAVED_GAMEPLAY_NAME, 4)) title_count++;
+  while (fgets(title_match, MAXIMUM_GAMEPLAY_TITLE_SIZE + 1, titles_file)) {
+    if (!strncmp(title_match, DEFAULT_SAVED_GAMEPLAY_NAME,
+                 DEFAULT_SAVED_GAMEPLAY_LENGTH)) {
+      next_title_number =
+          strtol(title_match + DEFAULT_SAVED_GAMEPLAY_LENGTH, NULL, 10) + 1;
+    }
   }
 
-  fclose(input_titles_file);
-  return title_count + 1;
+  fclose(titles_file);
+  return next_title_number;
 }
 
 static void saving_moves(FILE *moves_file, GameplayNode *head,
