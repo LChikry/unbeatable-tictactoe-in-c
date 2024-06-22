@@ -53,7 +53,7 @@ void MarkUserMove(char *board, char place, const char user_playing_symbol) {
       break;
 
     default:
-      puts("something went wrong when playing the user move");
+      puts("error when playing the user move");
       exit(1);
   }
 }
@@ -93,7 +93,7 @@ int ComputerTurnSimulator(char *board, int number_of_turns,
     return StartingSecondWithMarkedCenterSquare(board, number_of_turns);
   }
 
-  puts("Something went Wrong in ComputerTurnSimulator function");
+  puts("error in ComputerTurnSimulator function");
   exit(1);
 }
 

@@ -38,7 +38,7 @@ static int get_file_name(char *moves_file_name, char *titles_file_name,
 }
 
 int main(void) {
-  char titles_file_name[65] = {0};
+  char titles_file_name[MAX_FILE_TITLE_LENGTH] = {0};
   get_file_name(NULL, titles_file_name, 1);
 
   FILE *input_titles_file = fopen(titles_file_name, "r");

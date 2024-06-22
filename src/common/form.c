@@ -1,3 +1,5 @@
+#include "../../include/common/form.h"
+
 #include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -35,7 +37,7 @@ int MainMenuPage(void) {
   return main_menu_choice;
 }
 
-int ComputerModeMenuPage(void) {
+int GetGameplayMode(void) {
   bool is_loop_run_once = false;
   int game_mode;
 
@@ -45,7 +47,7 @@ int ComputerModeMenuPage(void) {
     if (is_loop_run_once) ErrorMessagePrinter();
 
     puts("\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
-    puts("|          Now, Choose the mode of the game:           |");
+    puts("|        Choose the Gameplay Mode of the Game:         |");
     puts("|                                                      |");
     puts("|     1. Easy       2. Normal       3. Unbeatable      |");
     puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -92,7 +94,7 @@ int ResetScoreMenuPage(void) {
     puts("\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
     puts("|       Which Game Mode Score You Want to Reset?       |");
     puts("|                                                      |");
-    puts("|    1. Easy    2. Normal    3. Unbeatable    4. All   |");
+    puts("|   1. Easy    2. Normal    3. Unbeatable    4. All    |");
     puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
     is_loop_run_once = true;
@@ -148,7 +150,7 @@ int EndGameMenuPage(char *board) {
   do {
     if (is_loop_run_once) ErrorMessagePrinter();
     BoardPrinter(board);
-    usleep(1300000);
+
     puts("\n++++++++++++++++++++++ Game Over: ++++++++++++++++++++++");
     puts("|                                                      |");
     puts("|         1. Play Again        2. Change Mode          |");
@@ -183,19 +185,20 @@ int GameTitleMenuPage(void) {
   return titling_the_game_choice;
 }
 
-void GetGameTitle(char *gameplay_title, int max_size) {
+void GetGameTitle(char *gameplay_title) {
   int confirming_game_title_choice = 1;
 
   do {
     puts("\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
     puts("|       Please Enter the Title of This Gameplay        |");
     puts("|                                                      |");
-    puts("|                 (Max. 25 Characters)                 |");
+    printf("|                 (Max. %d Characters)                 |\n",
+           MAX_GAMEPLAY_TITLE_LENGTH);
     puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
     puts("\n========================================================");
     fputs("Title: ", stdout);
-    fgets(gameplay_title, max_size, stdin);
+    fgets(gameplay_title, MAX_GAMEPLAY_TITLE_LENGTH + 1, stdin);
     puts("========================================================");
 
     if (gameplay_title[strlen(gameplay_title) - 1] == '\n') {
@@ -223,4 +226,90 @@ void GetGameTitle(char *gameplay_title, int max_size) {
     } while (confirming_game_title_choice < 1 ||
              confirming_game_title_choice > 2);
   } while (2 == confirming_game_title_choice);
+}
+
+int GetSavedGameplayAction(void) {
+  TerminalCleaner();
+  LogoPrinter();
+  bool is_loop_run_once = false;
+  int saved_gameplay_action_choice;
+
+  do {
+    if (is_loop_run_once) ErrorMessagePrinter();
+
+    puts("\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
+    puts("|                What Do You Want To Do?               |");
+    puts("|                                                      |");
+    puts("|     1. Show Gameplay       2. Delete Gameplay        |");
+    puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+    is_loop_run_once = true;
+    saved_gameplay_action_choice = GetGoodInput(1, true);
+  } while (saved_gameplay_action_choice <= 0 ||
+           saved_gameplay_action_choice >= 3);
+
+  return saved_gameplay_action_choice;
+}
+
+GameplayNumbers GetSavedGameplaysNumber(int game_mode, int titles_count) {
+  bool is_loop_run_once = false;
+  int saved_gameplay_action_choice;
+  GameplayNumbers gameplays_to_delete = {.list = NULL, .list_length = 0};
+
+  while (true) {
+    if (is_loop_run_once) {
+      free(gameplays_to_delete.list);
+      ErrorMessagePrinter();
+      PrintSavedGameplayTitles(game_mode);
+    }
+
+    is_loop_run_once = true;
+    puts("\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
+    puts("|          Enter the Number of the Gameplays?          |");
+    puts("|              (Use Spaces as Separators)              |");
+    puts("|                                                      |");
+    puts("|                 or Enter -1 to Cancel                |");
+    puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+    puts("\n==========================================================");
+    fputs("Your input is: ", stdout);
+    char *input = NULL;
+    int input_length = 0;
+    {
+      size_t input_size_limit = 0;
+      input_length = getline(&input, &input_size_limit, stdin) - 1;
+    }
+    puts("==========================================================");
+
+    if (input_length == 0) continue;
+    char *cursor = input;
+    int temp_number = 0;
+    // parsing the input
+    while (cursor != input + input_length) {
+      if (gameplays_to_delete.list_length >= titles_count) {
+        return gameplays_to_delete;
+      }
+      if (!isdigit(*cursor) && *cursor != '-' && *cursor != '.' &&
+          *cursor != ',' && *cursor != '+') {
+        ++cursor;
+        continue;
+      }
+      if (-1 == (temp_number = strtol(cursor, &cursor, 10))) {
+        return (GameplayNumbers){.list = NULL, .list_length = 0};
+      }
+      if (temp_number <= 0 || temp_number > titles_count) break;
+
+      ++gameplays_to_delete.list_length;
+      gameplays_to_delete.list =
+          realloc(gameplays_to_delete.list,
+                  sizeof(int) * gameplays_to_delete.list_length);
+      gameplays_to_delete.list[gameplays_to_delete.list_length - 1] =
+          temp_number;
+    }  // end of parsing input loop
+
+    if (temp_number <= 0 || temp_number > titles_count) continue;
+    break;
+  }  // end of input loop
+
+  return gameplays_to_delete;
 }

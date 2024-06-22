@@ -8,6 +8,7 @@
 
 #include "../../include/common/common.h"
 #include "../../include/game_play/game_checkers.h"
+#include "../../include/game_play/saving_gameplays.h"
 
 // Clean the terminal with any text, and changes the cursor to position (0,0)
 void TerminalCleaner(void) {
@@ -42,6 +43,17 @@ void ErrorMessagePrinter(void) {
   puts("|         Please Choose a Valid Option Number          |");
   puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
   fputs("\033[0m", stdout);
+}
+
+void SuccessfulMessagePrinter(void) {
+  TerminalCleaner();
+  LogoPrinter();
+  puts("\n\n\n\n+++++++++++++++++++++++ Message: +++++++++++++++++++++++");
+  puts("|                 Done Successfully :)                 |");
+  puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+  puts("\n\n\n\n");  // just to move the cursor for the design
+  sleep(1);
 }
 
 void BoardPrinter(char *board) {
@@ -138,7 +150,7 @@ void WinnerMessagePrinter(int game_mode, int game_result) {
 
       default:
         break;
-    }       // end of the switch
+    }  // end of the switch
   } else {  // Unfair Mode
     switch (game_result) {
       case DRAW_GAME:
@@ -168,7 +180,7 @@ void WinnerMessagePrinter(int game_mode, int game_result) {
       default:
         break;
     }  // end of the switch
-  }    // end of the else
+  }  // end of the else
 }
 
 int PickRandomlyWhoWillPlayFirst(void) {
@@ -220,4 +232,178 @@ int PickRandomlyWhoWillPlayFirst(void) {
 
   usleep(1750000);
   return coin_value;
+}
+
+/// @brief
+/// @param gameplay_mode
+/// @returns -1 if it fails to open the file, or 0 if no gameplay found,
+/// otherwise, it return the number of gameplays saved
+int PrintSavedGameplayTitles(int gameplay_mode) {
+  FILE *titles_file;
+  {
+    char titles_file_name[MAX_FILE_TITLE_LENGTH] = {0};
+    GetTitleFileName(titles_file_name, gameplay_mode);
+    titles_file = fopen(titles_file_name, "r");
+  }
+  if (!titles_file) return -1;
+
+  char buffer[MAX_GAMEPLAY_TITLE_LENGTH];
+  if (!fgets(buffer, MAX_GAMEPLAY_TITLE_LENGTH, titles_file) ||
+      strlen(buffer) == 1) {
+    TerminalCleaner();
+    LogoPrinter();
+
+    puts("\n++++++++++++++++++++++ Message : +++++++++++++++++++++++");
+    puts("|                                                      |");
+    puts("|                     No Game Found!                   |");
+    puts("|                                                      |");
+    puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    sleep(2);
+    fclose(titles_file);
+    return 0;
+  }
+
+  puts("\n\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+  puts("|                     Saved Games:                      |");
+  puts("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
+  puts("---------------------------------------------------------");
+  int title_length = 0;
+  int titles_count = 0;
+  rewind(titles_file);
+
+  while (fgets(buffer, MAX_GAMEPLAY_TITLE_LENGTH, titles_file)) {
+    title_length = strlen(buffer) - 1;
+    buffer[title_length] = '\0';
+    printf("|  %03d. %s", ++titles_count, buffer);
+    for (int j = 0; j < MAX_GAMEPLAY_TITLE_LENGTH - title_length; ++j) {
+      printf(" ");
+    }
+
+    if (!fgets(buffer, MAX_GAMEPLAY_TITLE_LENGTH, titles_file) ||
+        strlen(buffer) == 1) {
+      break;
+    }
+
+    title_length = strlen(buffer) - 1;
+    buffer[title_length] = '\0';
+    printf("|  %03d. %s", ++titles_count, buffer);
+
+    for (int j = 0; j < MAX_GAMEPLAY_TITLE_LENGTH - title_length; ++j) {
+      printf(" ");
+    }
+
+    printf("|\n");
+    puts("---------------------------------------------------------");
+  }
+
+  if (1 == titles_count % 2) {
+    for (int k = 0; k < MAX_GAMEPLAY_TITLE_LENGTH + 8; ++k) printf(" ");
+    printf("|\n");
+    puts("---------------------------------------------------------");
+  }
+
+  fclose(titles_file);
+  return titles_count;
+  return 0;
+}  // end of printing saved gameplayTitles
+
+static void ParseMovesIntoBoard(char *board, char *moves,
+                                bool should_user_play) {
+  char *cursor = moves + 3;
+  int moves_length = strlen(moves);
+  int board_place_number;
+
+  while (cursor != moves + moves_length) {
+    if (!isdigit(*cursor)) {
+      ++cursor;
+      continue;
+    }
+
+    if (-1 == (board_place_number = strtol(cursor, &cursor, 10))) {
+      return;
+    }
+
+    if (should_user_play) {
+      *(board + board_place_number - 1) = USER_PLAYING_SYMBOL;
+      should_user_play = false;
+      continue;
+    }
+
+    *(board + board_place_number - 1) = COMPUTER_PLAYING_SYMBOL;
+    should_user_play = true;
+  }
+}
+
+void PrintSavedGameplayBoards(GameplayNumbers gameplays_to_print,
+                              int gameplay_mode, int titles_count) {
+  TerminalCleaner();
+  LogoPrinter();
+
+  char titles_file_name[MAX_FILE_TITLE_LENGTH] = {0};
+  GetTitleFileName(titles_file_name, gameplay_mode);
+  FILE *titles_file = fopen(titles_file_name, "r");
+
+  char moves_file_name[MAX_FILE_TITLE_LENGTH] = {0};
+  GetMovesFileName(moves_file_name, gameplay_mode);
+  FILE *moves_file = fopen(moves_file_name, "r");
+
+  if (!titles_file || !moves_file) {
+    puts("error of Opening File in DeleteSavedGameplays");
+    return;
+  }
+
+  puts("\n+++++++++++++++++++++++ Message: +++++++++++++++++++++++");
+  printf("|     \033[34;1m  %c: Computer  \033[0m       ",
+         COMPUTER_PLAYING_SYMBOL);
+  printf("          \033[33;1m  %c: User  \033[0m      |\n",
+         USER_PLAYING_SYMBOL);
+  puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
+
+  char title_buffer[MAX_GAMEPLAY_TITLE_LENGTH] = {0};
+  char moves_buffer[MAX_MOVES_LENGTH] = {0};
+  int count = 0;
+  bool is_game_found = false;
+  bool is_user_played_first = false;
+
+  for (int i = 0; i < titles_count; ++i) {
+    if (count >= gameplays_to_print.list_length) break;
+
+    is_game_found = false;
+    is_user_played_first = false;
+    fgets(title_buffer, MAX_GAMEPLAY_TITLE_LENGTH, titles_file);
+    fgets(moves_buffer, MAX_MOVES_LENGTH, moves_file);
+
+    for (int j = 0; j < gameplays_to_print.list_length; ++j) {
+      if (i + 1 == gameplays_to_print.list[j]) {
+        is_game_found = true;
+        ++count;
+        break;
+      }
+    }
+
+    if (!is_game_found) continue;
+    int title_length = strlen(title_buffer) - 1;
+    title_buffer[title_length] = '\0';
+    puts("---------------------------------------------------------");
+    printf("|            Title:  %s", title_buffer);
+    for (int j = 0; j < 35 - title_length; ++j) printf(" ");
+    puts("|");
+    puts("---------------------------------------------------------");
+    if (moves_buffer[0] == 'U') is_user_played_first = true;
+    {
+      char board[9] = {'1', '2', '3', '4', '5', '6', '7', '8', '9'};
+      ParseMovesIntoBoard(board, moves_buffer, is_user_played_first);
+      BoardPrinter(board);
+    }
+    puts("\n");
+  }
+
+  fclose(titles_file);
+  fclose(moves_file);
+
+  char c[2];
+  do {
+    printf(" press enter to exist....");
+    fgets(c, 2, stdin);
+  } while (c[0] != '\n');
 }

@@ -1,6 +1,16 @@
 #ifndef COMMON_H
 #define COMMON_H
 
+typedef struct {
+  void *next;
+  char the_move[2];
+} GameplayNode;
+
+typedef struct {
+  int *list;
+  int list_length;
+} GameplayNumbers;
+
 #define false 0
 #define true 1
 
@@ -31,6 +41,14 @@
 #define EASY_GAME_MODE 1
 #define NORMAL_GAME_MODE 2
 #define UNBEATABLE_GAME_MODE 3
+
+#define MAX_GAMEPLAY_MODE_NAME_LENGTH 22
+#define MAX_GAMEPLAY_TITLE_LENGTH 20
+#define MAX_FILE_TITLE_LENGTH 57
+#define MAX_MOVES_LENGTH 31
+
+#define DEFAULT_SAVED_GAMEPLAY_NAME "Gameplay"
+#define DEFAULT_SAVED_GAMEPLAY_LENGTH 8
 
 #ifdef WIN32
 #include <windows.h>

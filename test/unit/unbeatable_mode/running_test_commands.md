@@ -21,7 +21,7 @@ bin/test/helper/./user_choices_samples
 2. Compile the test
 
 ```
-gcc -o bin/test/unit/unbeatable_mode_test test/unit/unbeatable_mode/unbeatable_mode_test.c src/game_play/game_checkers.c src/game_play/user_turn.c src/game_play/game_play.c src/computer_turn/unbeatable_mode.c src/computer_turn/normal_mode.c src/computer_turn/computer_moves.c src/computer_turn/computer_turn.c src/common/graphic.c src/common/err.c
+gcc -o bin/test/unit/unbeatable_mode_test test/unit/unbeatable_mode/unbeatable_mode_test.c src/game_play/game_checkers.c src/game_play/user_turn.c src/game_play/game_play.c src/computer_turn/unbeatable_mode.c src/computer_turn/normal_mode.c src/computer_turn/computer_moves.c src/computer_turn/computer_turn.c src/common/graphic.c src/common/err.c ./src/game_play/saving_gameplays.c
 ```
 
 3. Run the test

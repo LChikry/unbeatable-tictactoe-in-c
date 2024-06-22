@@ -61,7 +61,7 @@ int StartingFirstWinningAlgorithm(char *board, int number_of_turns,
                                            true);
 
     default:
-      puts("something Went Wrong in StartingFirstWinningAlgorithm");
+      puts("error in StartingFirstWinningAlgorithm");
       exit(1);
       break;
   }  // end of the switch statement
@@ -107,7 +107,7 @@ int StartingSecondWithMarkedCenterSquare(char *board, int number_of_turns) {
       return NormalMode(board, number_of_turns);
 
     default:
-      puts("Something Went Wrong in StartingSecondWithMarkedCenterSquare");
+      puts("error in StartingSecondWithMarkedCenterSquare");
       exit(1);
   }
 }
@@ -156,7 +156,7 @@ int StartingSecondWithEmptyCenterAndCornerSquares(char *board,
 
     default:
       puts(
-          "Something Went Wrong in "
+          "error in "
           "StartingSecondWithEmptyCenterAndCornerSquares");
       exit(1);
   }
@@ -207,7 +207,7 @@ int StartingSecondWithEmptyCenterAndMiddleSquares(char *board,
 
     default:
       puts(
-          "Something Went Wrong in "
+          "error in "
           "StartingSecondWithEmptyCenterAndMiddleSquares");
       exit(1);
   }
