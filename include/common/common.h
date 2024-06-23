@@ -31,6 +31,12 @@ typedef struct {
 #define USER_PLAYING_SYMBOL 'X'
 #define COMPUTER_PLAYING_SYMBOL 'O'
 
+#define PLAYER_ONE 'X'
+#define PLAYER_TWO 'O'
+#define PLAYER_THREE 'V'
+#define PLAYER_FOUR 'Q'
+#define PLAYER_FIVE '@'
+
 #define PLAYING_EASY_MODE 1
 #define PLAYING_NORMAL_MODE 2
 #define PLAYING_FIRST_ALGO 4

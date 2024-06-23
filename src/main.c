@@ -89,7 +89,18 @@ void PlayingAgainstComputer(void) {
   return;
 }  // end of first choice
 
-void PlayingWithFriends(void) {}
+void PlayingWithFriends(void) {
+  int number_of_players = GetNumberOfPlayers();
+  if (number_of_players > 2) DisplayMultiplePlayerRules();
+
+  char board[(number_of_players + 1) * (number_of_players + 1)];
+  for (size_t i = 0; i < (number_of_players + 1) * (number_of_players + 1);
+       i++) {
+    board[i] = '0';
+  }
+  
+  MultiplePlayerBoardPrinter(board, number_of_players);
+}
 
 void SavedGameplayChoice(void) {
   int gameplay_mode = GetGameplayMode();

@@ -25,4 +25,6 @@ int GetSavedGameplayAction(void);
 
 GameplayNumbers GetSavedGameplaysNumber(int game_mode, int titles_count);
 
+int GetNumberOfPlayers(void);
+
 #endif

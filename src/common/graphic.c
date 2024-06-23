@@ -56,6 +56,42 @@ void SuccessfulMessagePrinter(void) {
   sleep(1);
 }
 
+static void print_the_move(char *board, int board_place_number) {
+  bool is_place_empty = false;
+
+  switch (*(board + board_place_number - 1)) {
+    case PLAYER_ONE:
+      printf("\033[33;1m");
+      break;
+
+    case PLAYER_TWO:
+      printf("\033[34;1m");
+      break;
+
+    case PLAYER_THREE:
+      printf("\033[35;1m");
+      break;
+
+    case PLAYER_FOUR:
+      printf("\033[31;1m");
+      break;
+
+    case PLAYER_FIVE:
+      printf("\033[32;1m");
+      break;
+
+    default:
+      is_place_empty = true;
+      break;
+  }
+
+  if (is_place_empty) {
+    printf("  %02d   ", board_place_number);
+  } else {
+    printf("   %c   \033[0m", *(board + board_place_number - 1));
+  }
+}
+
 void BoardPrinter(char *board) {
   printf("\n");
   for (int i = 0; i < 3; i++) {
@@ -64,20 +100,51 @@ void BoardPrinter(char *board) {
     for (int j = 0; j < 3; j++) {
       if (j != 0) printf("|");
 
-      if (!IsPlaceEmpty(board, j + i * 3 + 1)) {
-        if (IsPlaceTakenByX(board, j + i * 3 + 1, COMPUTER_PLAYING_SYMBOL)) {
-          printf("\033[34;1m   %c   \033[0m", *(board + j + i * 3));
-        } else {
-          printf("\033[33;1m   %c   \033[0m", *(board + j + i * 3));
-        }
-      } else {
+      if (IsPlaceEmpty(board, j + i * 3 + 1)) {
         printf("   %c   ", *(board + j + i * 3));
+        continue;
       }
+
+      print_the_move(board, j + i * 3 + 1);
     }
 
     if (2 != i) puts("\n\t\t _______|_______|_______");
     if (2 == i) puts("\n\t\t        |       |      ");
   }
+}
+
+void MultiplePlayerBoardPrinter(char *board, int number_of_players) {
+  printf("\n\n");
+  for (int i = 0; i < number_of_players + 1; i++) {
+    printf("\t ");
+    for (int k = 0; k < number_of_players + 1; ++k) {
+      printf("       ");
+      if (k != number_of_players) printf("|");
+    }
+    printf("\n");
+
+    printf("\t ");
+    for (int j = 0; j < number_of_players + 1; j++) {
+      if (j != 0) printf("|");
+      print_the_move(board, j + i * (number_of_players + 1) + 1);
+    }
+    printf("\n");
+
+    if (i == number_of_players) break;
+    printf("\t ");
+    for (int k = 0; k < number_of_players + 1; ++k) {
+      printf("_______");
+      if (k != number_of_players) printf("|");
+    }
+    printf("\n");
+  }
+
+  printf("\t ");
+  for (int k = 0; k < number_of_players + 1; ++k) {
+    printf("       ");
+    if (k != number_of_players) printf("|");
+  }
+  printf("\n\n");
 }
 
 void GameIntro(void) {
@@ -400,6 +467,25 @@ void PrintSavedGameplayBoards(GameplayNumbers gameplays_to_print,
 
   fclose(titles_file);
   fclose(moves_file);
+
+  char c[2];
+  do {
+    printf(" press enter to exist....");
+    fgets(c, 2, stdin);
+  } while (c[0] != '\n');
+}
+
+void DisplayMultiplePlayerRules(void) {
+  TerminalCleaner();
+  LogoPrinter();
+
+  puts("\n++++++++++++++++++++++ The Rules: +++++++++++++++++++++++");
+  puts("|                                                       |");
+  puts("|  1. The First Person to Get 3 in a Row Wins.          |");
+  puts("|  2. The Game Ends When One Player Left or It's Draw.  |");
+  puts("|  3. Enjoy!!                                           |");
+  puts("|                                                       |");
+  puts("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n\n\n");
 
   char c[2];
   do {

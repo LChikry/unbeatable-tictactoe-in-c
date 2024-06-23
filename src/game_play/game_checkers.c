@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <stdbool.h>
 
 #include "../../include/common/common.h"
@@ -5,12 +6,7 @@
 #include "../../include/computer_turn/computer_turn.h"
 
 bool IsPlaceEmpty(char *board, int board_place_number) {
-  if (*(board + board_place_number - 1) != 'X' &&
-      *(board + board_place_number - 1) != 'O') {
-    return true;
-  }
-
-  return false;
+  return isdigit(*(board + board_place_number - 1));
 }
 
 // board place number is the number shown in the board
@@ -30,8 +26,8 @@ bool IsPlaceTakenByX(char *board, int board_place_number,
 
 // return values are the squares location, which range 1-3, 7, and 9.
 // 1 to 3 are the number of column/row where the targeted occurrence found
-// (start counting from top/right to down/left). Abd 9 for the 1-5-9 X line, and
-// 7 for 3-5-7 X line.
+// (start counting from top/right to down/left). Abd 9 for the 1-5-9 X line,
+// and 7 for 3-5-7 X line.
 int IsSymbolOccurredXTimes(char *board, const char playing_symbol, int x_times,
                            int direction) {
   const char counter_playing_symbol = CounterPlayingSymbol(playing_symbol);
@@ -48,9 +44,9 @@ int IsSymbolOccurredXTimes(char *board, const char playing_symbol, int x_times,
 
         // this is added because of the use case in which we want to check if
         // the user is close to win or not. As a result, we need to make sure
-        // that the remaining place is empty, so we can make sure that the user
-        // is actually close to win. And for other use cases, this doesn't
-        // effect them at all
+        // that the remaining place is empty, so we can make sure that the
+        // user is actually close to win. And for other use cases, this
+        // doesn't effect them at all
         if (IsPlaceTakenByX(board, j + i * 3 + 1, counter_playing_symbol)) {
           symbol_occurrence--;
         }

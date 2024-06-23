@@ -313,3 +313,25 @@ GameplayNumbers GetSavedGameplaysNumber(int game_mode, int titles_count) {
 
   return gameplays_to_delete;
 }
+
+int GetNumberOfPlayers(void) {
+  TerminalCleaner();
+  LogoPrinter();
+  bool is_loop_run_once = false;
+  int number_of_players;
+
+  do {
+    if (is_loop_run_once) ErrorMessagePrinter();
+
+    puts("\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
+    puts("|              How Many Players You Are?               |");
+    puts("|                                                      |");
+    puts("|                        (Max. 5)                      |");
+    puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+    is_loop_run_once = true;
+    number_of_players = GetGoodInput(1, true);
+  } while (number_of_players < 1 || number_of_players > 5);
+
+  return number_of_players;
+}
