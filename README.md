@@ -33,7 +33,7 @@ bin/src/./main
 2. Compile the game using this command:
 
 ```
-gcc -o bin/src/main ./src/main.c ./src/computer_turn/unbeatable_mode.c ./src/computer_turn/normal_mode.c ./src/computer_turn/computer_moves.c ./src/computer_turn/computer_turn.c ./src/common/err.c ./src/common/graphic.c ./src/common/form.c ./src/game_play/game_checkers.c ./src/game_play/user_turn.c ./src/game_play/game_play.c ./src/game_play/saving_gameplays.c
+gcc -o bin/src/main ./src/main.c ./src/computer_turn/unbeatable_mode.c ./src/computer_turn/normal_mode.c ./src/computer_turn/computer_moves.c ./src/computer_turn/computer_turn.c ./src/common/err.c ./src/common/graphic.c ./src/common/form.c ./src/game_play/game_checkers.c ./src/game_play/user_turn.c ./src/game_play/game_play.c ./src/game_play/saving_gameplays.c ./src/friends_gameplay/friends_gameplay.c ./src/friends_gameplay/multiple_player_game_checkers.c
 ```
 
 3. Now, run the game using this command:

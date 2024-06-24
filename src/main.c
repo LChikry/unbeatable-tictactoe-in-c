@@ -6,6 +6,7 @@
 #include "../include/common/common.h"
 #include "../include/common/form.h"
 #include "../include/common/graphic.h"
+#include "../include/friends_gameplay/friends_gameplay.h"
 #include "../include/game_play/game_play.h"
 #include "../include/game_play/saving_gameplays.h"
 
@@ -89,6 +90,8 @@ void PlayingAgainstComputer(void) {
   return;
 }  // end of first choice
 
+/// @brief
+/// @param
 void PlayingWithFriends(void) {
   int number_of_players = GetNumberOfPlayers();
   if (number_of_players > 2) DisplayMultiplePlayerRules();
@@ -98,8 +101,8 @@ void PlayingWithFriends(void) {
        i++) {
     board[i] = '0';
   }
-  
-  MultiplePlayerBoardPrinter(board, number_of_players);
+
+  MultiplePlayerGameplay(board, number_of_players);
 }
 
 void SavedGameplayChoice(void) {

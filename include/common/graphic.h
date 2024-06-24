@@ -15,6 +15,8 @@ void GameIntro(void);
 void WinnerMessagePrinter(int game_mode, int game_result);
 void SavedGameMessage(char *gameplay_title,
                       bool is_gameplay_saved_successfully);
+void InGameMultiplePlayerWinningMessage(const char player_symbol,
+                                        const int player_rank);
 
 // others
 int PickRandomlyWhoWillPlayFirst(void);

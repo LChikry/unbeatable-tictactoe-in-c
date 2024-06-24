@@ -86,7 +86,8 @@ static void print_the_move(char *board, int board_place_number) {
   }
 
   if (is_place_empty) {
-    printf("  %02d   ", board_place_number);
+    if (board_place_number < 10) printf(" ");
+    printf("  %d   ", board_place_number);
   } else {
     printf("   %c   \033[0m", *(board + board_place_number - 1));
   }
@@ -116,14 +117,14 @@ void BoardPrinter(char *board) {
 void MultiplePlayerBoardPrinter(char *board, int number_of_players) {
   printf("\n\n");
   for (int i = 0; i < number_of_players + 1; i++) {
-    printf("\t ");
+    for (int d = 6; d > number_of_players; --d) printf("    ");
     for (int k = 0; k < number_of_players + 1; ++k) {
       printf("       ");
       if (k != number_of_players) printf("|");
     }
     printf("\n");
 
-    printf("\t ");
+    for (int d = 6; d > number_of_players; --d) printf("    ");
     for (int j = 0; j < number_of_players + 1; j++) {
       if (j != 0) printf("|");
       print_the_move(board, j + i * (number_of_players + 1) + 1);
@@ -131,7 +132,7 @@ void MultiplePlayerBoardPrinter(char *board, int number_of_players) {
     printf("\n");
 
     if (i == number_of_players) break;
-    printf("\t ");
+    for (int d = 6; d > number_of_players; --d) printf("    ");
     for (int k = 0; k < number_of_players + 1; ++k) {
       printf("_______");
       if (k != number_of_players) printf("|");
@@ -139,7 +140,7 @@ void MultiplePlayerBoardPrinter(char *board, int number_of_players) {
     printf("\n");
   }
 
-  printf("\t ");
+  for (int d = 6; d > number_of_players; --d) printf("    ");
   for (int k = 0; k < number_of_players + 1; ++k) {
     printf("       ");
     if (k != number_of_players) printf("|");
@@ -492,4 +493,20 @@ void DisplayMultiplePlayerRules(void) {
     printf(" press enter to exist....");
     fgets(c, 2, stdin);
   } while (c[0] != '\n');
+}
+
+void InGameMultiplePlayerWinningMessage(const char player_symbol,
+                                        const int player_rank) {
+  TerminalCleaner();
+  LogoPrinter();
+
+  puts("\n\n\n+++++++++++++++++++ Congratulations: +++++++++++++++++++");
+  printf("|        ");
+  printf("\033[32;1m");
+  printf("Player %c, You Won!       You're the #%d", player_symbol,
+         player_rank);
+  printf("\033[0m");
+  printf("        |\n");
+  puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n\n\n");
+  usleep(2500000);
 }

@@ -24,6 +24,7 @@ typedef struct {
 #define USER_WON 2
 #define COMPUTER_WON 1
 #define DRAW_GAME 0
+#define MULTIPLE_PLAYER_DRAW_GAME '0'
 
 #define USER_PLAYING_FIRST 1
 #define COMPUTER_PLAYING_FIRST 0

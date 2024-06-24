@@ -14,7 +14,7 @@
 
 int MainMenuPage(void) {
   bool is_loop_run_once = false;
-  int main_menu_choice;
+  int main_menu_choice = 0;
 
   do {
     TerminalCleaner();
@@ -30,16 +30,15 @@ int MainMenuPage(void) {
     puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
     is_loop_run_once = true;
-    main_menu_choice = GetGoodInput(1, true);
-
-  } while (main_menu_choice < 1 || main_menu_choice > 5);
+    main_menu_choice = GetGoodIntegerInput(1, 5);
+  } while (main_menu_choice == 0);
 
   return main_menu_choice;
 }
 
 int GetGameplayMode(void) {
   bool is_loop_run_once = false;
-  int game_mode;
+  int game_mode = 0;
 
   do {
     TerminalCleaner();
@@ -53,38 +52,16 @@ int GetGameplayMode(void) {
     puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
     is_loop_run_once = true;
-    game_mode = GetGoodInput(1, true);
+    game_mode = GetGoodIntegerInput(1, 3);
 
-  } while (game_mode < 1 || game_mode > 3);
+  } while (game_mode == 0);
 
   return game_mode;
 }
 
-int FriendsModeMenuPage(void) {
-  bool is_loop_run_once = false;
-  int number_of_friends;
-
-  do {
-    TerminalCleaner();
-    LogoPrinter();
-    if (is_loop_run_once) ErrorMessagePrinter();
-
-    puts("\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
-    puts("|       How Many Friends You Want to Play With?        |");
-    puts("|                       (Max. 5)                       |");
-    puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-
-    is_loop_run_once = true;
-    number_of_friends = GetGoodInput(1, true);
-
-  } while (number_of_friends < 1 || number_of_friends > 5);
-
-  return (number_of_friends + 1);
-}
-
 int ResetScoreMenuPage(void) {
   bool is_loop_run_once = false;
-  int score_reset_choice;
+  int score_reset_choice = 0;
 
   do {
     TerminalCleaner();
@@ -98,16 +75,16 @@ int ResetScoreMenuPage(void) {
     puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
     is_loop_run_once = true;
-    score_reset_choice = GetGoodInput(1, true);
+    score_reset_choice = GetGoodIntegerInput(1, 4);
 
-  } while (score_reset_choice < 1 || score_reset_choice > 4);
+  } while (score_reset_choice == 0);
 
   return score_reset_choice;
 }
 
 bool IsUserWillPlayFirst(void) {
   bool is_loop_run_once = false;
-  int playing_order_choice;
+  int playing_order_choice = 0;
 
   do {
     TerminalCleaner();
@@ -121,9 +98,9 @@ bool IsUserWillPlayFirst(void) {
     puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
     is_loop_run_once = true;
-    playing_order_choice = GetGoodInput(1, true);
+    playing_order_choice = GetGoodIntegerInput(1, 3);
 
-  } while (playing_order_choice < 1 || playing_order_choice > 3);
+  } while (playing_order_choice == 0);
 
   switch (playing_order_choice) {
     case 1:
@@ -145,7 +122,7 @@ bool IsUserWillPlayFirst(void) {
 
 int EndGameMenuPage(char *board) {
   bool is_loop_run_once = false;
-  int end_game_menu_choice;
+  int end_game_menu_choice = 0;
 
   do {
     if (is_loop_run_once) ErrorMessagePrinter();
@@ -159,15 +136,15 @@ int EndGameMenuPage(char *board) {
     puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
     is_loop_run_once = true;
-    end_game_menu_choice = GetGoodInput(1, true);
-  } while (end_game_menu_choice <= 0 || end_game_menu_choice >= 5);
+    end_game_menu_choice = GetGoodIntegerInput(1, 4);
+  } while (end_game_menu_choice == 0);
 
   return end_game_menu_choice;
 }
 
 int GameTitleMenuPage(void) {
   bool is_loop_run_once = false;
-  int titling_the_game_choice;
+  int titling_the_game_choice = 0;
 
   do {
     if (is_loop_run_once) ErrorMessagePrinter();
@@ -179,13 +156,14 @@ int GameTitleMenuPage(void) {
     puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
     is_loop_run_once = true;
-    titling_the_game_choice = GetGoodInput(1, true);
-  } while (titling_the_game_choice < 1 || titling_the_game_choice > 2);
+    titling_the_game_choice = GetGoodIntegerInput(1, 2);
+  } while (titling_the_game_choice == 0);
 
   return titling_the_game_choice;
 }
 
 void GetGameTitle(char *gameplay_title) {
+  bool is_loop_run_once = false;
   int confirming_game_title_choice = 1;
 
   do {
@@ -206,8 +184,7 @@ void GetGameTitle(char *gameplay_title) {
     }
 
     do {
-      if (confirming_game_title_choice < 1 ||
-          confirming_game_title_choice > 2) {
+      if (is_loop_run_once) {
         ErrorMessagePrinter();
       }
       puts("\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
@@ -219,12 +196,12 @@ void GetGameTitle(char *gameplay_title) {
       puts("|                                                      |");
       puts("|           1. Confirm          2. Rename              |");
       puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+      is_loop_run_once = true;
 
-      confirming_game_title_choice = GetGoodInput(1, true);
+      confirming_game_title_choice = GetGoodIntegerInput(1, 2);
       TerminalCleaner();
       LogoPrinter();
-    } while (confirming_game_title_choice < 1 ||
-             confirming_game_title_choice > 2);
+    } while (0 == confirming_game_title_choice);
   } while (2 == confirming_game_title_choice);
 }
 
@@ -232,7 +209,7 @@ int GetSavedGameplayAction(void) {
   TerminalCleaner();
   LogoPrinter();
   bool is_loop_run_once = false;
-  int saved_gameplay_action_choice;
+  int saved_gameplay_action_choice = 0;
 
   do {
     if (is_loop_run_once) ErrorMessagePrinter();
@@ -244,9 +221,8 @@ int GetSavedGameplayAction(void) {
     puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
     is_loop_run_once = true;
-    saved_gameplay_action_choice = GetGoodInput(1, true);
-  } while (saved_gameplay_action_choice <= 0 ||
-           saved_gameplay_action_choice >= 3);
+    saved_gameplay_action_choice = GetGoodIntegerInput(1, 2);
+  } while (saved_gameplay_action_choice == 0);
 
   return saved_gameplay_action_choice;
 }
@@ -318,7 +294,7 @@ int GetNumberOfPlayers(void) {
   TerminalCleaner();
   LogoPrinter();
   bool is_loop_run_once = false;
-  int number_of_players;
+  int number_of_players = 0;
 
   do {
     if (is_loop_run_once) ErrorMessagePrinter();
@@ -326,12 +302,12 @@ int GetNumberOfPlayers(void) {
     puts("\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
     puts("|              How Many Players You Are?               |");
     puts("|                                                      |");
-    puts("|                        (Max. 5)                      |");
+    puts("|                      (Max. 5)                        |");
     puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
     is_loop_run_once = true;
-    number_of_players = GetGoodInput(1, true);
-  } while (number_of_players < 1 || number_of_players > 5);
+    number_of_players = GetGoodIntegerInput(2, 5);
+  } while (0 == number_of_players);
 
   return number_of_players;
 }
