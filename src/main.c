@@ -102,18 +102,20 @@ void PlayingWithFriends(void) {
     board[i] = '0';
   }
 
-  MultiplePlayerGameplay(board, number_of_players);
+  char *players_rank = MultiplePlayerGameplay(board, number_of_players);
+  // todo print the game summary
+  // todo don't exit until the user presses enter
 }
 
 void SavedGameplayChoice(void) {
-  int gameplay_mode = GetGameplayMode();
   // 1: show game play    and    2: delete gameplay
   int saved_gameplay_action = GetSavedGameplayAction();
+  int gameplay_mode = GetGameplayMode();
 
   TerminalCleaner();
   LogoPrinter();
   int titles_count = PrintSavedGameplayTitles(gameplay_mode);
-  if (0 == titles_count || -1 == titles_count) return;
+  if (0 == titles_count) return;
 
   GameplayNumbers choosen_gameplays =
       GetSavedGameplaysNumber(gameplay_mode, titles_count);

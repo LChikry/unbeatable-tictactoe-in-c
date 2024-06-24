@@ -304,8 +304,8 @@ int PickRandomlyWhoWillPlayFirst(void) {
 
 /// @brief
 /// @param gameplay_mode
-/// @returns -1 if it fails to open the file, or 0 if no gameplay found,
-/// otherwise, it return the number of gameplays saved
+/// @returns 0 if no gameplay found,
+/// otherwise, it returns the number of gameplays saved
 int PrintSavedGameplayTitles(int gameplay_mode) {
   FILE *titles_file;
   {
@@ -313,10 +313,9 @@ int PrintSavedGameplayTitles(int gameplay_mode) {
     GetTitleFileName(titles_file_name, gameplay_mode);
     titles_file = fopen(titles_file_name, "r");
   }
-  if (!titles_file) return -1;
 
   char buffer[MAX_GAMEPLAY_TITLE_LENGTH];
-  if (!fgets(buffer, MAX_GAMEPLAY_TITLE_LENGTH, titles_file) ||
+  if (!titles_file || !fgets(buffer, MAX_GAMEPLAY_TITLE_LENGTH, titles_file) ||
       strlen(buffer) == 1) {
     TerminalCleaner();
     LogoPrinter();
@@ -372,7 +371,6 @@ int PrintSavedGameplayTitles(int gameplay_mode) {
 
   fclose(titles_file);
   return titles_count;
-  return 0;
 }  // end of printing saved gameplayTitles
 
 static void ParseMovesIntoBoard(char *board, char *moves,
