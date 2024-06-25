@@ -49,28 +49,47 @@ static int IsSymbolOccurredXTimesAdvanced(char *board,
   }
 
   //! creating a good strategy to check the X shape
+  int row_and_column_size = number_of_players + 1;
+  int up_down_jump_length = row_and_column_size + 1;
+  int down_up_jump_length = row_and_column_size - 1;
 
-  // puts("\n\nHello there\n\n");
-  // sleep(3);
-  // checking in 1-5-9 X shape
-  symbol_occurrence = 0;
-  for (int i = 1; i <= number_of_squares; i += 4) {
-    if (IsPlaceTakenByX(board, i, playing_symbol)) {
-      symbol_occurrence++;
+  // row loop
+  for (int i = 0; i < row_and_column_size - 2; ++i) {
+    // column loop
+    for (int j = 0; j < row_and_column_size - 2; ++j) {
+      symbol_occurrence = 0;
+      // X-Shape loop from Up to Down
+      for (int k = 0; k < x_times; ++k) {
+        if (IsPlaceTakenByX(
+                board,
+                j + (i * row_and_column_size) + 1 + (k * up_down_jump_length),
+                playing_symbol)) {
+          ++symbol_occurrence;
+        }
+      }
+
+      if (symbol_occurrence == x_times) return X_LINE_159;
     }
   }
-  if (symbol_occurrence == x_times) return X_LINE_159;  // first X line number
 
-  // puts("\n\nHello there1\n\n");
-  // sleep(3);
-  // checking in 3-5-7 X shape
-  symbol_occurrence = 0;
-  for (int i = 3; i <= 7; i += 2) {
-    if (IsPlaceTakenByX(board, i, playing_symbol)) {
-      symbol_occurrence++;
+  // row loop
+  for (int i = 2; i < row_and_column_size; ++i) {
+    // column loop
+    for (int j = 2; j < row_and_column_size; ++j) {
+      symbol_occurrence = 0;
+      // X-Shape loop from Up to Down
+      for (int k = 0; k < x_times; ++k) {
+        if (IsPlaceTakenByX(
+                board,
+                j + (i * row_and_column_size) + 1 - (k * down_up_jump_length),
+                playing_symbol)) {
+          ++symbol_occurrence;
+        }
+      }
+
+      if (symbol_occurrence == x_times) return X_LINE_357;
     }
   }
-  if (symbol_occurrence == x_times) return X_LINE_357;  // second X line number
 
   // if no iteration reached X times in the targeted direction
   return DRAW_GAME;
