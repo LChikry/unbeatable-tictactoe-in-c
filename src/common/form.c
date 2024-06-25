@@ -307,7 +307,7 @@ int GetNumberOfPlayers(void) {
 
     is_loop_run_once = true;
     number_of_players = GetGoodIntegerInput(2, 5);
-  } while (2 == number_of_players);
+  } while (1 == number_of_players);
 
   return number_of_players;
 }
