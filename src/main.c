@@ -18,18 +18,17 @@ int main(void) {
   WelcomePage();
   int menu_choice = 0;
 
-  while (menu_choice != 5) {
+  while (menu_choice != 4) {
     menu_choice = MainMenuPage();
 
     if (1 == menu_choice) PlayingAgainstComputer();
     if (2 == menu_choice) PlayingWithFriends();
     if (3 == menu_choice) SavedGameplayChoice();
-
-  }  // end of the while loop
+  }
 
   TerminalCleaner();
   LogoPrinter();
-  puts("\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
+  puts("\n\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
   puts("|   Thank you for playing the game, see you soon! :)   |");
   puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
   return 0;

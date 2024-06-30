@@ -25,12 +25,11 @@ int MainMenuPage(void) {
     puts("|  1. Play Against the Computer                        |");
     puts("|  2. Play with Your Friends                           |");
     puts("|  3. Saved Gameplays                                  |");
-    puts("|  4. Your Score                                       |");
-    puts("|  5. Quit                                             |");
+    puts("|  4. Quit                                             |");
     puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
     is_loop_run_once = true;
-    main_menu_choice = GetGoodIntegerInput(1, 5);
+    main_menu_choice = GetGoodIntegerInput(1, 4);
   } while (main_menu_choice == 0);
 
   return main_menu_choice;
