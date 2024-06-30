@@ -6,6 +6,17 @@
 #include "../../include/common/common.h"
 #include "../../include/game_play/game_checkers.h"
 
+/*
+
+2 < 2
+
+1  2  3  4
+5  6  7  8
+9 10 11 12
+13 14 15 16
+
+*/
+
 static int horizontal_checking(char *board, const char playing_symbol,
                                int board_size, int i, int j, int k) {
   if (IsPlaceTakenByX(board, j + (i * board_size) + 1 + k, playing_symbol)) {
@@ -63,7 +74,7 @@ static int IsSymbolOccurredXTimesAdvanced(char *board,
   int right_diagonal_symbol_occurrence = 0;
   int left_diagonal_symbol_occurrence = 0;
 
-  for (int i = 0; i < board_size - 2; ++i) {
+  for (int i = 0; i < board_size; ++i) {
     for (int j = 0; j < board_size - 2; ++j) {
       horizontal_symbol_occurrence = 0;
       vertical_symbol_occurrence = 0;
@@ -77,6 +88,7 @@ static int IsSymbolOccurredXTimesAdvanced(char *board,
         vertical_symbol_occurrence +=
             vertical_checking(board, playing_symbol, board_size, i, j, k);
 
+        if (i >= board_size - 2) continue;
         right_diagonal_symbol_occurrence +=
             right_diagonal_checking(board, playing_symbol, board_size, i, j, k);
 
