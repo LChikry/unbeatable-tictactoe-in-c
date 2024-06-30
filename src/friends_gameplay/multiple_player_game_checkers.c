@@ -121,3 +121,17 @@ const char MultiplePlayerWinnerChecker(char *board, const int number_of_players,
   // if no one won yet..
   return MULTIPLE_PLAYER_DRAW_GAME;
 }
+
+bool IsSomeoneCloseToWin(char *board, const int number_of_players,
+                         char *symbols) {
+  for (int i = 0; i < number_of_players; ++i) {
+    if (isdigit(symbols[i])) continue;
+
+    if (IsSymbolOccurredXTimesAdvanced(board, number_of_players, symbols[i],
+                                       2)) {
+      return true;
+    }
+  }
+
+  return false;
+}

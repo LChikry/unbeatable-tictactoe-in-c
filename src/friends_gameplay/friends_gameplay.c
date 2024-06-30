@@ -14,9 +14,9 @@ char *MultiplePlayerGameplay(char *board, int number_of_players) {
   GameIntro();
 
   int number_of_squares = (number_of_players + 1) * (number_of_players + 1);
-  int number_of_turns = 0;
   char game_result = MULTIPLE_PLAYER_DRAW_GAME;
   int number_of_winners = 0;
+  int number_of_turns = 0;
 
   int cursor = 0;
   char *symbols = calloc(sizeof(char), 5);
@@ -60,6 +60,13 @@ char *MultiplePlayerGameplay(char *board, int number_of_players) {
     if (number_of_turns < number_of_players * 2 + 1) continue;
     game_result =
         MultiplePlayerWinnerChecker(board, number_of_players, symbols);
+
+    if (number_of_squares - number_of_players + number_of_winners <=
+        number_of_turns) {
+      if (!IsSomeoneCloseToWin(board, number_of_players, symbols)) {
+        return symbols;
+      }
+    }
 
     if (game_result == MULTIPLE_PLAYER_DRAW_GAME) continue;
     for (int i = 0; i < number_of_players; i++) {
