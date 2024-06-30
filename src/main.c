@@ -103,8 +103,14 @@ void PlayingWithFriends(void) {
   }
 
   char *players_rank = MultiplePlayerGameplay(board, number_of_players);
-  // todo print the game summary
-  // todo don't exit until the user presses enter
+  MultiplePlayerGameSummary(board, players_rank, number_of_players);
+  free(players_rank);
+
+  char c[2];
+  do {
+    printf(" press enter to exist....");
+    fgets(c, 2, stdin);
+  } while (c[0] != '\n');
 }
 
 void SavedGameplayChoice(void) {

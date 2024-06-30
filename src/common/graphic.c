@@ -159,6 +159,17 @@ void GameIntro(void) {
   sleep(1);
 }
 
+void GameEndMessage(void) {
+  TerminalCleaner();
+  LogoPrinter();
+  puts("\n\n\n\n++++++++++++++++++++++++ Message: ++++++++++++++++++++++");
+  puts("|                       Game Over                      |");
+  puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+  puts("\n\n\n\n");  // just to move the cursor for the design
+  sleep(1);
+}
+
 void SavedGameMessage(char *gameplay_title,
                       bool is_gameplay_saved_successfully) {
   TerminalCleaner();
@@ -507,4 +518,53 @@ void InGameMultiplePlayerWinningMessage(const char player_symbol,
   printf("        |\n");
   puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n\n\n");
   usleep(2500000);
+}
+
+void MultiplePlayerGameSummary(char *board, char *players_rank,
+                               int number_of_players) {
+  TerminalCleaner();
+  LogoPrinter();
+  puts("\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+  puts("|                     Game Summary                     |");
+  puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
+
+  bool is_no_one_won = true;
+  for (int i = 0; i < number_of_players; i++) {
+    if (isdigit(players_rank[i])) {
+      is_no_one_won = false;
+      break;
+    }
+  }
+
+  if (is_no_one_won) {
+    puts("\n--------------------------------------------------------");
+    puts("|                                                      |");
+    puts("|                Draw Game, No One Won!                |");
+    puts("|                                                      |");
+    puts("--------------------------------------------------------\n\n\n");
+
+    MultiplePlayerBoardPrinter(board, number_of_players);
+    return;
+  }
+
+  char player_symbols[5] = {PLAYER_ONE, PLAYER_TWO, PLAYER_THREE, PLAYER_FOUR,
+                            PLAYER_FIVE};
+
+  puts("--------------------------------------------------------");
+  for (int i = 0; i < number_of_players; i++) {
+    char symbol = players_rank[i];
+    puts("|                                                      |");
+    printf("|        ");
+    printf("\033[32;1m");
+    if (isdigit(players_rank[i])) {
+      printf("Player %c, You Won!       You're the #%c", player_symbols[i],
+             players_rank[i]);
+    } else {
+      printf("Player %c, You Lost!                   ", player_symbols[i]);
+    }
+    printf("\033[0m");
+    printf("        |\n");
+    puts("|                                                      |");
+  }
+  puts("--------------------------------------------------------\n\n\n");
 }
