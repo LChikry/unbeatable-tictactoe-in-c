@@ -187,6 +187,10 @@ void SavedGameMessage(char *gameplay_title,
     puts(
         "|           \033[31;1m The Gameplay Didn't Get Saved  \033[0m         "
         "  |");
+
+    puts(
+        "|        \033[31;1m You Reached The Maximum Number of Saves  \033[0m  "
+        "    |");
   }
 
   puts("|                                                      |");

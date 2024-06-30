@@ -65,7 +65,7 @@ void PlayingAgainstComputer(void) {
 
   TerminalCleaner();
   LogoPrinter();
-  char gameplay_title[MAX_GAMEPLAY_TITLE_LENGTH + 1] = {0};
+  char gameplay_title[MAX_GAMEPLAY_TITLE_LENGTH + 2] = {0};
 
   if (1 == game_title_choice) {
     // Manually Adding the Title of the Save
@@ -82,9 +82,10 @@ void PlayingAgainstComputer(void) {
     SavedGameMessage(gameplay_title, false);
     // puts("\nerror in SaveTheGameplay");
     // return 1;`
+  } else {
+    SavedGameMessage(gameplay_title, true);
   }
 
-  SavedGameMessage(gameplay_title, true);
   DeleteTheGameplay(&head);
   return;
 }  // end of first choice

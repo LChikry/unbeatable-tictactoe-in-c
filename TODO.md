@@ -9,6 +9,3 @@
 
 - todo 4:
   - add steps to run the program both in windows and MacOS, and mention the pre requirement to compile a C program
-
-- todo 5:
-  - add a checking boundary of number of saved games (when saving). It should not exist 3 digits (999)
