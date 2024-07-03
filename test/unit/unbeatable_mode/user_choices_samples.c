@@ -77,9 +77,9 @@ void CreateRandom5Digits(void) {
 /*                             MAIN                             */
 /*                                                              */
 /****************************************************************/
-// int main(void) {
-//   CreateRandom4DigitsWithoutNumber5();
-//   CreateRandom5Digits();
+int main(void) {
+  CreateRandom4DigitsWithoutNumber5();
+  CreateRandom5Digits();
 
-//   return 0;
-// }
+  return 0;
+}
