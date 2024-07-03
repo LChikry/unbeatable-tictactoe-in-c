@@ -72,9 +72,14 @@ void CreateRandom5Digits(void) {
   // fputs("\033[0m", stdout);
 }
 
-int main(void) {
-  CreateRandom4DigitsWithoutNumber5();
-  CreateRandom5Digits();
+/****************************************************************/
+/*                                                              */
+/*                             MAIN                             */
+/*                                                              */
+/****************************************************************/
+// int main(void) {
+//   CreateRandom4DigitsWithoutNumber5();
+//   CreateRandom5Digits();
 
-  return 0;
-}
+//   return 0;
+// }

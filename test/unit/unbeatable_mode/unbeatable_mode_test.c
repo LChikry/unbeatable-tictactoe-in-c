@@ -239,8 +239,8 @@ int UnbeatableModeTest(void) {
 /*                             MAIN                             */
 /*                                                              */
 /****************************************************************/
-int main(void) {
-  UnbeatableModeTest();
+// int main(void) {
+//   UnbeatableModeTest();
 
-  return 0;
-}
+//   return 0;
+// }
