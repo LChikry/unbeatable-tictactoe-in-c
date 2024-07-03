@@ -289,9 +289,12 @@ int PickRandomlyWhoWillPlayFirst(void) {
   }
 
   // flipping the coin
-  int coin_value;
-  srand(time(NULL));
-  coin_value = rand() % 2;
+  struct timespec res;
+  long nano_time = 0;
+  clock_gettime(CLOCK_REALTIME, &res);
+  nano_time = res.tv_nsec;
+  srand(nano_time);
+  int coin_value = rand() % 2;
 
   // show the result
   if (coin_value == USER_PLAYING_FIRST) {
