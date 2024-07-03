@@ -2,6 +2,7 @@
 
 ## About the Game
 
+I made this for fun :)
 This a CLI game that is similar to the TicTacToe game you can play in Google search engine. However, it has more features such as playing with your friends up to 5 players. In addition, it has the possibility of saving the gameplays you play against the computer.
 
 ## How to Run The Game
@@ -15,7 +16,7 @@ This a CLI game that is similar to the TicTacToe game you can play in Google sea
 bin/src/mac/./main
 ```
 
-- For Windows
+- For Windows (not added yet)
 ```
 bin/src/win/./main.exe
 ```
