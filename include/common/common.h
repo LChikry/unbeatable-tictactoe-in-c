@@ -24,12 +24,19 @@ typedef struct {
 #define USER_WON 2
 #define COMPUTER_WON 1
 #define DRAW_GAME 0
+#define MULTIPLE_PLAYER_DRAW_GAME '0'
 
 #define USER_PLAYING_FIRST 1
 #define COMPUTER_PLAYING_FIRST 0
 
 #define USER_PLAYING_SYMBOL 'X'
 #define COMPUTER_PLAYING_SYMBOL 'O'
+
+#define PLAYER_ONE 'X'
+#define PLAYER_TWO 'O'
+#define PLAYER_THREE 'V'
+#define PLAYER_FOUR 'Q'
+#define PLAYER_FIVE '@'
 
 #define PLAYING_EASY_MODE 1
 #define PLAYING_NORMAL_MODE 2
@@ -46,6 +53,7 @@ typedef struct {
 #define MAX_GAMEPLAY_TITLE_LENGTH 20
 #define MAX_FILE_TITLE_LENGTH 57
 #define MAX_MOVES_LENGTH 31
+#define MAX_SAVED_GAMES 999
 
 #define DEFAULT_SAVED_GAMEPLAY_NAME "Gameplay"
 #define DEFAULT_SAVED_GAMEPLAY_LENGTH 8

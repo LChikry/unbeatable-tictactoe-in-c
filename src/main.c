@@ -6,6 +6,7 @@
 #include "../include/common/common.h"
 #include "../include/common/form.h"
 #include "../include/common/graphic.h"
+#include "../include/friends_gameplay/friends_gameplay.h"
 #include "../include/game_play/game_play.h"
 #include "../include/game_play/saving_gameplays.h"
 
@@ -17,18 +18,17 @@ int main(void) {
   WelcomePage();
   int menu_choice = 0;
 
-  while (menu_choice != 5) {
+  while (menu_choice != 4) {
     menu_choice = MainMenuPage();
 
     if (1 == menu_choice) PlayingAgainstComputer();
     if (2 == menu_choice) PlayingWithFriends();
     if (3 == menu_choice) SavedGameplayChoice();
-
-  }  // end of the while loop
+  }
 
   TerminalCleaner();
   LogoPrinter();
-  puts("\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
+  puts("\n\n+++++++++++++++++++++++ MESSAGE: +++++++++++++++++++++++");
   puts("|   Thank you for playing the game, see you soon! :)   |");
   puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
   return 0;
@@ -65,7 +65,7 @@ void PlayingAgainstComputer(void) {
 
   TerminalCleaner();
   LogoPrinter();
-  char gameplay_title[MAX_GAMEPLAY_TITLE_LENGTH + 1] = {0};
+  char gameplay_title[MAX_GAMEPLAY_TITLE_LENGTH + 2] = {0};
 
   if (1 == game_title_choice) {
     // Manually Adding the Title of the Save
@@ -82,24 +82,46 @@ void PlayingAgainstComputer(void) {
     SavedGameMessage(gameplay_title, false);
     // puts("\nerror in SaveTheGameplay");
     // return 1;`
+  } else {
+    SavedGameMessage(gameplay_title, true);
   }
 
-  SavedGameMessage(gameplay_title, true);
   DeleteTheGameplay(&head);
   return;
 }  // end of first choice
 
-void PlayingWithFriends(void) {}
+/// @brief
+/// @param
+void PlayingWithFriends(void) {
+  int number_of_players = GetNumberOfPlayers();
+  if (number_of_players > 2) DisplayMultiplePlayerRules();
+
+  char board[(number_of_players + 1) * (number_of_players + 1)];
+  for (size_t i = 0; i < (number_of_players + 1) * (number_of_players + 1);
+       i++) {
+    board[i] = '0';
+  }
+
+  char *players_rank = MultiplePlayerGameplay(board, number_of_players);
+  MultiplePlayerGameSummary(board, players_rank, number_of_players);
+  free(players_rank);
+
+  char c[2];
+  do {
+    printf(" press enter to exist....");
+    fgets(c, 2, stdin);
+  } while (c[0] != '\n');
+}
 
 void SavedGameplayChoice(void) {
-  int gameplay_mode = GetGameplayMode();
   // 1: show game play    and    2: delete gameplay
   int saved_gameplay_action = GetSavedGameplayAction();
+  int gameplay_mode = GetGameplayMode();
 
   TerminalCleaner();
   LogoPrinter();
   int titles_count = PrintSavedGameplayTitles(gameplay_mode);
-  if (0 == titles_count || -1 == titles_count) return;
+  if (0 == titles_count) return;
 
   GameplayNumbers choosen_gameplays =
       GetSavedGameplaysNumber(gameplay_mode, titles_count);

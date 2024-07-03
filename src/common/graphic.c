@@ -56,6 +56,43 @@ void SuccessfulMessagePrinter(void) {
   sleep(1);
 }
 
+static void print_the_move(char *board, int board_place_number) {
+  bool is_place_empty = false;
+
+  switch (*(board + board_place_number - 1)) {
+    case PLAYER_ONE:
+      printf("\033[33;1m");
+      break;
+
+    case PLAYER_TWO:
+      printf("\033[34;1m");
+      break;
+
+    case PLAYER_THREE:
+      printf("\033[35;1m");
+      break;
+
+    case PLAYER_FOUR:
+      printf("\033[31;1m");
+      break;
+
+    case PLAYER_FIVE:
+      printf("\033[32;1m");
+      break;
+
+    default:
+      is_place_empty = true;
+      break;
+  }
+
+  if (is_place_empty) {
+    if (board_place_number < 10) printf(" ");
+    printf("  %d   ", board_place_number);
+  } else {
+    printf("   %c   \033[0m", *(board + board_place_number - 1));
+  }
+}
+
 void BoardPrinter(char *board) {
   printf("\n");
   for (int i = 0; i < 3; i++) {
@@ -64,15 +101,12 @@ void BoardPrinter(char *board) {
     for (int j = 0; j < 3; j++) {
       if (j != 0) printf("|");
 
-      if (!IsPlaceEmpty(board, j + i * 3 + 1)) {
-        if (IsPlaceTakenByX(board, j + i * 3 + 1, COMPUTER_PLAYING_SYMBOL)) {
-          printf("\033[34;1m   %c   \033[0m", *(board + j + i * 3));
-        } else {
-          printf("\033[33;1m   %c   \033[0m", *(board + j + i * 3));
-        }
-      } else {
+      if (IsPlaceEmpty(board, j + i * 3 + 1)) {
         printf("   %c   ", *(board + j + i * 3));
+        continue;
       }
+
+      print_the_move(board, j + i * 3 + 1);
     }
 
     if (2 != i) puts("\n\t\t _______|_______|_______");
@@ -80,11 +114,56 @@ void BoardPrinter(char *board) {
   }
 }
 
+void MultiplePlayerBoardPrinter(char *board, int number_of_players) {
+  printf("\n\n");
+  for (int i = 0; i < number_of_players + 1; i++) {
+    for (int d = 6; d > number_of_players; --d) printf("    ");
+    for (int k = 0; k < number_of_players + 1; ++k) {
+      printf("       ");
+      if (k != number_of_players) printf("|");
+    }
+    printf("\n");
+
+    for (int d = 6; d > number_of_players; --d) printf("    ");
+    for (int j = 0; j < number_of_players + 1; j++) {
+      if (j != 0) printf("|");
+      print_the_move(board, j + i * (number_of_players + 1) + 1);
+    }
+    printf("\n");
+
+    if (i == number_of_players) break;
+    for (int d = 6; d > number_of_players; --d) printf("    ");
+    for (int k = 0; k < number_of_players + 1; ++k) {
+      printf("_______");
+      if (k != number_of_players) printf("|");
+    }
+    printf("\n");
+  }
+
+  for (int d = 6; d > number_of_players; --d) printf("    ");
+  for (int k = 0; k < number_of_players + 1; ++k) {
+    printf("       ");
+    if (k != number_of_players) printf("|");
+  }
+  printf("\n\n");
+}
+
 void GameIntro(void) {
   TerminalCleaner();
   LogoPrinter();
   puts("\n\n\n\n+++++++++++++++++++++++ BE READY: ++++++++++++++++++++++");
   puts("|                   The Game Begins                    |");
+  puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+  puts("\n\n\n\n");  // just to move the cursor for the design
+  sleep(1);
+}
+
+void GameEndMessage(void) {
+  TerminalCleaner();
+  LogoPrinter();
+  puts("\n\n\n\n++++++++++++++++++++++++ Message: ++++++++++++++++++++++");
+  puts("|                       Game Over                      |");
   puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
   puts("\n\n\n\n");  // just to move the cursor for the design
@@ -108,6 +187,10 @@ void SavedGameMessage(char *gameplay_title,
     puts(
         "|           \033[31;1m The Gameplay Didn't Get Saved  \033[0m         "
         "  |");
+
+    puts(
+        "|        \033[31;1m You Reached The Maximum Number of Saves  \033[0m  "
+        "    |");
   }
 
   puts("|                                                      |");
@@ -206,9 +289,12 @@ int PickRandomlyWhoWillPlayFirst(void) {
   }
 
   // flipping the coin
-  int coin_value;
-  srand(time(NULL));
-  coin_value = rand() % 2;
+  struct timespec res;
+  long nano_time = 0;
+  clock_gettime(CLOCK_REALTIME, &res);
+  nano_time = res.tv_nsec;
+  srand(nano_time);
+  int coin_value = rand() % 2;
 
   // show the result
   if (coin_value == USER_PLAYING_FIRST) {
@@ -236,8 +322,8 @@ int PickRandomlyWhoWillPlayFirst(void) {
 
 /// @brief
 /// @param gameplay_mode
-/// @returns -1 if it fails to open the file, or 0 if no gameplay found,
-/// otherwise, it return the number of gameplays saved
+/// @returns 0 if no gameplay found,
+/// otherwise, it returns the number of gameplays saved
 int PrintSavedGameplayTitles(int gameplay_mode) {
   FILE *titles_file;
   {
@@ -245,10 +331,9 @@ int PrintSavedGameplayTitles(int gameplay_mode) {
     GetTitleFileName(titles_file_name, gameplay_mode);
     titles_file = fopen(titles_file_name, "r");
   }
-  if (!titles_file) return -1;
 
   char buffer[MAX_GAMEPLAY_TITLE_LENGTH];
-  if (!fgets(buffer, MAX_GAMEPLAY_TITLE_LENGTH, titles_file) ||
+  if (!titles_file || !fgets(buffer, MAX_GAMEPLAY_TITLE_LENGTH, titles_file) ||
       strlen(buffer) == 1) {
     TerminalCleaner();
     LogoPrinter();
@@ -304,7 +389,6 @@ int PrintSavedGameplayTitles(int gameplay_mode) {
 
   fclose(titles_file);
   return titles_count;
-  return 0;
 }  // end of printing saved gameplayTitles
 
 static void ParseMovesIntoBoard(char *board, char *moves,
@@ -406,4 +490,88 @@ void PrintSavedGameplayBoards(GameplayNumbers gameplays_to_print,
     printf(" press enter to exist....");
     fgets(c, 2, stdin);
   } while (c[0] != '\n');
+}
+
+void DisplayMultiplePlayerRules(void) {
+  TerminalCleaner();
+  LogoPrinter();
+
+  puts("\n++++++++++++++++++++++ The Rules: +++++++++++++++++++++++");
+  puts("|                                                       |");
+  puts("|  1. The First Person to Get 3 in a Row Wins.          |");
+  puts("|  2. The Game Ends When One Player Left or It's Draw.  |");
+  puts("|  3. Enjoy!!                                           |");
+  puts("|                                                       |");
+  puts("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n\n\n");
+
+  char c[2];
+  do {
+    printf(" press enter to exist....");
+    fgets(c, 2, stdin);
+  } while (c[0] != '\n');
+}
+
+void InGameMultiplePlayerWinningMessage(const char player_symbol,
+                                        const int player_rank) {
+  TerminalCleaner();
+  LogoPrinter();
+
+  puts("\n\n\n+++++++++++++++++++ Congratulations: +++++++++++++++++++");
+  printf("|        ");
+  printf("\033[32;1m");
+  printf("Player %c, You Won!       You're the #%d", player_symbol,
+         player_rank);
+  printf("\033[0m");
+  printf("        |\n");
+  puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n\n\n");
+  usleep(2500000);
+}
+
+void MultiplePlayerGameSummary(char *board, char *players_rank,
+                               int number_of_players) {
+  TerminalCleaner();
+  LogoPrinter();
+  puts("\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+  puts("|                     Game Summary                     |");
+  puts("++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
+
+  bool is_no_one_won = true;
+  for (int i = 0; i < number_of_players; i++) {
+    if (isdigit(players_rank[i])) {
+      is_no_one_won = false;
+      break;
+    }
+  }
+
+  if (is_no_one_won) {
+    puts("\n--------------------------------------------------------");
+    puts("|                                                      |");
+    puts("|                Draw Game, No One Won!                |");
+    puts("|                                                      |");
+    puts("--------------------------------------------------------\n\n\n");
+
+    MultiplePlayerBoardPrinter(board, number_of_players);
+    return;
+  }
+
+  char player_symbols[5] = {PLAYER_ONE, PLAYER_TWO, PLAYER_THREE, PLAYER_FOUR,
+                            PLAYER_FIVE};
+
+  puts("--------------------------------------------------------");
+  for (int i = 0; i < number_of_players; i++) {
+    char symbol = players_rank[i];
+    puts("|                                                      |");
+    printf("|        ");
+    printf("\033[32;1m");
+    if (isdigit(players_rank[i])) {
+      printf("Player %c, You Won!       You're the #%c", player_symbols[i],
+             players_rank[i]);
+    } else {
+      printf("Player %c, You Lost!                   ", player_symbols[i]);
+    }
+    printf("\033[0m");
+    printf("        |\n");
+    puts("|                                                      |");
+  }
+  puts("--------------------------------------------------------\n\n\n");
 }

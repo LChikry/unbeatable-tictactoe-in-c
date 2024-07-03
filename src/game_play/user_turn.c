@@ -8,7 +8,7 @@
 #include "../../include/game_play/game_checkers.h"
 
 int UserTurn(char *board) {
-  int board_place_number;
+  int board_place_number = 0;
   bool is_function_run_once = false;
 
   do {
@@ -17,10 +17,9 @@ int UserTurn(char *board) {
       BoardPrinter(board);
     }
 
-    board_place_number = GetGoodInput(1, true);
+    board_place_number = GetGoodIntegerInput(1, 9);
     is_function_run_once = true;
-  } while (board_place_number > 9 || board_place_number < 1 ||
-           !IsPlaceEmpty(board, board_place_number));
+  } while (board_place_number == 0 || !IsPlaceEmpty(board, board_place_number));
 
   *(board + board_place_number - 1) = USER_PLAYING_SYMBOL;
 

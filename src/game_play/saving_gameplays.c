@@ -129,6 +129,20 @@ static void saving_moves(FILE *moves_file, GameplayNode *head,
   if (!is_it_first_call) fputs(", ", moves_file);
 }
 
+static int count_number_of_saved_games(FILE *file) {
+  if (!file) return -1;
+  rewind(file);
+
+  char buffer[MAX_FILE_TITLE_LENGTH + 2] = {0};
+  int games_count = 0;
+  while (fgets(buffer, MAX_GAMEPLAY_TITLE_LENGTH, file)) {
+    if (strlen(buffer) == 1) continue;
+    ++games_count;
+  }
+
+  return games_count;
+}
+
 int SaveTheGameplay(GameplayNode *head, int game_mode, const char *game_title,
                     bool is_user_played_first) {
   char moves_file_name[MAX_FILE_TITLE_LENGTH] = {0};
@@ -137,14 +151,19 @@ int SaveTheGameplay(GameplayNode *head, int game_mode, const char *game_title,
   GetTitleFileName(titles_file_name, game_mode);
 
   // First file
-  FILE *titles_file = fopen(titles_file_name, "a");
+  FILE *titles_file = fopen(titles_file_name, "r");
   if (titles_file == NULL) return 1;
+  int number_of_saved_games = count_number_of_saved_games(titles_file);
+  fclose(titles_file);
+
+  if (number_of_saved_games >= MAX_SAVED_GAMES) return 1;
+
+  titles_file = fopen(titles_file_name, "a");
   fprintf(titles_file, "%s\n", game_title);
   fclose(titles_file);
 
   // Second file
   FILE *moves_file = fopen(moves_file_name, "a");
-  if (moves_file == NULL) return 1;
 
   if (is_user_played_first) {
     fputs("U: ", moves_file);

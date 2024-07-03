@@ -72,6 +72,11 @@ void CreateRandom5Digits(void) {
   // fputs("\033[0m", stdout);
 }
 
+/****************************************************************/
+/*                                                              */
+/*                             MAIN                             */
+/*                                                              */
+/****************************************************************/
 int main(void) {
   CreateRandom4DigitsWithoutNumber5();
   CreateRandom5Digits();
