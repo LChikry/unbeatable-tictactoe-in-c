@@ -32,12 +32,12 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/Users/houssinchikry/SecondBrain/2_Areas/Programming_Projects/unbeatable-tic-tac-toe-in-c/build",
-		"source" : "/Users/houssinchikry/SecondBrain/2_Areas/Programming_Projects/unbeatable-tic-tac-toe-in-c"
+		"build" : "/Users/houssinchikry/1SecondBrain/2_Areas/Programming_Projects/unbeatable-tic-tac-toe-in-c/build",
+		"source" : "/Users/houssinchikry/1SecondBrain/2_Areas/Programming_Projects/unbeatable-tic-tac-toe-in-c"
 	},
 	"version" : 
 	{
 		"major" : 2,
-		"minor" : 6
+		"minor" : 7
 	}
 }
